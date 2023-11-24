@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1072495003281",
+    "project_id": "practice-a07be",
+    "storage_bucket": "practice-a07be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072495003281:android:7327fce0fe5ea329fda130",
+        "android_client_info": {
+          "package_name": "com.example.ui_practice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_gUo9QkyfNutsOnImdE688cRqkHub8cM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072495003281:android:2d90c9ba1e6ebe17fda130",
+        "android_client_info": {
+          "package_name": "com.example.weathe_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_gUo9QkyfNutsOnImdE688cRqkHub8cM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
