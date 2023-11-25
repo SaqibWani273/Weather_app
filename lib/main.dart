@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:weathe_app/constants/theme.dart';
+import 'package:weathe_app/view/today_screen.dart';
 
 import 'firebase_options.dart';
 import 'repositories/weather_repository.dart';
-import 'view/home_page.dart';
-import 'view/weather_bloc/weather_bloc.dart';
+
+import 'view_model/weather_bloc/weather_bloc.dart';
 
 Future<void> main() async {
   //to do:
@@ -14,6 +17,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.light,
+  ));
 
   runApp(MyApp());
 }
@@ -23,16 +30,24 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: RepositoryProvider(
+    return RepositoryProvider(
         create: (context) => WeatherRepository(),
-        child: BlocProvider<WeatherBloc>(
-          create: (context) =>
-              WeatherBloc(weatherRepository: context.read<WeatherRepository>())
+        child: MultiBlocProvider(
+          providers: [
+            BlocProvider<WeatherBloc>(
+              create: (context) => WeatherBloc(
+                  weatherRepository: context.read<WeatherRepository>())
                 ..add(FetchCurrentLocationWeather()),
-          child: const HomePage(),
-        ),
-      ),
-    );
+            ),
+            // BlocProvider<CitiesBloc>(
+            // create: (context) => CitiesBloc(
+            // weatherRepository: context.read<WeatherRepository>()))
+          ],
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: CustomTheme().getTheme(),
+            home: const TodayScreen(),
+          ),
+        ));
   }
 }

@@ -5,7 +5,7 @@ import 'dart:developer';
 class WeatherModel {
   final ApiResponseModel apiResponseModel;
   final String imageUrl;
-  final String lottieUrl;
+  final String? lottieUrl;
   WeatherModel({
     required this.apiResponseModel,
     required this.imageUrl,
@@ -19,6 +19,7 @@ class ApiResponseModel {
 //  WeatherList weatherList;
   String base;
   Main main;
+  int visibility;
   Wind wind;
   Clouds clouds;
   int dt;
@@ -34,6 +35,7 @@ class ApiResponseModel {
     required this.weather,
     required this.base,
     required this.main,
+    required this.visibility,
     required this.wind,
     required this.clouds,
     required this.dt,
@@ -56,6 +58,7 @@ class ApiResponseModel {
       ),
       base: map['base'] as String,
       main: Main.fromMap(map['main'] as Map<String, dynamic>),
+      visibility: map['visibility'] as int,
       wind: Wind.fromMap(map['wind'] as Map<String, dynamic>),
       clouds: Clouds.fromMap(map['clouds'] as Map<String, dynamic>),
       dt: map['dt'] as int,
@@ -129,7 +132,10 @@ class Wind {
 
   Wind({required this.speed, required this.deg});
   factory Wind.fromMap(Map<String, dynamic> map) {
-    return Wind(deg: map['deg'], speed: map['speed']);
+    return Wind(
+      deg: map['deg'],
+      speed: double.parse(map['speed'].toString()),
+    );
   }
   factory Wind.fromJson(String source) =>
       Wind.fromMap(json.decode(source) as Map<String, dynamic>);
