@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:weathe_app/utils/get_formatted_datetime.dart';
 import 'package:weathe_app/view/search_weather.dart';
 
 import '../../constants/other_const.dart';
@@ -27,6 +30,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
     final temp = TodayScreenUiData().getTemp(apiResponseModel);
     final List<MainWeatherInfo> mainWeatherInfo =
         TodayScreenUiData().getMainWeatherInfo(apiResponseModel);
+    final formattedDateTime = getFormattedDateTime(apiResponseModel.dt);
 
     return GestureDetector(
       onTap: () {
@@ -62,6 +66,167 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                   icon: const Icon(
                     Icons.menu,
                   ))),
+
+          //      Positioned(top: 40, child: SearchWeather()),
+          //temp, city name, weather description
+          Positioned(
+              top: 100,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              apiResponseModel.name,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            FittedBox(
+                              child: Text(
+                                formattedDateTime,
+                                textScaleFactor: 1.8,
+                              ),
+                              fit: BoxFit.contain,
+                            ),
+                          ]),
+                    ),
+                    Spacer(),
+                    //to rotate the text from bottom to top
+                    // RotatedBox(
+                    //     quarterTurns: 3,
+                    //     child: Text(apiResponseModel.weather[0].description))
+                  ],
+                ),
+              )),
+
+          //main weather info
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              alignment: Alignment.center,
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height * 0.3,
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 80),
+              // decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(20),
+              //     border: Border.all(
+              //       color: Colors.white,
+              //       width: 3,
+              //     )),
+              child: Column(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              temp,
+                              style: TextStyle(
+                                fontSize: 70,
+                              ),
+                            ),
+                            Text(
+                              "O",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            Text(
+                              "C",
+                              style: TextStyle(
+                                  fontSize: 70, fontWeight: FontWeight.w500),
+                            )
+                          ],
+                        ),
+                        Expanded(
+                          //   flex: 2,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Image.asset(
+                                "assets/images/cloud.png",
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(apiResponseModel.weather[0].description),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Divider(
+                    height: 2,
+                    color: Colors.white,
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: mainWeatherInfo
+                          .asMap()
+                          .entries
+                          .map((mapEntry) => Expanded(
+                                  child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      flex: 5,
+                                      child: Column(
+                                        //  mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Expanded(
+                                            child: FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Text(
+                                                mapEntry.value.info,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            child: FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Text(
+                                                mapEntry.value.name,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )))
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned(
+              bottom: 0, right: 0, left: 0, child: MyBottomNavigationBar()),
+          if (widget.state.weatherModel.lottieUrl != null)
+            Lottie.network(widget.state.weatherModel.lottieUrl!, height: 500),
           if (showDrawer)
             Positioned(
               top: 0,
@@ -76,11 +241,17 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                 width: MediaQuery.of(context).size.width * 0.5,
                 height: MediaQuery.of(context).size.height,
                 child: Drawer(
-                  backgroundColor: Colors.white.withOpacity(0.1),
+                  backgroundColor: Colors.grey.withOpacity(0.8),
                   elevation: 0,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 80),
                     child: Column(children: [
+                      DrawerHeader(
+                        child: Image.asset("assets/images/cloud.png"),
+                        // decoration: BoxDecoration(
+                        //   color: Colors.grey.withOpacity(0.7),
+                        // ),
+                      ),
                       ListTile(
                         tileColor: Colors.white,
                         onTap: () {
@@ -98,146 +269,6 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                 ),
               ),
             ),
-          //      Positioned(top: 40, child: SearchWeather()),
-          //temp, city name, weather description
-          Positioned(
-              top: 100,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Column(children: [
-                      Text(
-                        apiResponseModel.name,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            temp,
-                            style: TextStyle(
-                              fontSize: 70,
-                            ),
-                          ),
-                          Text(
-                            "O",
-                            style: TextStyle(fontSize: 20),
-                          )
-                        ],
-                      ),
-                    ]),
-                    Spacer(),
-                    //to rotate the text from bottom to top
-                    RotatedBox(
-                        quarterTurns: 3,
-                        child: Text(apiResponseModel.weather[0].description))
-                  ],
-                ),
-              )),
-          //main weather info
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              alignment: Alignment.center,
-              width: double.infinity,
-              height: 80,
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 80),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 3,
-                  )),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: mainWeatherInfo
-                    .asMap()
-                    .entries
-                    .map((mapEntry) => Expanded(
-                            child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                flex: 5,
-                                child: Column(
-                                  //  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Expanded(
-                                      child: FittedBox(
-                                        fit: BoxFit.scaleDown,
-                                        child: Text(
-                                          mapEntry.value.info,
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: FittedBox(
-                                        fit: BoxFit.scaleDown,
-                                        child: Text(
-                                          mapEntry.value.name,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              // if (mapEntry.key != mainWeatherInfo.length - 1)
-                              //   Spacer(),
-                              // // if (mapEntry.key != mainWeatherInfo.length - 1)
-                              // Expanded(
-                              //     flex: 2,
-                              //     child: Text(
-                              //       "|",
-                              //       style: TextStyle(fontSize: 30),
-                              //     )),
-                            ],
-                          ),
-                        )))
-                    .toList(),
-                //  [
-                //   Expanded(
-                //     child: Column(
-                //       mainAxisSize: MainAxisSize.min,
-                //       children: [
-                //         Text(
-                //           "${state.weatherModel.apiResponseModel.main.humidity}%",
-                //         ),
-                //         Text("humidity"),
-                //       ],
-                //     ),
-                //   ),
-                //   Expanded(
-                //     child: Column(children: [
-                //       Text(
-                //         "${state.weatherModel.apiResponseModel.visibility / 1000}km",
-                //       ),
-                //       Text("visibility"),
-                //     ]),
-                //   ),
-                //   Expanded(
-                //       child: Column(children: [
-                //     Text(
-                //       "${state.weatherModel.apiResponseModel.wind.speed * 3.6}km/h",
-                //     ),
-                //     Text("wind"),
-                //   ]))
-                // ],
-              ),
-            ),
-          ),
-          Positioned(
-              bottom: 0, right: 0, left: 0, child: MyBottomNavigationBar()),
-          if (widget.state.weatherModel.lottieUrl != null)
-            Lottie.network(widget.state.weatherModel.lottieUrl!, height: 500),
         ]),
       ),
     );

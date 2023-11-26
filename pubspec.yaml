@@ -23,6 +23,7 @@ dependencies:
   firebase_core: ^2.23.0
   lottie: ^2.7.0
   google_fonts: ^6.1.0
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +31,8 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
   # list giving the asset and other descriptors for the font. For
   # example:
   # fonts:

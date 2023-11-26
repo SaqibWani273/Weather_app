@@ -67,7 +67,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       onTap: changeIndex,
       items: bottomNavigationBarItems
           .map((MyBottomNavigationBarItem item) => BottomNavigationBarItem(
-              backgroundColor: Colors.transparent,
+              backgroundColor: Colors.white.withOpacity(0.2),
               icon: Icon(item.inactiveIcon),
               label: item.label,
               activeIcon: Icon(item.activeIcon)))
