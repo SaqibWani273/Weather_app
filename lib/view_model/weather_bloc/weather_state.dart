@@ -24,13 +24,8 @@ class LoadedSuggestedLocations extends WeatherState {
 class LoadingSuggestedLocations extends WeatherState {}
 
 class NoSuggestedLocations extends WeatherState {}
-// class NoCitiesState extends CitiesState {}
 
-// class LoadingCitiesState extends CitiesState {}
-
-// class GeneratedCitiesState extends CitiesState {
-//   final List<CityModel>? cities;
-
-//   GeneratedCitiesState({required this.cities});
-// }
-
+class LoadedHourlyWeatherState extends WeatherState {
+  final List<HourlyWeatherModel> hourlyWeatherList;
+  LoadedHourlyWeatherState({required this.hourlyWeatherList});
+}

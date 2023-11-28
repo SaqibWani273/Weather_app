@@ -6,7 +6,7 @@ import 'package:weathe_app/models/weather_model1.dart';
 import 'package:weathe_app/repositories/weather_repository.dart';
 
 import '../../constants/custom_exception.dart';
-import '../../models/complete_data_model.dart';
+import '../../models/hourly_weather_model.dart';
 part 'weather_event.dart';
 part 'weather_state.dart';
 
@@ -16,6 +16,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     on<FetchCurrentLocationWeather>(_fetchCurrentLocationWeather);
     on<FetchSuggestedLocations>(_fetchSuggestedLocations);
     on<FetchLocationWeatherByLatLong>(_fetchLocationWeatherByLatLong);
+    on<FetchHourlyWeatherEvent>(_fetchHourlyWeather);
   }
   final WeatherRepository weatherRepository;
   Future<void> _fetchCurrentLocationWeather(
@@ -89,6 +90,27 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       log('custom error while getting weather data from repo: $e');
       //  emit(WeatherErrorState(error: e.message));
       rethrow;
+    }
+  }
+
+  Future<void> _fetchHourlyWeather(
+      FetchHourlyWeatherEvent event, Emitter<WeatherState> emit) async {
+    try {
+      emit(LoadingWeatherState());
+      final hourlyWeatherList = await weatherRepository.getHourlyWeather();
+
+      emit(LoadedHourlyWeatherState(
+        hourlyWeatherList: hourlyWeatherList,
+      ));
+    } on CustomException catch (e) {
+      log('custom error while getting hourly weather data from repo: $e');
+      emit(WeatherErrorState(
+        error: e.message,
+      ));
+    } catch (e) {
+      emit(WeatherErrorState(
+        error: "Unexpected Error Occurred\n Please Try Again!",
+      ));
     }
   }
 }

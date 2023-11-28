@@ -16,3 +16,5 @@ class FetchLocationWeatherByLatLong extends WeatherEvent {
   final double longt;
   FetchLocationWeatherByLatLong({required this.lat, required this.longt});
 }
+
+class FetchHourlyWeatherEvent extends WeatherEvent {}

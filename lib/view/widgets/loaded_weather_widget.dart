@@ -30,8 +30,11 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
     final temp = TodayScreenUiData().getTemp(apiResponseModel);
     final List<MainWeatherInfo> mainWeatherInfo =
         TodayScreenUiData().getMainWeatherInfo(apiResponseModel);
-    final formattedDateTime = getFormattedDateTime(apiResponseModel.dt);
-
+    final formattedDateTime = getFormattedDateTime(apiResponseModel.timezone);
+    // final tempDate = DateTime.now().add(Duration(
+    //     seconds: apiResponseModel.timezone -
+    //         DateTime.now().timeZoneOffset.inSeconds));
+    //  log("Temp Date: $tempDate");
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -223,8 +226,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
               ),
             ),
           ),
-          Positioned(
-              bottom: 0, right: 0, left: 0, child: MyBottomNavigationBar()),
+
           if (widget.state.weatherModel.lottieUrl != null)
             Lottie.network(widget.state.weatherModel.lottieUrl!, height: 500),
           if (showDrawer)

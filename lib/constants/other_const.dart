@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:weathe_app/models/weather_model1.dart';
 import 'package:weathe_app/view/today_screen.dart';
 
+import '../view/hourly_screen.dart';
+
 class MyBottomNavigationBarItem {
   final String label;
   final IconData activeIcon;
@@ -34,9 +36,7 @@ const List<MyBottomNavigationBarItem> bottomNavigationBarItems = [
 ];
 List<Widget> screens = [
   TodayScreen(),
-  Container(
-    child: Text("Hourly"),
-  ),
+  HourlyScreen(),
   Container(
     child: Text("Daily"),
   ),
