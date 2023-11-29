@@ -3,8 +3,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../view_model/weather_bloc/weather_bloc.dart';
-import 'widgets/loaded_weather_widget.dart';
+import '../../view_model/weather_bloc/weather_bloc.dart';
+import '../widgets/loaded_weather_widget.dart';
 
 // const dummy =
 //     'https://raw.githubusercontent.com/xvrh/lottie-flutter/master/example/assets/Mobilo/A.json';

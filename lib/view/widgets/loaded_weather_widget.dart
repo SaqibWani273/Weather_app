@@ -7,7 +7,7 @@ import 'package:weathe_app/view/search_weather.dart';
 
 import '../../constants/other_const.dart';
 import '../../view_model/weather_bloc/weather_bloc.dart';
-import '../home_page.dart';
+import '../screens/home_page.dart';
 
 //to do: change the  name of the class
 class LoadedTodayWidget extends StatefulWidget {

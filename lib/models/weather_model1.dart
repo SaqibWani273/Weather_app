@@ -159,12 +159,13 @@ class Main {
   });
   factory Main.fromMap(Map<String, dynamic> map) {
     return Main(
-      temp: map['temp'],
-      feelsLike: map['feels_like'],
-      tempMin: map['temp_min'],
-      tempMax: map['temp_max'],
-      pressure: map['pressure'],
-      humidity: map['humidity'],
+      temp: double.parse(map['temp'].toString()),
+      feelsLike:
+          double.parse(map['feels_like'].toString()), // map['feels_like'],
+      tempMin: double.parse(map['temp_min'].toString()), // map['temp_min'],
+      tempMax: double.parse(map['temp_max'].toString()), // map['temp_max'],
+      pressure: map['pressure'] as int,
+      humidity: map['humidity'] as int,
     );
   }
   factory Main.fromJson(String source) =>

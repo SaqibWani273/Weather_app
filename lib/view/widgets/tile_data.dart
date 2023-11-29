@@ -13,32 +13,21 @@ class TileData {
   AxisTitles getTileData(
       {bool isTopTiles = false, required BuildContext context}) {
     return AxisTitles(
-        //   drawBelowEverything: false,
+
         //   axisNameSize: 30,
         sideTitles: SideTitles(
-      reservedSize: 35,
+      reservedSize: 55,
       showTitles: true,
       getTitlesWidget: (double value, TitleMeta meta) {
-        //     log("meta = ${meta.formattedValue}");
         return SideTitleWidget(
-          // space: 0.1,
-          axisSide: AxisSide.bottom,
-          child: Container(
-            // height: 100,
-            // width: 100,
-            padding: EdgeInsets.only(left: 5),
-            child: FittedBox(
-              fit: BoxFit.fill,
-              child: Container(
-                padding: EdgeInsets.only(),
-                width: MediaQuery.of(context).size.width * 0.2, //100,
-                height: 30, // MediaQuery.of(context).size.width * 0.2, // 100,
-                child: Text(
-                  isTopTiles ? _getHour(value) : _getHumidity(value),
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 20),
-                ),
-              ),
+          axisSide: isTopTiles ? AxisSide.top : AxisSide.bottom,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.25,
+              height: 60,
+              child: isTopTiles ? _getHour(value) : _getHumidity(value),
             ),
           ),
         );
@@ -46,25 +35,52 @@ class TileData {
     ));
   }
 
-  String _getTemp(double val) {
+  Widget _getHour(double val) {
     if (val == val.toInt()) {
-      return hourlyWeatherList[val.toInt()].main.temp.round().toString();
-    }
-    return '';
-  }
-
-  String _getHour(double val) {
-    if (val == val.toInt()) {
-      return hourlyWeatherList[val.toInt()].hour;
+      final text = hourlyWeatherList[val.toInt()].hour;
+      return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              flex: 2,
+              child: Text(
+                text,
+                style: const TextStyle(fontSize: 20),
+              ),
+            ),
+            const Expanded(
+              flex: 1,
+              child: Icon(
+                Icons.cloud,
+                color: Colors.white,
+              ),
+            ),
+          ]);
       // return hourlyWeatherList[val.toInt()].main.temp.toString();
+    } else {
+      return const Text('');
     }
-    return '';
   }
 
-  String _getHumidity(double val) {
+  Widget _getHumidity(double val) {
     if (val == val.toInt()) {
-      return hourlyWeatherList[val.toInt()].main.humidity.toString();
+      final text = "${hourlyWeatherList[val.toInt()].main.humidity}%";
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const Icon(
+            Icons.water_drop_sharp,
+            color: Colors.white,
+          ),
+          Text(
+            text,
+            style: const TextStyle(fontSize: 20),
+          )
+        ],
+      );
     }
-    return '';
+    return const Text('');
   }
 }

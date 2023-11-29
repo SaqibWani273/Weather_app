@@ -3,8 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:weathe_app/constants/theme.dart';
-import 'package:weathe_app/view/home_page.dart';
-import 'package:weathe_app/view/today_screen.dart';
+import 'package:weathe_app/view/screens/home_page.dart';
+import 'package:weathe_app/view/screens/today_screen.dart';
 
 import 'firebase_options.dart';
 import 'repositories/weather_repository.dart';

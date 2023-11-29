@@ -90,7 +90,7 @@ class OpenWeatherApi {
         //  log("hourly response body = ${response.body}");
         log(" hourly response code = ${response.statusCode}");
         final decodeResponse = jsonDecode(response.body);
-        //  log("decoderesponse = $decodeResponse");
+        log("decoderesponse = $decodeResponse");
         final timeZone = decodeResponse["city"]["timezone"];
 
         int hr = 0;
@@ -105,6 +105,10 @@ class OpenWeatherApi {
       } else {
         log("hourly response code = ${response.statusCode}");
       }
+    } on TypeError catch (e) {
+      log("type error occurred in getHourlyWeather:\n stacktrace : ${e.stackTrace}\n error : $e");
+      throw CustomException(
+          message: "An internal error occurred.\n Please try again later");
     } catch (e) {
       log("error occurred in getHourlyWeather: ${e}");
       throw CustomException(
