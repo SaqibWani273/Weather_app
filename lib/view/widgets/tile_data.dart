@@ -11,7 +11,9 @@ class TileData {
     required this.hourlyWeatherList,
   });
   AxisTitles getTileData(
-      {bool isTopTiles = false, required BuildContext context}) {
+      {bool isTopTiles = false,
+      required BuildContext context,
+      bool showClouds = false}) {
     return AxisTitles(
 
         //   axisNameSize: 30,
@@ -26,8 +28,10 @@ class TileData {
             child: Container(
               alignment: Alignment.center,
               width: MediaQuery.of(context).size.width * 0.25,
-              height: 60,
-              child: isTopTiles ? _getHour(value) : _getHumidity(value),
+              height: 80,
+              child: isTopTiles
+                  ? _getHour(value, showClouds: showClouds)
+                  : _getHumidity(value),
             ),
           ),
         );
@@ -35,9 +39,34 @@ class TileData {
     ));
   }
 
-  Widget _getHour(double val) {
+  Widget _getHour(double val, {bool showClouds = false}) {
     if (val == val.toInt()) {
-      final text = hourlyWeatherList[val.toInt()].hour;
+      var text = hourlyWeatherList[val.toInt()].hour;
+      final date = DateTime.parse(hourlyWeatherList[val.toInt()].dt_txt);
+      log("date = ${date.weekday}");
+      var day = "";
+      switch (date.weekday) {
+        case 1:
+          day += " Mon";
+          break;
+        case 2:
+          day += " Tue";
+          break;
+        case 3:
+          day += " Wed";
+          break;
+        case 4:
+          day += " Thu";
+          break;
+        case 5:
+          day += " Fri";
+          break;
+        case 6:
+          day += " Sat";
+          break;
+        case 7:
+          day += " Sun";
+      }
       return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,14 +74,14 @@ class TileData {
             Expanded(
               flex: 2,
               child: Text(
-                text,
+                "$day\n$text",
                 style: const TextStyle(fontSize: 20),
               ),
             ),
-            const Expanded(
+            Expanded(
               flex: 1,
               child: Icon(
-                Icons.cloud,
+                showClouds ? Icons.cloud : Icons.sunny,
                 color: Colors.white,
               ),
             ),

@@ -22,6 +22,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   Future<void> _fetchCurrentLocationWeather(
       FetchCurrentLocationWeather event, Emitter<WeatherState> emit) async {
     try {
+      emit(LoadingWeatherState());
       final weatherModel = await _fetchFromRepository();
       emit(WeatherLoadedState(
         weatherModel: weatherModel,

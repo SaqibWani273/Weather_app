@@ -26,25 +26,72 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-            color: Colors.blue.shade900.withOpacity(0.7),
+            height: MediaQuery.of(context).size.height * 0.1,
+            color: Colors.blue.shade900.withOpacity(0.3),
+            padding: EdgeInsets.only(top: 15),
             child: Row(children: [
               Expanded(
-                child: TextButton(
-                    onPressed: () {
-                      _changeIndex(0);
-                    },
-                    child: Text(
-                      "Temperature",
-                    )),
+                child: Column(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        _changeIndex(0);
+                      },
+                      child: Text(
+                        "  Temperature  ",
+                      ),
+                      style: currentIndex == 0
+                          ? TextButton.styleFrom(
+                              backgroundColor: Colors.grey.withOpacity(0.9))
+                          : null,
+                    ),
+                    SizedBox(height: 8.0),
+                    if (currentIndex ==
+                        0) // Adjust spacing between text and underline
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            8.0), // Adjust the radius for rounded ends
+                        child: Container(
+                          margin: EdgeInsets.only(left: 20),
+                          height: 4.0, // Adjust the thickness of the underline
+                          color: Colors.blue
+                              .shade300, // Choose the color of the underline
+                          width: double.infinity,
+                        ),
+                      ),
+                  ],
+                ),
               ),
               Expanded(
-                child: TextButton(
-                    onPressed: () {
-                      _changeIndex(1);
-                    },
-                    child: Text(
-                      "Clouds",
-                    )),
+                child: Column(
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        _changeIndex(1);
+                      },
+                      child: Text(
+                        "    Clouds    ",
+                      ),
+                      style: currentIndex == 1
+                          ? TextButton.styleFrom(
+                              backgroundColor: Colors.grey.withOpacity(0.9))
+                          : null,
+                    ),
+                    SizedBox(height: 8.0),
+                    if (currentIndex == 1)
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(
+                            8.0), // Adjust the radius for rounded ends
+                        child: Container(
+                          margin: EdgeInsets.only(left: 20),
+                          height: 4.0, // Adjust the thickness of the underline
+                          color: Colors.blue
+                              .shade300, // Choose the color of the underline
+                          width: double.infinity,
+                        ),
+                      ),
+                  ],
+                ),
               )
             ])),
         currentIndex == 0
@@ -55,22 +102,48 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
               ),
         if (currentIndex == 0)
           Container(
+            color: Colors.blue.shade900.withOpacity(0.3),
+            padding: EdgeInsets.only(left: 20, right: 20, bottom: 10),
             child: Column(children: [
               const SizedBox(
-                height: 20,
+                height: 5,
               ),
-              Row(children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 Expanded(
-                  child: Text("___.___  Temperauture",
+                  child: Text("__.__  Temp",
                       style: TextStyle(color: Colors.white70, fontSize: 15)),
                 ),
                 Expanded(
-                  child: Text("----.----  Real Feel",
-                      style: TextStyle(color: Colors.green, fontSize: 15)),
+                  child: Text("--.--  Real Feel",
+                      style: TextStyle(color: Colors.white70, fontSize: 15)),
+                ),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.water_drop_sharp,
+                        color: Colors.white70,
+                      ),
+                      Text(" Humidity",
+                          style:
+                              TextStyle(color: Colors.white70, fontSize: 15)),
+                    ],
+                  ),
                 )
               ])
             ]),
-          )
+          ),
+        SizedBox(
+          height: 20,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("3-Hourly Weather Forecast for 5-days ",
+                style: TextStyle(color: Colors.purple, fontSize: 15)),
+            Icon(Icons.arrow_forward_sharp)
+          ],
+        )
       ],
     );
   }

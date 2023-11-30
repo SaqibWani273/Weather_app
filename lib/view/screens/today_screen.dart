@@ -45,9 +45,27 @@ class TodayScreen extends StatelessWidget {
             return Container(
               color: Color.fromRGBO(13, 117, 248, 1.0),
               child: Center(
-                child: Text(
-                  " ${state.error!} ",
-                  overflow: TextOverflow.visible,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      " ${state.error!} ",
+                      overflow: TextOverflow.visible,
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          context
+                              .read<WeatherBloc>()
+                              .add(FetchCurrentLocationWeather());
+                        },
+                        child: Text(
+                          'Try Again',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.blueGrey,
+                        )),
+                  ],
                 ),
               ),
             );

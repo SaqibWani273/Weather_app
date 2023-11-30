@@ -35,7 +35,7 @@ class WeatherChart extends StatelessWidget {
               : FlSpot(entry.key.toDouble(), entry.value.main.temp);
         }).toList(),
 
-        isCurved: true,
+        isCurved: false,
         //   show: false,
         //   dotData: FlDotData(show: false),
         //by default changes the color of both tooltip and the line
@@ -43,24 +43,26 @@ class WeatherChart extends StatelessWidget {
       ),
       if (showClouds != true)
         LineChartBarData(
-            barWidth: 5.0,
+            dotData: FlDotData(show: false),
+            barWidth: 2.0,
             spots: hourlyWeatherList
                 .asMap()
                 .entries
                 .map<FlSpot>((MapEntry<int, HourlyWeatherModel> entry) {
               return FlSpot(entry.key.toDouble(), entry.value.main.feelsLike);
             }).toList(),
-            isCurved: true,
+            isCurved: false,
 
             //by default changes the color of both tooltip and the line
-            color: Colors.green,
-            dashArray: [5, 3]),
+            color: Colors.white70,
+            dashArray: [5, 5]),
     ];
 
-    return SizedBox(
+    return Container(
       height: MediaQuery.of(context).size.height * 0.4,
       width: deviceWidth,
       child: Container(
+        padding: EdgeInsets.symmetric(vertical: 15),
         color: Colors.blue.shade900.withOpacity(0.3),
         height: 200,
         width: deviceWidth,
@@ -91,7 +93,7 @@ class WeatherChart extends StatelessWidget {
                       }).toList();
                     },
                     tooltipBgColor: Colors.transparent,
-                    tooltipRoundedRadius: 5,
+                    tooltipRoundedRadius: 2,
                     tooltipPadding: EdgeInsets.all(0),
                   ),
                 ),
@@ -122,24 +124,30 @@ class WeatherChart extends StatelessWidget {
                 minY: 0,
                 maxY: showClouds ? 150 : 25,
 
-                //to hide the grid
+                //to hide/show the grid
                 gridData: const FlGridData(
                   show: false,
                 ),
-                //to hide the borders
-                borderData: FlBorderData(show: false),
+                //to hide/show the borders
+                borderData: FlBorderData(
+                  show: false,
+                ),
                 //to show data around four sides of graph
                 titlesData: FlTitlesData(
                   show: true,
                   leftTitles: noTiles,
                   rightTitles: noTiles,
-                  topTitles:
-                      tileData.getTileData(isTopTiles: true, context: context),
+                  topTitles: tileData.getTileData(
+                      isTopTiles: true,
+                      context: context,
+                      showClouds: showClouds),
                   bottomTitles: tileData.getTileData(context: context),
                 ),
                 //this is the actual chart line/lines
                 lineBarsData: lineBarsData,
               ),
+              duration: Durations.long1,
+              curve: Curves.easeInOut,
             ),
           ),
         ),
