@@ -2,9 +2,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:weathe_app/models/weather_model1.dart';
-import 'package:weathe_app/view/screens/today_screen.dart';
-
-import '../view/screens/hourly_screen.dart';
 
 class MyBottomNavigationBarItem {
   final String label;
@@ -21,11 +18,11 @@ class MyBottomNavigationBarItem {
 const List<MyBottomNavigationBarItem> bottomNavigationBarItems = [
   MyBottomNavigationBarItem(
       label: "Today",
-      activeIcon: Icons.calendar_today,
+      activeIcon: Icons.calendar_today_sharp,
       inactiveIcon: Icons.calendar_today_outlined),
   MyBottomNavigationBarItem(
       label: "Hourly",
-      activeIcon: Icons.lock_clock,
+      activeIcon: Icons.lock_clock_sharp,
       inactiveIcon: Icons.lock_clock_outlined),
   MyBottomNavigationBarItem(
       label: "Daily",
@@ -33,16 +30,6 @@ const List<MyBottomNavigationBarItem> bottomNavigationBarItems = [
       inactiveIcon: Icons.person_outline),
   MyBottomNavigationBarItem(
       label: "Map", activeIcon: Icons.map, inactiveIcon: Icons.map_outlined),
-];
-List<Widget> screens = [
-  TodayScreen(),
-  HourlyScreen(),
-  Container(
-    child: Text("Daily"),
-  ),
-  Container(
-    child: Text("Map"),
-  ),
 ];
 
 class TodayScreenUiData {
@@ -75,4 +62,8 @@ class MainWeatherInfo {
     required this.name,
     required this.info,
   });
+}
+
+class ImageConstants {
+  final backgroundColor = Colors.lightBlue;
 }

@@ -12,8 +12,8 @@ class WeatherLoadedState extends WeatherState {
 }
 
 class WeatherErrorState extends WeatherState {
-  String? error = "Error occurred!";
-  WeatherErrorState({this.error});
+  final CustomException error;
+  WeatherErrorState({required this.error});
 }
 
 class LoadedSuggestedLocations extends WeatherState {

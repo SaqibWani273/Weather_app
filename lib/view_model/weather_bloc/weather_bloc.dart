@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weathe_app/constants/error_type.dart';
 import 'package:weathe_app/models/city_model.dart';
 import 'package:weathe_app/models/weather_model1.dart';
 import 'package:weathe_app/repositories/weather_repository.dart';
@@ -30,11 +31,11 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     } on CustomException catch (e) {
       log('custom error while getting weather data from repo: $e');
       emit(WeatherErrorState(
-        error: e.message,
+        error: e,
       ));
     } catch (e) {
       emit(WeatherErrorState(
-        error: "Unexpected Error Occurred\n Please Try Again!",
+        error: unknownException,
       ));
     }
   }
@@ -51,8 +52,11 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       }
     } on CustomException catch (e) {
       log('unexpected error in fetching suggested locations: ${e}');
+      emit(WeatherErrorState(error: e));
+    } catch (e) {
       emit(WeatherErrorState(
-          error: "Unexpected Error Occurred\n Please Try Again!"));
+        error: unknownException,
+      ));
     }
   }
 
@@ -69,11 +73,11 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     } on CustomException catch (e) {
       log('custom error while getting weather data from repo: $e');
       emit(WeatherErrorState(
-        error: e.message,
+        error: e,
       ));
     } catch (e) {
       emit(WeatherErrorState(
-        error: "Unexpected Error Occurred\n Please Try Again!",
+        error: unknownException,
       ));
     }
   }
@@ -106,11 +110,11 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     } on CustomException catch (e) {
       log('custom error while getting hourly weather data from repo: $e');
       emit(WeatherErrorState(
-        error: e.message,
+        error: e,
       ));
     } catch (e) {
       emit(WeatherErrorState(
-        error: "Unexpected Error Occurred\n Please Try Again!",
+        error: unknownException,
       ));
     }
   }

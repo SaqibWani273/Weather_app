@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:weathe_app/utils/get_formatted_datetime.dart';
 import 'package:weathe_app/view/search_weather.dart';
+import 'package:weathe_app/view/widgets/loading_weather.dart';
 
-import '../../constants/other_const.dart';
-import '../../view_model/weather_bloc/weather_bloc.dart';
-import '../screens/home_page.dart';
+import '../../../constants/other_const.dart';
+import '../../../view_model/weather_bloc/weather_bloc.dart';
+import '../../home_page.dart';
 
 //to do: change the  name of the class
 class LoadedTodayWidget extends StatefulWidget {
@@ -31,10 +32,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
     final List<MainWeatherInfo> mainWeatherInfo =
         TodayScreenUiData().getMainWeatherInfo(apiResponseModel);
     final formattedDateTime = getFormattedDateTime(apiResponseModel.timezone);
-    // final tempDate = DateTime.now().add(Duration(
-    //     seconds: apiResponseModel.timezone -
-    //         DateTime.now().timeZoneOffset.inSeconds));
-    //  log("Temp Date: $tempDate");
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -53,7 +51,16 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
             width: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage(widget.state.weatherModel.imageUrl),
+                  image: Image.network(
+                    widget.state.weatherModel.imageUrl,
+                    frameBuilder:
+                        (context, child, frame, wasSynchronouslyLoaded) {
+                      if (wasSynchronouslyLoaded) {
+                        return child;
+                      }
+                      return LoadingWeather();
+                    },
+                  ).image,
                   fit: BoxFit.fill),
             ),
           ),
