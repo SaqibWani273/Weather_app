@@ -2,15 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:weathe_app/utils/get_formatted_datetime.dart';
-import 'package:weathe_app/view/search_weather.dart';
-import 'package:weathe_app/view/widgets/loading_weather.dart';
+import '../../../utils/get_formatted_datetime.dart';
+import '../../../view/search_weather.dart';
+import '../../../view/widgets/loading_weather.dart';
 
 import '../../../constants/other_const.dart';
 import '../../../view_model/weather_bloc/weather_bloc.dart';
-import '../../home_page.dart';
 
-//to do: change the  name of the class
 class LoadedTodayWidget extends StatefulWidget {
   const LoadedTodayWidget({
     super.key,
@@ -56,14 +54,17 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                     frameBuilder:
                         (context, child, frame, wasSynchronouslyLoaded) {
                       if (wasSynchronouslyLoaded) {
+                        log("loading image synchronously");
                         return child;
                       }
-                      return LoadingWeather();
+                      log("loaded image asynchronously");
+                      return const LoadingWeather();
                     },
                   ).image,
                   fit: BoxFit.fill),
             ),
           ),
+          //menu icon
           Positioned(
               top: 30,
               left: 20,
@@ -75,10 +76,9 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                   },
                   icon: const Icon(
                     Icons.menu,
+                    color: Colors.white,
                   ))),
-
-          //      Positioned(top: 40, child: SearchWeather()),
-          //temp, city name, weather description
+//location name and date
           Positioned(
               top: 100,
               child: Container(
@@ -96,23 +96,19 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                             Text(
                               apiResponseModel.name,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                             FittedBox(
+                              fit: BoxFit.contain,
                               child: Text(
                                 formattedDateTime,
-                                textScaleFactor: 1.8,
+                                textScaler: const TextScaler.linear(1.8),
                               ),
-                              fit: BoxFit.contain,
                             ),
                           ]),
                     ),
-                    Spacer(),
-                    //to rotate the text from bottom to top
-                    // RotatedBox(
-                    //     quarterTurns: 3,
-                    //     child: Text(apiResponseModel.weather[0].description))
+                    const Spacer(),
                   ],
                 ),
               )),
@@ -123,15 +119,9 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
             child: Container(
               alignment: Alignment.center,
               width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.3,
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 80),
-              // decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(20),
-              //     border: Border.all(
-              //       color: Colors.white,
-              //       width: 3,
-              //     )),
+              height: MediaQuery.of(context).size.height * 0.35,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
               child: Column(
                 children: [
                   Expanded(
@@ -139,28 +129,34 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              temp,
-                              style: TextStyle(
-                                fontSize: 70,
+                        Expanded(
+                          flex: 3,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                temp,
+                                style: const TextStyle(
+                                  fontSize: 70,
+                                ),
                               ),
-                            ),
-                            Text(
-                              "O",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            Text(
-                              "C",
-                              style: TextStyle(
-                                  fontSize: 70, fontWeight: FontWeight.w500),
-                            )
-                          ],
+                              const Text(
+                                "O",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              const Text(
+                                "C",
+                                style: TextStyle(
+                                    fontSize: 70, fontWeight: FontWeight.w500),
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
                         ),
                         Expanded(
-                          //   flex: 2,
+                          flex: 2,
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -168,7 +164,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                               Image.asset(
                                 "assets/images/cloud.png",
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Text(apiResponseModel.weather[0].description),
@@ -178,10 +174,10 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Divider(
+                  const Divider(
                     height: 2,
                     color: Colors.white,
                   ),
@@ -233,9 +229,11 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
               ),
             ),
           ),
-
+//to show some animation for rain or snow
           if (widget.state.weatherModel.lottieUrl != null)
             Lottie.network(widget.state.weatherModel.lottieUrl!, height: 500),
+
+//custom drawer
           if (showDrawer)
             Positioned(
               top: 0,
@@ -246,11 +244,12 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                 curve: Curves.easeInOut,
                 transform:
                     Matrix4.translationValues(showDrawer ? 0 : -250, 0, 0),
-                color: Colors.transparent,
+                //   color: Colors.transparent,
+                color: const Color.fromRGBO(10, 47, 91, 255),
                 width: MediaQuery.of(context).size.width * 0.5,
                 height: MediaQuery.of(context).size.height,
                 child: Drawer(
-                  backgroundColor: Colors.grey.withOpacity(0.8),
+                  backgroundColor: const Color.fromARGB(255, 2, 51, 94),
                   elevation: 0,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 80),
@@ -262,7 +261,8 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                         // ),
                       ),
                       ListTile(
-                        tileColor: Colors.white,
+                        //  tileColor: Colors.white,
+                        tileColor: Colors.blueGrey,
                         onTap: () {
                           Navigator.push(
                               context,
@@ -270,8 +270,8 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                                 builder: (context) => SearchWeather(),
                               ));
                         },
-                        title: Text("Search Weather"),
-                        trailing: Icon(Icons.search),
+                        title: const Text("Search Weather"),
+                        trailing: const Icon(Icons.search),
                       )
                     ]),
                   ),

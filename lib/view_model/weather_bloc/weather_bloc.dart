@@ -29,7 +29,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         weatherModel: weatherModel,
       ));
     } on CustomException catch (e) {
-      log('custom error while getting weather data from repo: $e');
+      log('custom error while getting weather data from repo: $e ');
       emit(WeatherErrorState(
         error: e,
       ));

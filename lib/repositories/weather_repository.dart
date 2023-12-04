@@ -10,7 +10,7 @@ import 'package:weathe_app/models/weather_model1.dart';
 
 class WeatherRepository {
   //get everything about current location, i.e. weather, image, lottie file
-  late WeatherModel _weatherModel;
+  late WeatherModel weatherModel;
 
   Future<WeatherModel> getWeatherData({
     double? lat,
@@ -38,11 +38,11 @@ class WeatherRepository {
       log("Catched Error in WeatherRepository: $e");
       rethrow;
     }
-    _weatherModel = WeatherModel(
+    weatherModel = WeatherModel(
         apiResponseModel: apiResponseModel,
         imageUrl: imageUrl!,
         lottieUrl: lottieUrl);
-    return _weatherModel;
+    return weatherModel;
   }
 
   Future<List<CityModel>?> getSuggestedCities(String query) async {
@@ -52,8 +52,8 @@ class WeatherRepository {
   Future<List<HourlyWeatherModel>> getHourlyWeather() async {
     try {
       return await OpenWeatherApi().getHourlyWeather(
-        lat: _weatherModel.apiResponseModel.coord.lat,
-        longt: _weatherModel.apiResponseModel.coord.lon,
+        lat: weatherModel.apiResponseModel.coord.lat,
+        longt: weatherModel.apiResponseModel.coord.lon,
       );
     } catch (e) {
       log("error in repository =$e");

@@ -8,6 +8,7 @@ import 'package:weathe_app/models/hourly_weather_model.dart';
 import 'package:weathe_app/utils/get_formatted_datetime.dart';
 
 import '../../../constants/api_keys.dart';
+import '../../../constants/custom_exception.dart';
 import '../../../constants/error_type.dart';
 import '../../../models/weather_model1.dart';
 
@@ -65,6 +66,9 @@ class OpenWeatherApi {
         log("response body = ${response.body}");
 
         apiResponseModel = ApiResponseModel.fromJson(response.body);
+      } else if (response.statusCode == 408) {
+        //request timeout
+        throw internetException;
       } else {
         log("response = ${response.statusCode}");
         throw unknownException;
@@ -74,7 +78,7 @@ class OpenWeatherApi {
       throw unknownException;
     } catch (e) {
       log("error occurred in getWeather: ${e}");
-      throw internetException;
+      throw unknownException;
     }
 
     return apiResponseModel;

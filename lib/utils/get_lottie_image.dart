@@ -24,12 +24,12 @@ LottieBuilder getLottieImage(CustomException customException) {
     case ErrorType.unknown:
       return Lottie.asset(
         //to do: change lottie file later
-        'assets/lottie/network_error.json',
+        'assets/lottie/unknown.json',
       );
     default:
       return Lottie.asset(
         //to do: change lottie file later
-        'assets/lottie/network_error.json',
+        'assets/lottie/unknown.json',
       );
   }
 }
