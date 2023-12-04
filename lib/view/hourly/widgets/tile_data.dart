@@ -3,12 +3,20 @@ import 'dart:developer';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:weathe_app/models/hourly_weather_model.dart';
+import 'package:weathe_app/utils/get_formatted_datetime.dart';
 
 class TileData {
   final List<HourlyWeatherModel> hourlyWeatherList;
+  final DateTime sunrise;
+  final DateTime sunset;
+  final int timeZone;
   TileData({
     required this.hourlyWeatherList,
+    required this.sunrise,
+    required this.sunset,
+    required this.timeZone,
   });
   AxisTitles getTileData(
       {bool isTopTiles = false,
@@ -42,8 +50,16 @@ class TileData {
   Widget _getHour(double val, {bool showClouds = false}) {
     if (val == val.toInt()) {
       var text = hourlyWeatherList[val.toInt()].hour;
-      final date = DateTime.parse(hourlyWeatherList[val.toInt()].dt_txt);
-      log("date = ${date.weekday}");
+
+      //  var isDay = hourlyWeatherList[val.toInt()].dt;
+      final utcDate = DateTime.fromMillisecondsSinceEpoch(
+          hourlyWeatherList[val.toInt()].dt * 1000,
+          isUtc: true);
+      final date = utcDate.add(Duration(seconds: timeZone));
+      log("date  = ${date.toLocal()}");
+      // log("date.hour=${date.hour}");
+      // log("sunrise.hour= ${sunrise.hour}");
+      // log("    sunset.hour= ${sunset.hour}");
       var day = "";
       switch (date.weekday) {
         case 1:
@@ -79,12 +95,17 @@ class TileData {
               ),
             ),
             Expanded(
-              flex: 1,
-              child: Icon(
-                showClouds ? Icons.cloud : Icons.sunny,
-                color: Colors.white,
-              ),
-            ),
+                flex: 1,
+                child: date.hour < sunrise.hour || date.hour > sunset.hour
+                    ? Icon(
+                        Icons.nights_stay,
+                        color: Colors.blue,
+                      )
+                    : Icon(
+                        showClouds ? Icons.cloud : Icons.sunny,
+                        color:
+                            showClouds ? Colors.white : Colors.amber.shade600,
+                      )),
           ]);
       // return hourlyWeatherList[val.toInt()].main.temp.toString();
     } else {
@@ -99,9 +120,9 @@ class TileData {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const Icon(
+          Icon(
             Icons.water_drop_sharp,
-            color: Colors.white,
+            color: Colors.lightBlue.shade100,
           ),
           Text(
             text,

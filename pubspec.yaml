@@ -37,19 +37,20 @@ dev_dependencies:
 
 flutter_native_splash:
 
-  color: "#6699cc66" #Colors.blue.withOpacity(0.4)
-  image: assets/images/cloud.png
+  color: "#202046" #   "#6699cc66" #Colors.blue.withOpacity(0.4)
+  image: assets/images/splash_img_nobg.png
   branding: assets/images/logo.png #only png supported(not working currently)
  # color_dark: "#444444" #dark grey
-  image_dark: assets/images/cloud.png   #to do : add dark image 
+  image_dark: assets/images/splash_img_nobg.png   #to do : add dark image 
 #  branding_dark: assets/images/logo.png #only png supported
   fullscreen: true
 
   android_12:
-    image: assets/images/cloud.png
-    icon_background_color: "#ffffff"
-    image_dark: assets/images/cloud.png
-    icon_background_color_dark: "#121212"
+    image: assets/images/splash_img_nobg.png       #assets/images/cloud.png
+    icon_background_color: "#202046"
+    image_dark: assets/images/splash_img_nobg.png
+    icon_background_color_dark: "#202046"
+    fullscreen: true
 
 flutter:
   uses-material-design: true

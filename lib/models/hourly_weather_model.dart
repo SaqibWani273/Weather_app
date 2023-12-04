@@ -7,7 +7,7 @@ class HourlyWeatherModel {
   final Main main;
   final List<Weather> weather;
   final Clouds clouds;
-  // final int dt;
+  final int dt;
   final Wind wind;
   final int visibility;
   final String dt_txt;
@@ -16,7 +16,7 @@ class HourlyWeatherModel {
     required this.main,
     required this.weather,
     required this.clouds,
-    // required this.dt,
+    required this.dt,
     required this.wind,
     required this.visibility,
     required this.dt_txt,
@@ -33,7 +33,7 @@ class HourlyWeatherModel {
         ),
       ),
       clouds: Clouds.fromMap(map['clouds'] as Map<String, dynamic>),
-      // dt: map['dt'] as int,
+      dt: map['dt'] as int,
       wind: Wind.fromMap(map['wind'] as Map<String, dynamic>),
       visibility: map['visibility'] as int,
       dt_txt: map['dt_txt'] as String,

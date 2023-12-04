@@ -92,13 +92,14 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
           ),
           Expanded(
             child: Container(
-              // decoration: const BoxDecoration(
-              //   image: DecorationImage(
-              //       image: AssetImage("assets/images/cloud_bg2.jpg"),
-              //       fit: BoxFit.fill),
-              // ),
-              // height:
-              //     deviceHeight * 0.9 - (MediaQuery.of(context).padding.top + 85),
+              margin: EdgeInsets.all(15.0),
+              //rounded corners
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(20),
+                ),
+                color: Colors.transparent.withOpacity(0.3),
+              ),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -107,7 +108,6 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      color: Colors.transparent.withOpacity(0.2),
                       // color:
                       //     const Color.fromARGB(255, 2, 51, 94).withOpacity(0.5),
                       height: deviceHeight <= Devices.smallMaxHeight

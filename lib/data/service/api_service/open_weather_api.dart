@@ -92,17 +92,19 @@ class OpenWeatherApi {
     final response = await http.get(Uri.parse(url));
     try {
       if (response.statusCode == 200) {
-        //  log("hourly response body = ${response.body}");
-        log(" hourly response code = ${response.statusCode}");
+        // log("hourly response body = ${response.body}");
+        // log(" hourly response code = ${response.statusCode}");
         final decodeResponse = jsonDecode(response.body);
         log("decoderesponse = $decodeResponse");
         final timeZone = decodeResponse["city"]["timezone"];
+        log("timezone = $timeZone");
 
-        int hr = 0;
+        //  int hr = 0;
         for (var item in decodeResponse["list"]) {
-          final hour = getFormattedDateTime(timeZone, hr: hr);
+          //  final hour = getFormattedDateTime(timeZone, hr: hr);
+          final hour = getHour(timeZone, item["dt"]);
           hourlyWeatherList.add(HourlyWeatherModel.fromMap(item, hour));
-          hr += 3;
+          // hr += 3;
         }
       } else {
         log("hourly response code = ${response.statusCode}");
