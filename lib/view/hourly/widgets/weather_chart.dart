@@ -108,8 +108,15 @@ class WeatherChart extends StatelessWidget {
                   width: hourlyWeatherList.length * deviceWidth * 0.2,
                   child: LineChart(
                     LineChartData(
-                      //to disable show data on touch
                       lineTouchData: LineTouchData(
+                        handleBuiltInTouches: false,
+                        //to do : change bg color of currently focused spot
+                        //to navigate to detail page on touch
+                        touchCallback: (FlTouchEvent event,
+                            LineTouchResponse? touchResponse) {
+                          log("event = ${touchResponse?.lineBarSpots?.first.spotIndex} ");
+                        },
+                        //to disable show data on touch
                         enabled: false,
                         //to customize tooltip
                         touchTooltipData: LineTouchTooltipData(

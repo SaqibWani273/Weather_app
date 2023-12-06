@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../../../utils/get_formatted_datetime.dart';
 import '../../../view/search_weather.dart';
-import '../../../view/widgets/loading_weather.dart';
+import '../../common_widgets/loading_weather.dart';
 
 import '../../../constants/other_const.dart';
 import '../../../view_model/weather_bloc/weather_bloc.dart';
+import 'transition_image_widget.dart';
 
 class LoadedTodayWidget extends StatefulWidget {
   const LoadedTodayWidget({
@@ -47,21 +48,9 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
           Container(
             height: MediaQuery.of(context).size.height,
             width: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: Image.network(
-                    widget.state.weatherModel.imageUrl,
-                    frameBuilder:
-                        (context, child, frame, wasSynchronouslyLoaded) {
-                      if (wasSynchronouslyLoaded) {
-                        log("loading image synchronously");
-                        return child;
-                      }
-                      log("loaded image asynchronously");
-                      return const LoadingWeather();
-                    },
-                  ).image,
-                  fit: BoxFit.fill),
+            color: Colors.grey,
+            child: TransitionImageWidget(
+              widget.state.weatherModel.imageUrl,
             ),
           ),
           //menu icon

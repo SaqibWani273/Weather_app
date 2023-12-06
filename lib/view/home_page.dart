@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:weathe_app/constants/other_const.dart';
 
 import 'hourly/hourly_screen.dart';
-import 'today/today_screen.dart';
+import 'today/screens/today_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

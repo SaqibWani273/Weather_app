@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weathe_app/constants/custom_exception.dart';
-import 'package:weathe_app/view/widgets/error_screen.dart';
-import 'package:weathe_app/view/widgets/loading_weather.dart';
+import 'package:weathe_app/view/common_widgets/error_screen.dart';
+import 'package:weathe_app/view/common_widgets/loading_weather.dart';
 
-import '../../view_model/weather_bloc/weather_bloc.dart';
-import 'widgets/loaded_today_widget.dart';
+import '../../../view_model/weather_bloc/weather_bloc.dart';
+import '../widgets/loaded_today_widget.dart';
 
 class TodayScreen extends StatelessWidget {
   const TodayScreen({super.key});

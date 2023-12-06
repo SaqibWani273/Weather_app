@@ -3,7 +3,7 @@ import 'dart:developer';
 
 import 'package:weathe_app/models/city_model.dart';
 import 'package:http/http.dart' as http;
-import '../../../constants/api_keys.dart';
+import '../../constants/api_keys.dart';
 
 class GeoDBApi {
   Future<List<CityModel>?> fetchSuggestedCities(String query) async {

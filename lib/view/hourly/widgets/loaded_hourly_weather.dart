@@ -1,17 +1,14 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weathe_app/constants/other_const.dart';
-import 'package:weathe_app/models/weather_model1.dart';
 import 'package:weathe_app/repositories/weather_repository.dart';
 import 'package:weathe_app/view/hourly/widgets/weather_chart.dart';
 
 import '../../../models/hourly_weather_model.dart';
 import '../../../utils/get_formatted_datetime.dart';
 
-final dummmyUrl =
-    "https://img.freepik.com/free-vector/sun-light-cloud-transparent_107791-892.jpg?size=626&ext=jpg&uid=R125884824&ga=GA1.1.1043004737.1700320989&semt=ais";
+// final dummmyUrl =
+//     "https://img.freepik.com/free-vector/sun-light-cloud-transparent_107791-892.jpg?size=626&ext=jpg&uid=R125884824&ga=GA1.1.1043004737.1700320989&semt=ais";
 
 class LoadedHourlyWeather extends StatefulWidget {
   final List<HourlyWeatherModel> hourlyWeatherList;
@@ -47,44 +44,51 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          //location and date
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             width: MediaQuery.of(context).size.width,
-            height: deviceHeight * 0.25,
+            height: deviceHeight <= Devices.smallMaxHeight
+                ? 0.2 * deviceHeight
+                : 0.25 * deviceHeight,
             child: Column(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              apiResponseModel.name,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            FittedBox(
-                              fit: BoxFit.contain,
-                              child: Text(
-                                formattedDateTime,
-                                textScaler: const TextScaler.linear(1.8),
-                              ),
-                            ),
-                          ]),
-                    ),
-                    const Spacer(),
-                  ],
-                ),
+                //location and date
                 Expanded(
+                  flex: 3,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                apiResponseModel.name,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              FittedBox(
+                                fit: BoxFit.contain,
+                                child: Text(
+                                  formattedDateTime,
+                                  textScaler: const TextScaler.linear(1.8),
+                                ),
+                              ),
+                            ]),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+                //image,
+                Expanded(
+                  flex: 2,
                   child: Image.asset(
                     "assets/images/$img",
-                    fit: BoxFit.contain,
+                    fit: BoxFit.cover,
                   ),
                 )
               ],
@@ -92,10 +96,10 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
           ),
           Expanded(
             child: Container(
-              margin: EdgeInsets.all(15.0),
+              margin: const EdgeInsets.all(15.0),
               //rounded corners
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(
+                borderRadius: const BorderRadius.all(
                   Radius.circular(20),
                 ),
                 color: Colors.transparent.withOpacity(0.3),
@@ -203,9 +207,11 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
             ),
           ),
           Container(
-              height: deviceHeight * 0.15,
-              margin: EdgeInsets.only(bottom: 100),
-              child: Row(
+              height: deviceHeight <= Devices.smallMaxHeight
+                  ? 0.03 * deviceHeight
+                  : deviceHeight * 0.1,
+              margin: const EdgeInsets.only(bottom: 100),
+              child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("3-Hourly Weather Forecast for 5-days   ",

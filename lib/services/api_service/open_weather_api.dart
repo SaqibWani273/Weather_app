@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:weathe_app/data/service/geo_locator.dart';
+import 'package:weathe_app/services/geo_locator.dart';
 import 'package:weathe_app/models/hourly_weather_model.dart';
 import 'package:weathe_app/utils/get_formatted_datetime.dart';
 
-import '../../../constants/api_keys.dart';
-import '../../../constants/custom_exception.dart';
-import '../../../constants/error_type.dart';
-import '../../../models/weather_model1.dart';
+import '../../constants/api_keys.dart';
+import '../../constants/custom_exception.dart';
+import '../../constants/error_type.dart';
+import '../../models/weather_model1.dart';
 
 class OpenWeatherApi {
   Position? _position;

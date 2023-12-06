@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weathe_app/view/hourly/widgets/loaded_hourly_weather.dart';
 
 import '../../view_model/weather_bloc/weather_bloc.dart';
-import '../widgets/error_screen.dart';
-import '../widgets/loading_weather.dart';
+import '../common_widgets/error_screen.dart';
+import '../common_widgets/loading_weather.dart';
 
 class HourlyScreen extends StatefulWidget {
   const HourlyScreen({super.key});
