@@ -1,28 +1,29 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:developer';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:weathe_app/models/hourly_weather_model.dart';
-import 'package:weathe_app/utils/get_formatted_datetime.dart';
+import 'package:weathe_app/utils/date_formatter.dart';
 
 class TileData {
   final List<HourlyWeatherModel> hourlyWeatherList;
-  final DateTime sunrise;
-  final DateTime sunset;
+  // final DateTime sunrise;
+  // final DateTime sunset;
   final int timeZone;
+  final int sunriseDate;
+  final int sunsetDate;
   TileData({
     required this.hourlyWeatherList,
-    required this.sunrise,
-    required this.sunset,
+    // required this.sunrise,
+    // required this.sunset,
     required this.timeZone,
+    required this.sunriseDate,
+    required this.sunsetDate,
   });
   AxisTitles getTileData({
     bool isTopTiles = false,
     required BuildContext context,
     bool showClouds = false,
-    required int hoveredElementIndex,
   }) {
     return AxisTitles(
 
@@ -33,18 +34,15 @@ class TileData {
       getTitlesWidget: (double value, TitleMeta meta) {
         return SideTitleWidget(
           axisSide: isTopTiles ? AxisSide.top : AxisSide.bottom,
-          child: Container(
-            // color: Colors.red,
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Container(
-                alignment: Alignment.center,
-                width: MediaQuery.of(context).size.width * 0.25,
-                height: 80,
-                child: isTopTiles
-                    ? _getHour(value, showClouds: showClouds)
-                    : _getHumidity(value),
-              ),
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width * 0.25,
+              height: 80,
+              child: isTopTiles
+                  ? _getHour(value, showClouds: showClouds)
+                  : _getHumidity(value),
             ),
           ),
         );
@@ -53,41 +51,19 @@ class TileData {
   }
 
   Widget _getHour(double val, {bool showClouds = false}) {
+    //only return text if val is a whole number
     if (val == val.toInt()) {
-      var text = hourlyWeatherList[val.toInt()].hour;
+      final hourlyWeather = hourlyWeatherList[val.toInt()];
+      var text = hourlyWeather.hour;
 
-      //  var isDay = hourlyWeatherList[val.toInt()].dt;
-      final utcDate = DateTime.fromMillisecondsSinceEpoch(
-          hourlyWeatherList[val.toInt()].dt * 1000,
-          isUtc: true);
-      final date = utcDate.add(Duration(seconds: timeZone));
-      //  log("date  = ${date.toLocal()}");
-      // log("date.hour=${date.hour}");
-      // log("sunrise.hour= ${sunrise.hour}");
-      // log("    sunset.hour= ${sunset.hour}");
-      var day = "";
-      switch (date.weekday) {
-        case 1:
-          day += " Mon";
-          break;
-        case 2:
-          day += " Tue";
-          break;
-        case 3:
-          day += " Wed";
-          break;
-        case 4:
-          day += " Thu";
-          break;
-        case 5:
-          day += " Fri";
-          break;
-        case 6:
-          day += " Sat";
-          break;
-        case 7:
-          day += " Sun";
-      }
+      final currentDate = DateFormatter().getCurrentDateTimeofLocation(
+          timeZoneOffsetFromUtc: timeZone, dtInMillis: hourlyWeather.dt);
+      final sunrise = DateFormatter().getCurrentDateTimeofLocation(
+          timeZoneOffsetFromUtc: timeZone, dtInMillis: sunriseDate);
+      final sunset = DateFormatter().getCurrentDateTimeofLocation(
+          timeZoneOffsetFromUtc: timeZone, dtInMillis: sunsetDate);
+      final String day = DateFormatter().getFormattedDay(currentDate);
+
       return Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -101,8 +77,9 @@ class TileData {
             ),
             Expanded(
                 flex: 1,
-                child: date.hour < sunrise.hour || date.hour > sunset.hour
-                    ? Icon(
+                child: currentDate.hour < sunrise.hour ||
+                        currentDate.hour > sunset.hour
+                    ? const Icon(
                         Icons.nights_stay,
                         color: Colors.blue,
                       )

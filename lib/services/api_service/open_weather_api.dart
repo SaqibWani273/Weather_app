@@ -5,11 +5,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:weathe_app/services/geo_locator.dart';
 import 'package:weathe_app/models/hourly_weather_model.dart';
-import 'package:weathe_app/utils/get_formatted_datetime.dart';
+import 'package:weathe_app/utils/date_formatter.dart';
 
 import '../../constants/api_keys.dart';
 import '../../constants/custom_exception.dart';
-import '../../constants/error_type.dart';
 import '../../models/weather_model1.dart';
 
 class OpenWeatherApi {
@@ -74,7 +73,7 @@ class OpenWeatherApi {
         throw unknownException;
       }
     } on TypeError catch (e) {
-      log("Error in getHourlyWeather:\n stacktrace : ${e.stackTrace}\n error : $e");
+      log("Error in getHourlyWeather:\n : ${e.stackTrace}\n error : $e");
       throw unknownException;
     } catch (e) {
       log("error occurred in getWeather: ${e}");
@@ -93,26 +92,24 @@ class OpenWeatherApi {
     try {
       if (response.statusCode == 200) {
         final decodeResponse = jsonDecode(response.body);
-        //    log("decoderesponse = $decodeResponse");
-        final timeZone = decodeResponse["city"]["timezone"];
-        log("timezone = $timeZone");
 
-        //  int hr = 0;
+        final timeZone = decodeResponse["city"]["timezone"];
+
         for (var item in decodeResponse["list"]) {
-          //  final hour = getFormattedDateTime(timeZone, hr: hr);
-          final hour = getHour(timeZone, item["dt"]);
+          //to get formatted hour like 12 AM, 5pm
+          final String hour =
+              DateFormatter().getFormattedHour(timeZone, item["dt"]);
           hourlyWeatherList.add(HourlyWeatherModel.fromMap(item, hour));
-          // hr += 3;
         }
       } else {
         log("hourly response code = ${response.statusCode}");
         throw unknownException;
       }
     } on TypeError catch (e) {
-      log("type error occurred in getHourlyWeather:\n stacktrace : ${e.stackTrace}\n error : $e");
+      log("type error in getHourlyWeather:\n  : ${e.stackTrace}\n error : $e");
       throw unknownException;
     } catch (e) {
-      log("error occurred in getHourlyWeather: ${e}");
+      log("error  in getHourlyWeather: ${e}");
       throw internetException;
     }
     return hourlyWeatherList;

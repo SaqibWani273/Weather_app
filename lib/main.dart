@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'constants/theme.dart';
 
-import 'view/home_page.dart';
+import 'view/common_widgets/home_page.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'firebase_options.dart';

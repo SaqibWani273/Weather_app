@@ -1,17 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weathe_app/constants/other_const.dart';
-import 'package:weathe_app/repositories/weather_repository.dart';
-import 'package:weathe_app/view/hourly/widgets/weather_chart.dart';
+import '../../../constants/other_const.dart';
+import '../../../repositories/weather_repository.dart';
+import '../../../view/hourly/widgets/weather_chart.dart';
 
 import '../../../models/hourly_weather_model.dart';
-import '../../../utils/get_formatted_datetime.dart';
+import '../../../utils/date_formatter.dart';
 import '../../today/widgets/transition_image_widget.dart';
-
-// final dummmyUrl =
-//     "https://img.freepik.com/free-vector/sun-light-cloud-transparent_107791-892.jpg?size=626&ext=jpg&uid=R125884824&ga=GA1.1.1043004737.1700320989&semt=ais";
 
 class LoadedHourlyWeather extends StatefulWidget {
   final List<HourlyWeatherModel> hourlyWeatherList;
@@ -37,8 +32,8 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
     final deviceHeight = MediaQuery.of(context).size.height;
     final apiResponseModel =
         context.read<WeatherRepository>().weatherModel.apiResponseModel;
-    final formattedDateTime = getFormattedDateTime(apiResponseModel.timezone);
-    log("rebuilt hourly weather");
+    final formattedDateTime =
+        DateFormatter().getFormattedDateTime(apiResponseModel.timezone);
 
     return Container(
       color: const Color.fromARGB(255, 2, 51, 94),
@@ -216,20 +211,20 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                       padding: const EdgeInsets.only(
                           left: 20, right: 20, bottom: 10),
                       child: Column(children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 5,
                         ),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Expanded(
+                              const Expanded(
                                 child: Text("__.__  Temp",
                                     style: TextStyle(
                                         color: Colors.white70, fontSize: 15)),
                               ),
                               Expanded(
                                   child: RichText(
-                                      text: TextSpan(children: [
+                                      text: const TextSpan(children: [
                                 TextSpan(
                                     text: "---.---",
                                     style: TextStyle(
@@ -246,7 +241,7 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                                       Icons.water_drop_sharp,
                                       color: Colors.lightBlue.shade100,
                                     ),
-                                    Text(" Humidity",
+                                    const Text(" Humidity",
                                         style: TextStyle(
                                             color: Colors.white70,
                                             fontSize: 15)),

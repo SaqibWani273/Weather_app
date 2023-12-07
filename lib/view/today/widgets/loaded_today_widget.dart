@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import '../../../utils/get_formatted_datetime.dart';
-import '../../../view/search_weather.dart';
-import '../../common_widgets/loading_weather.dart';
+import '../../../utils/date_formatter.dart';
+import '../screens/search_weather.dart';
 
 import '../../../constants/other_const.dart';
 import '../../../view_model/weather_bloc/weather_bloc.dart';
@@ -30,7 +27,8 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
     final temp = TodayScreenUiData().getTemp(apiResponseModel);
     final List<MainWeatherInfo> mainWeatherInfo =
         TodayScreenUiData().getMainWeatherInfo(apiResponseModel);
-    final formattedDateTime = getFormattedDateTime(apiResponseModel.timezone);
+    final formattedDateTime =
+        DateFormatter().getFormattedDateTime(apiResponseModel.timezone);
 
     return GestureDetector(
       onTap: () {

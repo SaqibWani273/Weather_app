@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:weathe_app/models/hourly_weather_model.dart';
 import 'package:weathe_app/view/detailed_weather/widgets/top_scrollable_row.dart';
 
+import 'widgets/weather_details_widget.dart';
+
 class DetailedWeather extends StatefulWidget {
   final bool isHourly;
-  final List<HourlyWeatherModel>? hourlyWeatherList;
+  final List<HourlyWeatherModel> hourlyWeatherList;
   final int currentIndex;
   final double screenWidth;
   //to do : add daily weather
@@ -12,7 +14,7 @@ class DetailedWeather extends StatefulWidget {
   const DetailedWeather({
     required this.isHourly,
     required this.screenWidth,
-    this.hourlyWeatherList,
+    required this.hourlyWeatherList,
     required this.currentIndex,
     super.key,
   });
@@ -38,10 +40,13 @@ class _DetailedWeatherState extends State<DetailedWeather> {
 
     //using post frame callback as we need to wait for scroll controller to be initialized
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      //  _mainScrollController.jumpTo(713.5);
-      _mainScrollController.animateTo(mainScrollOffset,
-          duration: const Duration(seconds: 1), curve: Curves.easeOut);
+      animateToOffset(offset: mainScrollOffset);
     });
+  }
+
+  void animateToOffset({required double offset}) {
+    _mainScrollController.animateTo(offset,
+        duration: const Duration(seconds: 1), curve: Curves.easeOut);
   }
 
   @override
@@ -69,33 +74,20 @@ class _DetailedWeatherState extends State<DetailedWeather> {
           child: TopScrollableRow(
               currentIndex: widget.currentIndex,
               screenWidth: widget.screenWidth,
-              hourlyWeatherList: widget.hourlyWeatherList!,
+              hourlyWeatherList: widget.hourlyWeatherList,
               onTap: (index) {
-                _mainScrollController.animateTo(
-                  index.toDouble() * widget.screenWidth,
-                  duration: const Duration(seconds: 1),
-                  curve: Curves.easeOut,
-                );
+                animateToOffset(offset: index.toDouble() * widget.screenWidth);
               }),
         ),
         Expanded(
           flex: 8,
           child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: widget.hourlyWeatherList!.length,
+              itemCount: widget.hourlyWeatherList.length,
               controller: _mainScrollController,
               itemBuilder: (context, index) {
-                return SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          " ${widget.hourlyWeatherList![index].main.temp}",
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                      ]),
-                );
+                return WeatherDetailWidget(
+                    hourlyWeatherList: widget.hourlyWeatherList, index: index);
               }),
         ),
       ]),
