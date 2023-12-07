@@ -92,10 +92,8 @@ class OpenWeatherApi {
     final response = await http.get(Uri.parse(url));
     try {
       if (response.statusCode == 200) {
-        // log("hourly response body = ${response.body}");
-        // log(" hourly response code = ${response.statusCode}");
         final decodeResponse = jsonDecode(response.body);
-        log("decoderesponse = $decodeResponse");
+        //    log("decoderesponse = $decodeResponse");
         final timeZone = decodeResponse["city"]["timezone"];
         log("timezone = $timeZone");
 

@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class TransitionImageWidget extends StatefulWidget {
   final String url;
-  const TransitionImageWidget(this.url, {super.key});
+  final bool isAssetFile;
+  const TransitionImageWidget(this.url, {super.key, required this.isAssetFile});
 
   @override
   State<TransitionImageWidget> createState() => _TransitionImageWidgetState();
@@ -10,6 +13,7 @@ class TransitionImageWidget extends StatefulWidget {
 
 class _TransitionImageWidgetState extends State<TransitionImageWidget>
     with SingleTickerProviderStateMixin {
+  var isFirstBuild = true;
   late AnimationController animationController;
   late Animation<double> _animation;
   @override
@@ -19,14 +23,14 @@ class _TransitionImageWidgetState extends State<TransitionImageWidget>
       vsync: this,
       duration: const Duration(seconds: 4),
     );
-    // _animation = Tween<double>(
-    //   begin: 0.2, // Starting opacity (fully transparent)
-    //   end: 1.0, // Ending opacity (fully opaque)
-    // ).animate(animationController);
+
     _animation =
         CurvedAnimation(parent: animationController, curve: Curves.easeIn);
     // Start the animation
     animationController.forward();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      isFirstBuild = false;
+    });
   }
 
   @override
@@ -38,12 +42,19 @@ class _TransitionImageWidgetState extends State<TransitionImageWidget>
 
   @override
   Widget build(BuildContext context) {
+    if (!isFirstBuild) {
+      //note: this is working as expected but might cause issues in ux
+      animationController.forward(from: 0.2);
+    }
+
     return FadeTransition(
       opacity: _animation,
-      child: Image.network(
-        widget.url,
-        fit: BoxFit.fill,
-      ),
+      child: widget.isAssetFile
+          ? Image.asset(widget.url, fit: BoxFit.fill)
+          : Image.network(
+              widget.url,
+              fit: BoxFit.fill,
+            ),
     );
   }
 }

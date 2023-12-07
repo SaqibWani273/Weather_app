@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weathe_app/constants/other_const.dart';
@@ -6,6 +8,7 @@ import 'package:weathe_app/view/hourly/widgets/weather_chart.dart';
 
 import '../../../models/hourly_weather_model.dart';
 import '../../../utils/get_formatted_datetime.dart';
+import '../../today/widgets/transition_image_widget.dart';
 
 // final dummmyUrl =
 //     "https://img.freepik.com/free-vector/sun-light-cloud-transparent_107791-892.jpg?size=626&ext=jpg&uid=R125884824&ga=GA1.1.1043004737.1700320989&semt=ais";
@@ -35,6 +38,7 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
     final apiResponseModel =
         context.read<WeatherRepository>().weatherModel.apiResponseModel;
     final formattedDateTime = getFormattedDateTime(apiResponseModel.timezone);
+    log("rebuilt hourly weather");
 
     return Container(
       color: const Color.fromARGB(255, 2, 51, 94),
@@ -85,12 +89,16 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                 ),
                 //image,
                 Expanded(
-                  flex: 2,
-                  child: Image.asset(
-                    "assets/images/$img",
-                    fit: BoxFit.cover,
-                  ),
-                )
+                    flex: 2,
+                    child: TransitionImageWidget(
+                      "assets/images/$img",
+                      isAssetFile: true,
+                    )
+                    //  Image.asset(
+                    //   "assets/images/$img",
+                    //   fit: BoxFit.cover,
+                    // ),
+                    )
               ],
             ),
           ),
@@ -110,7 +118,7 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                 children: [
                   //temperature and clouds navigation buttons
                   Expanded(
-                    flex: 1,
+                    flex: 2,
                     child: Container(
                       // color:
                       //     const Color.fromARGB(255, 2, 51, 94).withOpacity(0.5),
@@ -191,17 +199,63 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                   currentIndex == 0
                       //temperature chart
                       ? Expanded(
-                          flex: 3,
+                          flex: 4,
                           child: WeatherChart(
                               hourlyWeatherList: widget.hourlyWeatherList))
                       //clouds chart
                       : Expanded(
-                          flex: 3,
+                          flex: 4,
                           child: WeatherChart(
                             hourlyWeatherList: widget.hourlyWeatherList,
                             showClouds: true,
                           ),
                         ),
+                  if (currentIndex == 0)
+                    Container(
+                      //   color: Colors.blue.shade900.withOpacity(0.3),
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, bottom: 10),
+                      child: Column(children: [
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Expanded(
+                                child: Text("__.__  Temp",
+                                    style: TextStyle(
+                                        color: Colors.white70, fontSize: 15)),
+                              ),
+                              Expanded(
+                                  child: RichText(
+                                      text: TextSpan(children: [
+                                TextSpan(
+                                    text: "---.---",
+                                    style: TextStyle(
+                                        color: Colors.deepPurple,
+                                        fontSize: 15)),
+                                TextSpan(
+                                  text: " Real Feel",
+                                )
+                              ]))),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.water_drop_sharp,
+                                      color: Colors.lightBlue.shade100,
+                                    ),
+                                    Text(" Humidity",
+                                        style: TextStyle(
+                                            color: Colors.white70,
+                                            fontSize: 15)),
+                                  ],
+                                ),
+                              )
+                            ])
+                      ]),
+                    ),
                 ],
               ),
             ),

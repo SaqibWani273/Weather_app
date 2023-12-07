@@ -51,6 +51,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
             color: Colors.grey,
             child: TransitionImageWidget(
               widget.state.weatherModel.imageUrl,
+              isAssetFile: false,
             ),
           ),
           //menu icon

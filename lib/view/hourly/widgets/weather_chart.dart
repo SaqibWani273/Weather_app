@@ -8,6 +8,7 @@ import 'package:weathe_app/repositories/weather_repository.dart';
 import '../../../models/hourly_weather_model.dart';
 
 import '../../../constants/other_const.dart';
+import '../../detailed_weather/detailed_weather_screen.dart';
 import 'tile_data.dart';
 
 class WeatherChart extends StatelessWidget {
@@ -19,6 +20,7 @@ class WeatherChart extends StatelessWidget {
     this.showClouds = false,
   });
 
+  final currentHoveredIndex = 3;
   @override
   Widget build(BuildContext context) {
     final deviceHeight = MediaQuery.of(context).size.height;
@@ -93,9 +95,7 @@ class WeatherChart extends StatelessWidget {
     ];
 
     return Container(
-      //  color: const Color.fromARGB(255, 2, 51, 94).withOpacity(0.5),
-      //  color: Colors.transparent.withOpacity(0.2),
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.only(top: 10, bottom: 5),
       child: Column(
         children: [
           Expanded(
@@ -114,7 +114,38 @@ class WeatherChart extends StatelessWidget {
                         //to navigate to detail page on touch
                         touchCallback: (FlTouchEvent event,
                             LineTouchResponse? touchResponse) {
-                          log("event = ${touchResponse?.lineBarSpots?.first.spotIndex} ");
+                          //for enter event
+                          if (event.runtimeType == FlTapUpEvent &&
+                              touchResponse != null) {
+                            //    log("event = ${event.runtimeType}");
+
+                            //detail page
+                            if (touchResponse.lineBarSpots?.first.spotIndex !=
+                                null) {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => DetailedWeather(
+                                    hourlyWeatherList: hourlyWeatherList,
+                                    currentIndex: touchResponse
+                                        .lineBarSpots!.first.spotIndex,
+                                    isHourly: true,
+                                    screenWidth:
+                                        MediaQuery.of(context).size.width,
+                                  ),
+                                ),
+                              );
+                            }
+                          }
+                          //for hover event
+                          //to do: change bg color of currently focused spot
+                          if (event.runtimeType == FlPointerHoverEvent) {
+                            log("event = ${event.runtimeType}");
+                            //get index of that spot
+                            final index =
+                                touchResponse?.lineBarSpots?.first.spotIndex;
+                            log("index = $index");
+                          }
                         },
                         //to disable show data on touch
                         enabled: false,
@@ -161,7 +192,7 @@ class WeatherChart extends StatelessWidget {
                       }).toList(),
 
                       minX: 0,
-                      minY: 0,
+                      minY: -5,
                       maxY: showClouds ? 150 : 55,
 
                       //to hide/show the grid
@@ -178,10 +209,15 @@ class WeatherChart extends StatelessWidget {
                         leftTitles: noTiles,
                         rightTitles: noTiles,
                         topTitles: tileData.getTileData(
-                            isTopTiles: true,
-                            context: context,
-                            showClouds: showClouds),
-                        bottomTitles: tileData.getTileData(context: context),
+                          isTopTiles: true,
+                          context: context,
+                          showClouds: showClouds,
+                          hoveredElementIndex: currentHoveredIndex,
+                        ),
+                        bottomTitles: tileData.getTileData(
+                          context: context,
+                          hoveredElementIndex: currentHoveredIndex,
+                        ),
                       ),
                       //this is the actual chart line/lines
                       lineBarsData: lineBarsData,
@@ -191,49 +227,6 @@ class WeatherChart extends StatelessWidget {
                   ),
                 )),
           ),
-          if (showClouds != true)
-            Container(
-              //   color: Colors.blue.shade900.withOpacity(0.3),
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
-              child: Column(children: [
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Expanded(
-                        child: Text("__.__  Temp",
-                            style:
-                                TextStyle(color: Colors.white70, fontSize: 15)),
-                      ),
-                      Expanded(
-                          child: RichText(
-                              text: TextSpan(children: [
-                        TextSpan(
-                            text: "---.---",
-                            style: TextStyle(
-                                color: Colors.deepPurple, fontSize: 15)),
-                        TextSpan(
-                          text: " Real Feel",
-                        )
-                      ]))),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.water_drop_sharp,
-                              color: Colors.lightBlue.shade100,
-                            ),
-                            Text(" Humidity",
-                                style: TextStyle(
-                                    color: Colors.white70, fontSize: 15)),
-                          ],
-                        ),
-                      )
-                    ])
-              ]),
-            ),
         ],
       ),
     );

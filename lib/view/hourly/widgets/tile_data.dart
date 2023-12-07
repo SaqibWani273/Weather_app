@@ -18,10 +18,12 @@ class TileData {
     required this.sunset,
     required this.timeZone,
   });
-  AxisTitles getTileData(
-      {bool isTopTiles = false,
-      required BuildContext context,
-      bool showClouds = false}) {
+  AxisTitles getTileData({
+    bool isTopTiles = false,
+    required BuildContext context,
+    bool showClouds = false,
+    required int hoveredElementIndex,
+  }) {
     return AxisTitles(
 
         //   axisNameSize: 30,
@@ -31,15 +33,18 @@ class TileData {
       getTitlesWidget: (double value, TitleMeta meta) {
         return SideTitleWidget(
           axisSide: isTopTiles ? AxisSide.top : AxisSide.bottom,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width * 0.25,
-              height: 80,
-              child: isTopTiles
-                  ? _getHour(value, showClouds: showClouds)
-                  : _getHumidity(value),
+          child: Container(
+            // color: Colors.red,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Container(
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width * 0.25,
+                height: 80,
+                child: isTopTiles
+                    ? _getHour(value, showClouds: showClouds)
+                    : _getHumidity(value),
+              ),
             ),
           ),
         );
@@ -56,7 +61,7 @@ class TileData {
           hourlyWeatherList[val.toInt()].dt * 1000,
           isUtc: true);
       final date = utcDate.add(Duration(seconds: timeZone));
-      log("date  = ${date.toLocal()}");
+      //  log("date  = ${date.toLocal()}");
       // log("date.hour=${date.hour}");
       // log("sunrise.hour= ${sunrise.hour}");
       // log("    sunset.hour= ${sunset.hour}");
