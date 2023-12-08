@@ -42,15 +42,20 @@ class WeatherDetailWidget extends StatelessWidget {
                             children: [
                               //to do : add icon or image dynamically based on weather condition
                               Icon(
-                                Icons.nightlight_round_outlined,
+                                currentHour.sys.partOfDay == 'd'
+                                    ? Icons.wb_sunny_outlined
+                                    : Icons.nightlight_round_outlined,
                                 color: Colors.yellow,
                                 size: 60,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 20,
                               ),
                               Text("${currentHour.main.temp}°"),
                               Text(currentHour.weather[0].description),
+                              const SizedBox(
+                                height: 10,
+                              ),
                             ],
                           ),
                         ],
@@ -58,18 +63,18 @@ class WeatherDetailWidget extends StatelessWidget {
                     ),
                   ),
                   Expanded(
-                      flex: 7,
+                      flex: 8,
                       child:
                           WeatherDetailsGrid(getMainHourDetails(currentHour))),
                 ]),
           ),
           Positioned(
+              top: 10,
+              left: 5,
               child: Text(
                 DateFormatter().dayAndMonth(currentHour.dt_txt),
-                style: TextStyle(fontSize: 15),
-              ),
-              top: 10,
-              left: 5),
+                style: const TextStyle(fontSize: 15),
+              )),
         ],
       ),
     );
@@ -79,47 +84,60 @@ class WeatherDetailWidget extends StatelessWidget {
 class WeatherDetailsGrid extends StatelessWidget {
   final Map<String, dynamic> weatherDetails;
 
-  WeatherDetailsGrid(this.weatherDetails);
+  const WeatherDetailsGrid(this.weatherDetails, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 3,
-        crossAxisSpacing: 8.0,
-        mainAxisSpacing: 8.0,
-      ),
-      itemCount: weatherDetails.length,
-      itemBuilder: (context, index) {
-        final key = weatherDetails.keys.elementAt(index);
-        final value = weatherDetails[key];
+    return SizedBox(
+      height: 200,
+      child: GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 8.0,
+          mainAxisSpacing: 8.0,
+          childAspectRatio: 2.0,
+        ),
+        //  physics: const NeverScrollableScrollPhysics(),
+        itemCount: weatherDetails.length,
+        itemBuilder: (context, index) {
+          final key = weatherDetails.keys.elementAt(index);
+          final value = weatherDetails[key];
 
-        return FittedBox(
-          child: Card(
-            color: Colors.transparent,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    key,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.black),
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  // flex: 2,
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      key,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                          color: Colors.grey.shade400),
+                    ),
                   ),
-                  SizedBox(height: 4.0),
-                  Text(
+                ),
+                // SizedBox(height: 4.0),
+                Expanded(
+                  //  flex: 1,
+                  child: Text(
                     value.toString(),
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.black),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                        color: Colors.grey.shade200),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }

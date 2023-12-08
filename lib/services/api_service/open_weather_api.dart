@@ -73,7 +73,10 @@ class OpenWeatherApi {
         throw unknownException;
       }
     } on TypeError catch (e) {
-      log("Error in getHourlyWeather:\n : ${e.stackTrace}\n error : $e");
+      log("TypeError getWeather:\n : ${e.stackTrace}\n error : $e");
+      throw unknownException;
+    } on FormatException catch (e) {
+      log("FormatException getWeather:\n msg : ${e.message}\n error : ${e}");
       throw unknownException;
     } catch (e) {
       log("error occurred in getWeather: ${e}");

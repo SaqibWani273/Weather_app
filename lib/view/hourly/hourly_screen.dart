@@ -1,6 +1,5 @@
 // import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weathe_app/view/hourly/widgets/loaded_hourly_weather.dart';
 

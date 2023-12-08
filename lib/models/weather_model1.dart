@@ -134,7 +134,7 @@ class Wind {
   Wind({required this.speed, required this.deg, required this.gust});
   factory Wind.fromMap(Map<String, dynamic> map) {
     return Wind(
-      deg: map['deg'],
+      deg: map['deg'].round(),
       speed: double.parse(map['speed'].toString()),
       gust: double.parse(map['gust'].toString()),
     );
@@ -220,8 +220,8 @@ class Coord {
 
   factory Coord.fromMap(Map<String, dynamic> map) {
     return Coord(
-      lon: map['lon'] as double,
-      lat: map['lat'] as double,
+      lon: double.parse(map['lon'].toString()),
+      lat: double.parse(map['lat'].toString()),
     );
   }
 

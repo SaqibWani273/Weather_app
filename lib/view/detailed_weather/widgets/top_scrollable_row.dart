@@ -23,18 +23,30 @@ class _TopScrollableRowState extends State<TopScrollableRow> {
   late ScrollController _scrollController;
   late double offset;
   late int currentIndex;
+  var isInitial = true;
   @override
   void initState() {
     super.initState();
+
     // width = screen width * 0.12 i.e. 12% of screen width
-    offset = widget.currentIndex * widget.screenWidth * 0.12;
+    currentIndex = widget.currentIndex;
 
     _scrollController = ScrollController();
     currentIndex = widget.currentIndex;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      _scrollController.animateTo(offset,
-          duration: const Duration(seconds: 1), curve: Curves.easeOut);
+      // _scrollController.animateTo(offset,
+      //     duration: const Duration(seconds: 1), curve: Curves.easeOut);
+      animateToOffset(index: currentIndex);
+      isInitial = false;
     });
+  }
+
+  void animateToOffset({required int index}) {
+    _scrollController.animateTo(
+      index * widget.screenWidth * 0.12,
+      duration: const Duration(seconds: 1),
+      curve: Curves.easeOut,
+    );
   }
 
   @override
@@ -46,6 +58,10 @@ class _TopScrollableRowState extends State<TopScrollableRow> {
 
   @override
   Widget build(BuildContext context) {
+    currentIndex = widget.currentIndex;
+    if (!isInitial) {
+      animateToOffset(index: currentIndex);
+    }
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       controller: _scrollController,
@@ -53,7 +69,7 @@ class _TopScrollableRowState extends State<TopScrollableRow> {
         //to show almost 7-8 hours
         width: widget.hourlyWeatherList.length *
             MediaQuery.of(context).size.width *
-            0.13,
+            0.15,
         padding: const EdgeInsets.only(left: 10),
         child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -67,39 +83,44 @@ class _TopScrollableRowState extends State<TopScrollableRow> {
                 flex: e.value.hour.length,
                 child: GestureDetector(
                   onTap: () {
-                    _scrollController.animateTo(
-                        e.key.toDouble() * widget.screenWidth * 0.12,
-                        duration: const Duration(seconds: 1),
-                        curve: Curves.easeOut);
+                    animateToOffset(index: e.key);
+                    // _scrollController.animateTo(
+                    //     e.key.toDouble() * widget.screenWidth * 0.12,
+                    //     duration: const Duration(seconds: 1),
+                    //     curve: Curves.easeOut);
                     widget.onTap(e.key);
                     setState(() {
                       currentIndex = e.key;
                     });
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 5.0, vertical: 5.0),
+
+                    //round corners
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: currentIndex == e.key
+                          ? Colors.purple
+                          : Colors.transparent.withOpacity(0.2),
+                    ),
+                    alignment: Alignment.center,
+
                     child: RichText(
-                      text: TextSpan(
-                          //text: e.value.hour.split(' ')[0],
-                          style: TextStyle(
-                              color: e.key == currentIndex
-                                  ? Colors.purple
-                                  : Colors.black),
-                          children: [
-                            TextSpan(
-                                text: "${e.value.hour.split(' ')[0]}:00\n",
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                )),
-                            TextSpan(
-                                text: e.value.hour.split(' ')[1].toLowerCase(),
-                                style: const TextStyle(fontSize: 15)),
-                            if (e.key == widget.currentIndex)
-                              const TextSpan(
-                                  text: "\n .",
-                                  style: TextStyle(
-                                      color: Colors.blue, fontSize: 5))
-                          ]),
+                      text: TextSpan(children: [
+                        TextSpan(
+                            text: "${e.value.hour.split(' ')[0]}:00\n",
+                            style: const TextStyle(
+                              fontSize: 15,
+                            )),
+                        TextSpan(
+                            text: e.value.hour.split(' ')[1].toLowerCase(),
+                            style: const TextStyle(fontSize: 15)),
+                        if (e.key == widget.currentIndex)
+                          const TextSpan(
+                              text: "\n .",
+                              style: TextStyle(color: Colors.blue, fontSize: 5))
+                      ]),
                     ),
                   ),
                 ),

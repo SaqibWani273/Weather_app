@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:weathe_app/constants/custom_exception.dart';
 import 'package:weathe_app/services/api_service/open_weather_api.dart';
 import 'package:weathe_app/services/firestore_service.dart';
 import 'package:weathe_app/services/api_service/geo_db_service.dart';

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:geolocator/geolocator.dart';
 
 import '../constants/custom_exception.dart';

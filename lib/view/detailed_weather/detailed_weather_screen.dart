@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:weathe_app/models/hourly_weather_model.dart';
-import 'package:weathe_app/view/detailed_weather/widgets/top_scrollable_row.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../models/hourly_weather_model.dart';
+import '../../view/detailed_weather/widgets/top_scrollable_row.dart';
 
+import '../../repositories/weather_repository.dart';
 import 'widgets/weather_details_widget.dart';
 
 class DetailedWeather extends StatefulWidget {
@@ -27,20 +29,31 @@ class _DetailedWeatherState extends State<DetailedWeather> {
   late ScrollController _mainScrollController;
 
   late double mainScrollOffset;
+  late PageController _pageController;
+  late int currentTopIndex;
+  late String locationName;
   // late double topRowOffset;
   @override
   void initState() {
-    _mainScrollController = ScrollController();
-
     super.initState();
+    _mainScrollController = ScrollController();
+    _pageController = PageController(
+      initialPage: widget.currentIndex,
+    );
+    currentTopIndex = widget.currentIndex;
+    locationName =
+        context.read<WeatherRepository>().weatherModel.apiResponseModel.name;
     //Offset is the displacement (or destination position)
 
     //main item's width = screen width
     mainScrollOffset = widget.currentIndex * widget.screenWidth;
 
-    //using post frame callback as we need to wait for scroll controller to be initialized
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      animateToOffset(offset: mainScrollOffset);
+    _pageController.addListener(() {
+      if (_pageController.page!.round() == _pageController.page) {
+        setState(() {
+          currentTopIndex = _pageController.page!.round();
+        });
+      }
     });
   }
 
@@ -52,8 +65,8 @@ class _DetailedWeatherState extends State<DetailedWeather> {
   }
 
   void animateToOffset({required double offset}) {
-    _mainScrollController.animateTo(offset,
-        duration: const Duration(seconds: 1), curve: Curves.easeOut);
+    _pageController.animateTo(offset,
+        duration: const Duration(seconds: 1), curve: Curves.ease);
   }
 
   @override
@@ -61,18 +74,22 @@ class _DetailedWeatherState extends State<DetailedWeather> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black.withOpacity(0.7),
         centerTitle: true,
-        title: Column(
-          children: [
-            const Text(
-              "location name",
-            ),
-            Text(
-              widget.isHourly ? "Hourly Weather" : "Daily Weather",
-              style: const TextStyle(color: Colors.black),
-            ),
-          ],
+        title: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20.0),
+          child: Column(
+            children: [
+              Text(
+                locationName,
+                style: const TextStyle(color: Colors.white),
+              ),
+              Text(
+                widget.isHourly ? "Hourly Weather" : "Daily Weather",
+                style: const TextStyle(color: Colors.black),
+              ),
+            ],
+          ),
         ),
       ),
       body: Container(
@@ -81,26 +98,27 @@ class _DetailedWeatherState extends State<DetailedWeather> {
           Expanded(
             flex: 1,
             child: TopScrollableRow(
-                currentIndex: widget.currentIndex,
+                currentIndex: currentTopIndex,
                 screenWidth: widget.screenWidth,
                 hourlyWeatherList: widget.hourlyWeatherList,
                 onTap: (index) {
                   animateToOffset(
                       offset: index.toDouble() * widget.screenWidth);
+                  // _pageController.jumpToPage(index);
                 }),
           ),
           Expanded(
-            flex: 8,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
+              flex: 8,
+              child: PageView.builder(
                 itemCount: widget.hourlyWeatherList.length,
-                controller: _mainScrollController,
+                scrollDirection: Axis.horizontal,
+                controller: _pageController,
                 itemBuilder: (context, index) {
                   return WeatherDetailWidget(
                       hourlyWeatherList: widget.hourlyWeatherList,
                       index: index);
-                }),
-          ),
+                },
+              )),
         ]),
       ),
     );

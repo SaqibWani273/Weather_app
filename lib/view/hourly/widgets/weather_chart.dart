@@ -129,8 +129,8 @@ class WeatherChart extends StatelessWidget {
                     }).toList(),
 
                     minX: 0,
-                    minY: -5,
-                    maxY: showClouds ? 150 : 55,
+                    minY: 0,
+                    maxY: showClouds ? 150 : 45,
 
                     //to hide/show the grid
                     gridData: const FlGridData(

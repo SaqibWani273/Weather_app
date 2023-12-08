@@ -24,6 +24,8 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
     });
   }
 
+  List<String> _list = ["Temperature", "Clouds"];
+
   @override
   Widget build(BuildContext context) {
     final img = currentIndex == 0
@@ -113,7 +115,7 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                 children: [
                   //temperature and clouds navigation buttons
                   Expanded(
-                    flex: 2,
+                    flex: 1,
                     child: Container(
                       // color:
                       //     const Color.fromARGB(255, 2, 51, 94).withOpacity(0.5),
@@ -122,72 +124,56 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                           : 0.1 * deviceHeight,
                       padding: const EdgeInsets.only(top: 15),
                       child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    _changeIndex(0);
-                                  },
-                                  style: currentIndex == 0
-                                      ? TextButton.styleFrom(
-                                          backgroundColor:
-                                              Colors.grey.withOpacity(0.9))
-                                      : null,
-                                  child: const Text("  Temperature  ",
-                                      style: TextStyle(color: Colors.white)),
-                                ),
-                                const SizedBox(height: 8.0),
-                                if (currentIndex == 0)
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        8.0), // Adjust the radius for rounded ends
-                                    child: Container(
-                                      margin: const EdgeInsets.only(left: 20),
-                                      height:
-                                          4.0, // Adjust the thickness of the underline
-                                      color: Colors.blue.shade300,
-                                      width: double.infinity,
-                                    ),
+                          children: _list
+                              .asMap()
+                              .entries
+                              .map(
+                                (MapEntry<int, String> e) => Expanded(
+                                  child: Column(
+                                    children: [
+                                      Expanded(
+                                        flex: 10,
+                                        child: TextButton(
+                                          onPressed: () {
+                                            _changeIndex(e.key);
+                                          },
+                                          style: currentIndex == e.key
+                                              ? TextButton.styleFrom(
+                                                  backgroundColor: Colors.grey
+                                                      .withOpacity(0.9))
+                                              : null,
+                                          child: Text(e.value,
+                                              style: const TextStyle(
+                                                  color: Colors.white)),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8.0),
+                                      if (currentIndex == e.key)
+                                        Expanded(
+                                          flex: 1,
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                                8.0), // Adjust the radius for rounded ends
+                                            child: Container(
+                                              margin: e.key == 0
+                                                  ? const EdgeInsets.only(
+                                                      left: 20,
+                                                    )
+                                                  : const EdgeInsets.only(
+                                                      right: 20,
+                                                    ),
+                                              height:
+                                                  4.0, // Adjust the thickness of the underline
+                                              color: Colors.blue.shade300,
+                                              width: double.infinity,
+                                            ),
+                                          ),
+                                        ),
+                                    ],
                                   ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                TextButton(
-                                  onPressed: () {
-                                    _changeIndex(1);
-                                  },
-                                  style: currentIndex == 1
-                                      ? TextButton.styleFrom(
-                                          backgroundColor:
-                                              Colors.grey.withOpacity(0.9))
-                                      : null,
-                                  child: const Text("    Clouds    ",
-                                      style: TextStyle(color: Colors.white)),
                                 ),
-                                const SizedBox(height: 8.0),
-                                if (currentIndex == 1)
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        8.0), // Adjust the radius for rounded ends
-                                    child: Container(
-                                      margin: const EdgeInsets.only(left: 20),
-                                      height:
-                                          4.0, // Adjust the thickness of the underline
-                                      color: Colors.blue
-                                          .shade300, // Choose the color of the underline
-                                      width: double.infinity,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                              )
+                              .toList()),
                     ),
                   ), //end of temperature and clouds navigation buttons
 

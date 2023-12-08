@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 
 class LoadingWeather extends StatefulWidget {
   const LoadingWeather({super.key});

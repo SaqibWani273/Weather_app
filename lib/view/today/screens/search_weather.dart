@@ -91,9 +91,9 @@ class SearchWeather extends StatelessWidget {
                                 tileColor: Colors.grey.withOpacity(0.3),
                                 leading: Icon(Icons.location_on_outlined),
                                 title: Text(
-                                    "${location.name},${location.region!}"),
+                                    "${location.name},${location.region ?? ""}"),
                                 subtitle: Text(
-                                  location.country!,
+                                  location.country ?? "",
                                 ),
                               ),
                               Divider(
