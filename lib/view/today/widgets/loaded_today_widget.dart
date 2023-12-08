@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import '../../../constants/today_screen_consts.dart';
 import '../../../utils/date_formatter.dart';
 import '../screens/search_weather.dart';
 
-import '../../../constants/other_const.dart';
 import '../../../view_model/weather_bloc/weather_bloc.dart';
 import 'transition_image_widget.dart';
 

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weathe_app/constants/custom_exception.dart';
-import 'package:weathe_app/constants/error_type.dart';
 import 'package:weathe_app/utils/get_lottie_image.dart';
 
 import '../../view_model/weather_bloc/weather_bloc.dart';

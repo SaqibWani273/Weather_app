@@ -59,4 +59,52 @@ class DateFormatter {
     }
     return day;
   }
+
+//needed for detailed weather for a particvular hour
+  String dayAndMonth(String dtTxt) {
+    // dtTxt= "2022-12-08 08:00:00"
+    final temp =
+        dtTxt.split(' ')[0].split('-').reversed.toList(); //[08,12,2022]
+    final day = temp[0];
+    switch (temp[1]) {
+      case '01':
+        return "$day Jan";
+
+      case '02':
+        return "$day Feb";
+
+      case '03':
+        return "$day Mar";
+
+      case '04':
+        return "$day Apr";
+
+      case '05':
+        return "$day May";
+
+      case '06':
+        return "$day Jun";
+
+      case '07':
+        return "$day Jul";
+
+      case '08':
+        return "$day Aug";
+
+      case '09':
+        return "$day Sep";
+
+      case '10':
+        return "$day Oct";
+
+      case '11':
+        return "$day Nov";
+
+      case '12':
+        return "$day Dec";
+
+      default:
+        return "$day Jan";
+    }
+  }
 }

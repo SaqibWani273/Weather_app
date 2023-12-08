@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weathe_app/constants/error_type.dart';
 import 'package:weathe_app/models/city_model.dart';
 import 'package:weathe_app/models/weather_model1.dart';
 import 'package:weathe_app/repositories/weather_repository.dart';

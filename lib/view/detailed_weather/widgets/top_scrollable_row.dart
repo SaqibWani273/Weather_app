@@ -38,6 +38,13 @@ class _TopScrollableRowState extends State<TopScrollableRow> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

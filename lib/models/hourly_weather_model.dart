@@ -9,6 +9,8 @@ class HourlyWeatherModel {
   final int visibility;
   final String dt_txt;
   final String hour;
+  final double probOfPercpipitation;
+  final Sys sys;
   HourlyWeatherModel({
     required this.main,
     required this.weather,
@@ -18,6 +20,8 @@ class HourlyWeatherModel {
     required this.visibility,
     required this.dt_txt,
     required this.hour,
+    required this.probOfPercpipitation,
+    required this.sys,
   });
 
   factory HourlyWeatherModel.fromMap(
@@ -34,12 +38,29 @@ class HourlyWeatherModel {
       wind: Wind.fromMap(map['wind'] as Map<String, dynamic>),
       visibility: map['visibility'] as int,
       dt_txt: map['dt_txt'] as String,
+      probOfPercpipitation: double.parse(
+        map['pop'].toString(),
+      ),
+      sys: Sys.fromMap(map['sys'] as Map<String, dynamic>),
       hour: hour,
     );
   }
 
   // factory HourlyWeatherModel.fromJson(String source) =>
   //     HourlyWeatherModel.fromMap(json.decode(source) as Map<String, dynamic>);
+}
+
+class Sys {
+  final String partOfDay;
+  Sys({
+    required this.partOfDay,
+  });
+
+  factory Sys.fromMap(Map<String, dynamic> map) {
+    return Sys(
+      partOfDay: map['pod'] as String,
+    );
+  }
 }
 
 

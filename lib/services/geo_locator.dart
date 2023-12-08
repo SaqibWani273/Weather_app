@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:weathe_app/constants/error_type.dart';
 
 import '../constants/custom_exception.dart';
 

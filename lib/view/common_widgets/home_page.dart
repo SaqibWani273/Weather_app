@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:weathe_app/constants/other_const.dart';
 
+import '../../constants/bottom_nav_bar_consts.dart';
 import '../hourly/hourly_screen.dart';
 import '../today/screens/today_screen.dart';
 

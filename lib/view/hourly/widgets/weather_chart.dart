@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../constants/hourly_weather_consts.dart';
+import '../../../constants/hourly_consts/line_chart_consts.dart';
 import '../../../models/weather_model1.dart';
 import '../../../repositories/weather_repository.dart';
 import '../../../models/hourly_weather_model.dart';

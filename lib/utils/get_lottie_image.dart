@@ -1,8 +1,6 @@
 import 'package:lottie/lottie.dart';
 import 'package:weathe_app/constants/custom_exception.dart';
 
-import '../constants/error_type.dart';
-
 LottieBuilder getLottieImage(CustomException customException) {
   switch (customException.errorType) {
     case ErrorType.locationpermissionDenied:

@@ -44,6 +44,13 @@ class _DetailedWeatherState extends State<DetailedWeather> {
     });
   }
 
+  @override
+  void dispose() {
+    _mainScrollController.dispose();
+
+    super.dispose();
+  }
+
   void animateToOffset({required double offset}) {
     _mainScrollController.animateTo(offset,
         duration: const Duration(seconds: 1), curve: Curves.easeOut);
@@ -68,29 +75,34 @@ class _DetailedWeatherState extends State<DetailedWeather> {
           ],
         ),
       ),
-      body: Column(children: [
-        Expanded(
-          flex: 1,
-          child: TopScrollableRow(
-              currentIndex: widget.currentIndex,
-              screenWidth: widget.screenWidth,
-              hourlyWeatherList: widget.hourlyWeatherList,
-              onTap: (index) {
-                animateToOffset(offset: index.toDouble() * widget.screenWidth);
-              }),
-        ),
-        Expanded(
-          flex: 8,
-          child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: widget.hourlyWeatherList.length,
-              controller: _mainScrollController,
-              itemBuilder: (context, index) {
-                return WeatherDetailWidget(
-                    hourlyWeatherList: widget.hourlyWeatherList, index: index);
-              }),
-        ),
-      ]),
+      body: Container(
+        color: Colors.black.withOpacity(0.7),
+        child: Column(children: [
+          Expanded(
+            flex: 1,
+            child: TopScrollableRow(
+                currentIndex: widget.currentIndex,
+                screenWidth: widget.screenWidth,
+                hourlyWeatherList: widget.hourlyWeatherList,
+                onTap: (index) {
+                  animateToOffset(
+                      offset: index.toDouble() * widget.screenWidth);
+                }),
+          ),
+          Expanded(
+            flex: 8,
+            child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: widget.hourlyWeatherList.length,
+                controller: _mainScrollController,
+                itemBuilder: (context, index) {
+                  return WeatherDetailWidget(
+                      hourlyWeatherList: widget.hourlyWeatherList,
+                      index: index);
+                }),
+          ),
+        ]),
+      ),
     );
   }
 }

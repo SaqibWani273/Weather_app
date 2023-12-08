@@ -92,6 +92,7 @@ class OpenWeatherApi {
     try {
       if (response.statusCode == 200) {
         final decodeResponse = jsonDecode(response.body);
+        log("decodeResponse = $decodeResponse");
 
         final timeZone = decodeResponse["city"]["timezone"];
 
@@ -106,7 +107,7 @@ class OpenWeatherApi {
         throw unknownException;
       }
     } on TypeError catch (e) {
-      log("type error in getHourlyWeather:\n  : ${e.stackTrace}\n error : $e");
+      log("type error in getHourlyWeather:\n stacktrace : ${e.stackTrace}\n error : $e");
       throw unknownException;
     } catch (e) {
       log("error  in getHourlyWeather: ${e}");

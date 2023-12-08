@@ -129,12 +129,14 @@ class Clouds {
 class Wind {
   double speed;
   int deg;
+  double gust;
 
-  Wind({required this.speed, required this.deg});
+  Wind({required this.speed, required this.deg, required this.gust});
   factory Wind.fromMap(Map<String, dynamic> map) {
     return Wind(
       deg: map['deg'],
       speed: double.parse(map['speed'].toString()),
+      gust: double.parse(map['gust'].toString()),
     );
   }
   factory Wind.fromJson(String source) =>
