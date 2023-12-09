@@ -8,9 +8,10 @@ import 'constants/theme.dart';
 import 'view/common_widgets/home_page.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-import 'firebase_options.dart';
+import 'constants/firebase_options.dart';
 import 'repositories/weather_repository.dart';
 
+import 'view_model/Daily_weather_bloc/daily_weather_bloc.dart';
 import 'view_model/weather_bloc/weather_bloc.dart';
 
 Future<void> main() async {
@@ -51,6 +52,13 @@ class MyApp extends StatelessWidget {
                 weatherRepository: context.read<WeatherRepository>(),
               )..add(FetchHourlyWeatherEvent()),
             ),
+
+            //for daily weather
+            BlocProvider(
+              create: (context) => DailyWeatherBloc(
+                weatherRepository: context.read<WeatherRepository>(),
+              )..add(FetchDailyWeatherEvent()),
+            )
           ],
           child: MaterialApp(
             debugShowCheckedModeBanner: false,

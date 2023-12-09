@@ -9,7 +9,10 @@ import 'package:weathe_app/models/weather_model1.dart';
 
 class WeatherRepository {
   //get everything about current location, i.e. weather, image, lottie file
-  late WeatherModel weatherModel;
+  WeatherModel? previousWeatherModel;
+  WeatherModel? currentWeatherModel;
+  //by default it is hourlyforecast
+  List<ForecastWeatherModel>? forecastWeatherModelList;
 
   Future<WeatherModel> getWeatherData({
     double? lat,
@@ -23,7 +26,7 @@ class WeatherRepository {
 //weather from oepnweathermapapi
       apiResponseModel =
           await OpenWeatherApi().getLocationWeather(lat: lat, longt: longt);
-      log('weather responsed ');
+
       //bg image and lottie file from firestore
       //get type of background needed
       // final destination=getFirestoreDestination(weather.weatherStatus);
@@ -37,23 +40,54 @@ class WeatherRepository {
       log("Catched Error in WeatherRepository: $e");
       rethrow;
     }
-    weatherModel = WeatherModel(
+    //using previousWeatherModel to check whether i need to fetch forecast or not
+    //after forecast is fetched, i update the previousWeatherModel to current currentWeatherModel
+    previousWeatherModel = currentWeatherModel;
+    currentWeatherModel = WeatherModel(
         apiResponseModel: apiResponseModel,
         imageUrl: imageUrl!,
         lottieUrl: lottieUrl);
-    return weatherModel;
+
+    return currentWeatherModel!;
   }
 
   Future<List<CityModel>?> getSuggestedCities(String query) async {
     return await GeoDBApi().fetchSuggestedCities(query);
   }
 
-  Future<List<HourlyWeatherModel>> getHourlyWeather() async {
+  Future<List<ForecastWeatherModel>> getForecastWeather(
+      {required bool isHourly}) async {
     try {
-      return await OpenWeatherApi().getHourlyWeather(
-        lat: weatherModel.apiResponseModel.coord.lat,
-        longt: weatherModel.apiResponseModel.coord.lon,
-      );
+      //idea is that we should only fetch from api for two cases:
+      // 1. first time any of the two screens are triggered
+      //2. user changes the location by searching for a new location
+      if (forecastWeatherModelList != null &&
+          previousWeatherModel == currentWeatherModel) {
+        //=> this method was invoked before either by hourly screen or daily
+        //& now the different screen is invoking it again
+        if (isHourly) {
+          return forecastWeatherModelList!;
+        } else {
+          return forecastWeatherModelList!;
+          //we need to do furhter processing
+        }
+      } else {
+        log("fetching forecast...");
+        //=> forecastWeatherModelList is null
+        //this is the first time the method is invoked
+        forecastWeatherModelList = await OpenWeatherApi().getHourlyWeather(
+          lat: currentWeatherModel!.apiResponseModel.coord.lat,
+          longt: currentWeatherModel!.apiResponseModel.coord.lon,
+        );
+        //to avoid unnecessary api calls
+        previousWeatherModel = currentWeatherModel;
+        if (isHourly) {
+          return forecastWeatherModelList!;
+        } else {
+          //we need to do furhter processing
+          return forecastWeatherModelList!;
+        }
+      }
     } catch (e) {
       log("error in repository =$e");
       rethrow;

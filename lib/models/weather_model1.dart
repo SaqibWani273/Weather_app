@@ -11,6 +11,18 @@ class WeatherModel {
     required this.imageUrl,
     required this.lottieUrl,
   });
+//returns new instance of WeatherModel with updated values from other instance
+  WeatherModel copyWith({
+    ApiResponseModel? apiResponseModel,
+    String? imageUrl,
+    String? lottieUrl,
+  }) {
+    return WeatherModel(
+      apiResponseModel: apiResponseModel ?? this.apiResponseModel,
+      imageUrl: imageUrl ?? this.imageUrl,
+      lottieUrl: lottieUrl ?? this.lottieUrl,
+    );
+  }
 }
 
 class ApiResponseModel {
@@ -129,14 +141,15 @@ class Clouds {
 class Wind {
   double speed;
   int deg;
-  double gust;
+  double? gust;
 
-  Wind({required this.speed, required this.deg, required this.gust});
+  Wind({required this.speed, required this.deg, this.gust});
   factory Wind.fromMap(Map<String, dynamic> map) {
     return Wind(
       deg: map['deg'].round(),
       speed: double.parse(map['speed'].toString()),
-      gust: double.parse(map['gust'].toString()),
+      gust:
+          map.containsKey("gust") ? double.parse(map['gust'].toString()) : null,
     );
   }
   factory Wind.fromJson(String source) =>

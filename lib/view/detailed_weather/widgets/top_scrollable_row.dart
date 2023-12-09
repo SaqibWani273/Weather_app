@@ -5,13 +5,13 @@ import '../../../models/hourly_weather_model.dart';
 class TopScrollableRow extends StatefulWidget {
   final int currentIndex;
   final double screenWidth;
-  final List<HourlyWeatherModel> hourlyWeatherList;
+  final List<ForecastWeatherModel> hourlyForecastList;
   final Function(int) onTap;
   const TopScrollableRow({
     super.key,
     required this.currentIndex,
     required this.screenWidth,
-    required this.hourlyWeatherList,
+    required this.hourlyForecastList,
     required this.onTap,
   });
 
@@ -67,17 +67,17 @@ class _TopScrollableRowState extends State<TopScrollableRow> {
       controller: _scrollController,
       child: Container(
         //to show almost 7-8 hours
-        width: widget.hourlyWeatherList.length *
+        width: widget.hourlyForecastList.length *
             MediaQuery.of(context).size.width *
             0.15,
         padding: const EdgeInsets.only(left: 10),
         child: Row(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: widget.hourlyWeatherList
+            children: widget.hourlyForecastList
                 .asMap()
                 .entries
-                .map((MapEntry<int, HourlyWeatherModel> e) {
+                .map((MapEntry<int, ForecastWeatherModel> e) {
               return Expanded(
                 //to allocate space as per the length of the word
                 flex: e.value.hour.length,

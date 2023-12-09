@@ -7,8 +7,8 @@ class WeatherInitialState extends WeatherState {}
 class LoadingWeatherState extends WeatherState {}
 
 class WeatherLoadedState extends WeatherState {
-  final WeatherModel weatherModel;
-  WeatherLoadedState({required this.weatherModel});
+  final WeatherModel currentWeatherModel;
+  WeatherLoadedState({required this.currentWeatherModel});
 }
 
 class WeatherErrorState extends WeatherState {
@@ -26,6 +26,6 @@ class LoadingSuggestedLocations extends WeatherState {}
 class NoSuggestedLocations extends WeatherState {}
 
 // class LoadedHourlyWeatherState extends WeatherState {
-//   final List<HourlyWeatherModel> hourlyWeatherList;
-//   LoadedHourlyWeatherState({required this.hourlyWeatherList});
+//   final List<ForecastWeatherModel> hourlyForecastList;
+//   LoadedHourlyWeatherState({required this.hourlyForecastList});
 // }

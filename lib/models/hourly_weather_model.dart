@@ -1,17 +1,19 @@
 import 'package:weathe_app/models/weather_model1.dart';
 
-class HourlyWeatherModel {
+//using this model for both hourly and daily weather forecast
+class ForecastWeatherModel {
   final Main main;
   final List<Weather> weather;
   final Clouds clouds;
-  final int dt;
+  final int dt; //different for hourly and daily
   final Wind wind;
   final int visibility;
-  final String dt_txt;
-  final String hour;
+  final String dt_txt; //different for hourly and daily
+  final String hour; //only for hourly
   final double probOfPercpipitation;
   final Sys sys;
-  HourlyWeatherModel({
+  //final String day; //only for daily
+  ForecastWeatherModel({
     required this.main,
     required this.weather,
     required this.clouds,
@@ -24,9 +26,9 @@ class HourlyWeatherModel {
     required this.sys,
   });
 
-  factory HourlyWeatherModel.fromMap(
+  factory ForecastWeatherModel.fromMap(
       Map<String, dynamic> map, final String hour) {
-    return HourlyWeatherModel(
+    return ForecastWeatherModel(
       main: Main.fromMap(map['main'] as Map<String, dynamic>),
       weather: List<Weather>.from(
         (map['weather'] as List<dynamic>).map<Weather>(
@@ -46,8 +48,8 @@ class HourlyWeatherModel {
     );
   }
 
-  // factory HourlyWeatherModel.fromJson(String source) =>
-  //     HourlyWeatherModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  // factory ForecastWeatherModel.fromJson(String source) =>
+  //     ForecastWeatherModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
 class Sys {
@@ -62,11 +64,6 @@ class Sys {
     );
   }
 }
-
-
-
-
-
 
 /*
 

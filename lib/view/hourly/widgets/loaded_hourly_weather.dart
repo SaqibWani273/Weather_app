@@ -9,8 +9,8 @@ import '../../../utils/date_formatter.dart';
 import '../../today/widgets/transition_image_widget.dart';
 
 class LoadedHourlyWeather extends StatefulWidget {
-  final List<HourlyWeatherModel> hourlyWeatherList;
-  const LoadedHourlyWeather({super.key, required this.hourlyWeatherList});
+  final List<ForecastWeatherModel> hourlyForecastList;
+  const LoadedHourlyWeather({super.key, required this.hourlyForecastList});
 
   @override
   State<LoadedHourlyWeather> createState() => _LoadedHourlyWeatherState();
@@ -33,7 +33,7 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
         : "hourly_screen_cloud1.png";
     final deviceHeight = MediaQuery.of(context).size.height;
     final apiResponseModel =
-        context.read<WeatherRepository>().weatherModel.apiResponseModel;
+        context.read<WeatherRepository>().currentWeatherModel!.apiResponseModel;
     final formattedDateTime =
         DateFormatter().getFormattedDateTime(apiResponseModel.timezone);
 
@@ -182,12 +182,12 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                       ? Expanded(
                           flex: 4,
                           child: WeatherChart(
-                              hourlyWeatherList: widget.hourlyWeatherList))
+                              hourlyForecastList: widget.hourlyForecastList))
                       //clouds chart
                       : Expanded(
                           flex: 4,
                           child: WeatherChart(
-                            hourlyWeatherList: widget.hourlyWeatherList,
+                            hourlyForecastList: widget.hourlyForecastList,
                             showClouds: true,
                           ),
                         ),

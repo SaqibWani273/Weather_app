@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:weathe_app/view/daily/screens/daily_weather_screen.dart';
 
 import '../../constants/bottom_nav_bar_consts.dart';
-import '../hourly/hourly_screen.dart';
+import '../hourly/screens/hourly_screen.dart';
 import '../today/screens/today_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -58,9 +59,7 @@ class _HomePageState extends State<HomePage> {
 List<Widget> screens = [
   const TodayScreen(),
   const HourlyScreen(),
-  Container(
-    child: const Text("Daily"),
-  ),
+  const DailyWeatherScreen(),
   Container(
     child: const Text("Map"),
   ),

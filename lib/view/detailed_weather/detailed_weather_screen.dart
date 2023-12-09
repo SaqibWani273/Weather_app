@@ -8,7 +8,7 @@ import 'widgets/weather_details_widget.dart';
 
 class DetailedWeather extends StatefulWidget {
   final bool isHourly;
-  final List<HourlyWeatherModel> hourlyWeatherList;
+  final List<ForecastWeatherModel> hourlyForecastList;
   final int currentIndex;
   final double screenWidth;
   //to do : add daily weather
@@ -16,7 +16,7 @@ class DetailedWeather extends StatefulWidget {
   const DetailedWeather({
     required this.isHourly,
     required this.screenWidth,
-    required this.hourlyWeatherList,
+    required this.hourlyForecastList,
     required this.currentIndex,
     super.key,
   });
@@ -41,8 +41,11 @@ class _DetailedWeatherState extends State<DetailedWeather> {
       initialPage: widget.currentIndex,
     );
     currentTopIndex = widget.currentIndex;
-    locationName =
-        context.read<WeatherRepository>().weatherModel.apiResponseModel.name;
+    locationName = context
+        .read<WeatherRepository>()
+        .currentWeatherModel!
+        .apiResponseModel
+        .name;
     //Offset is the displacement (or destination position)
 
     //main item's width = screen width
@@ -100,7 +103,7 @@ class _DetailedWeatherState extends State<DetailedWeather> {
             child: TopScrollableRow(
                 currentIndex: currentTopIndex,
                 screenWidth: widget.screenWidth,
-                hourlyWeatherList: widget.hourlyWeatherList,
+                hourlyForecastList: widget.hourlyForecastList,
                 onTap: (index) {
                   animateToOffset(
                       offset: index.toDouble() * widget.screenWidth);
@@ -110,12 +113,12 @@ class _DetailedWeatherState extends State<DetailedWeather> {
           Expanded(
               flex: 8,
               child: PageView.builder(
-                itemCount: widget.hourlyWeatherList.length,
+                itemCount: widget.hourlyForecastList.length,
                 scrollDirection: Axis.horizontal,
                 controller: _pageController,
                 itemBuilder: (context, index) {
                   return WeatherDetailWidget(
-                      hourlyWeatherList: widget.hourlyWeatherList,
+                      hourlyForecastList: widget.hourlyForecastList,
                       index: index);
                 },
               )),

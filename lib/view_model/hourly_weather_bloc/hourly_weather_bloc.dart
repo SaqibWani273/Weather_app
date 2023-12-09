@@ -19,10 +19,12 @@ class HourlyWeatherBloc extends Bloc<HourlyWeatherEvent, HourlyWeatherState> {
       FetchHourlyWeatherEvent event, Emitter<HourlyWeatherState> emit) async {
     try {
       emit(LoadingHourlyWeatherState());
-      final hourlyWeatherList = await weatherRepository.getHourlyWeather();
+      //pass a named parameter isHourly adn set it to true here
+      final hourlyForecastList =
+          await weatherRepository.getForecastWeather(isHourly: true);
 
       emit(LoadedHourlyWeatherState(
-        hourlyWeatherList: hourlyWeatherList,
+        hourlyForecastList: hourlyForecastList,
       ));
     } on CustomException catch (e) {
       log('custom error while getting hourly weather data from repo: $e');

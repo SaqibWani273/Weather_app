@@ -22,9 +22,9 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       FetchCurrentLocationWeather event, Emitter<WeatherState> emit) async {
     try {
       emit(LoadingWeatherState());
-      final weatherModel = await _fetchFromRepository();
+      final currentWeatherModel = await _fetchFromRepository();
       emit(WeatherLoadedState(
-        weatherModel: weatherModel,
+        currentWeatherModel: currentWeatherModel,
       ));
     } on CustomException catch (e) {
       log('custom error while getting weather data from repo: $e ');
@@ -62,12 +62,12 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       FetchLocationWeatherByLatLong event, Emitter<WeatherState> emit) async {
     try {
       emit(LoadingWeatherState());
-      final weatherModel =
+      final currentWeatherModel =
           await _fetchFromRepository(lat: event.lat, longt: event.longt);
       emit(WeatherLoadedState(
-        weatherModel: weatherModel,
+        currentWeatherModel: currentWeatherModel,
       ));
-      log("Weather model from repo: ${weatherModel.toString()}");
+      log("Weather model from repo: ${currentWeatherModel.toString()}");
     } on CustomException catch (e) {
       log('custom error while getting weather data from repo: $e');
       emit(WeatherErrorState(
@@ -85,10 +85,11 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     double? longt,
   }) async {
     try {
-      final weatherModel =
+      final currentWeatherModel =
           await weatherRepository.getWeatherData(lat: lat, longt: longt);
-      return weatherModel;
-      // emit(WeatherLoadedState(weatherModel: weatherModel));
+
+      return currentWeatherModel;
+      // emit(WeatherLoadedState(currentWeatherModel: currentWeatherModel));
     } catch (e) {
       log('custom error while getting weather data from repo: $e');
       //  emit(WeatherErrorState(error: e.message));
@@ -100,10 +101,10 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   //     FetchHourlyWeatherEvent event, Emitter<WeatherState> emit) async {
   //   try {
   //     emit(LoadingWeatherState());
-  //     final hourlyWeatherList = await weatherRepository.getHourlyWeather();
+  //     final hourlyForecastList = await weatherRepository.getHourlyWeather();
 
   //     emit(LoadedHourlyWeatherState(
-  //       hourlyWeatherList: hourlyWeatherList,
+  //       hourlyForecastList: hourlyForecastList,
   //     ));
   //   } on CustomException catch (e) {
   //     log('custom error while getting hourly weather data from repo: $e');

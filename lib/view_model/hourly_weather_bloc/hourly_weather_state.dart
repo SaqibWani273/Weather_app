@@ -7,8 +7,8 @@ final class HourlyWeatherInitial extends HourlyWeatherState {}
 final class LoadingHourlyWeatherState extends HourlyWeatherState {}
 
 final class LoadedHourlyWeatherState extends HourlyWeatherState {
-  final List<HourlyWeatherModel> hourlyWeatherList;
-  LoadedHourlyWeatherState({required this.hourlyWeatherList});
+  final List<ForecastWeatherModel> hourlyForecastList;
+  LoadedHourlyWeatherState({required this.hourlyForecastList});
 }
 
 final class HourlyWeatherErrorState extends HourlyWeatherState {

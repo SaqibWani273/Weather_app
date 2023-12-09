@@ -26,8 +26,6 @@ class GeoDBApi {
 
       //
       // final temp = CityModel.fromJson(response.body);
-    } else {
-      log("response = nosucces , code=${response.statusCode}");
     }
     return cities;
   }

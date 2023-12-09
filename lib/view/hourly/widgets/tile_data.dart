@@ -6,14 +6,14 @@ import 'package:weathe_app/models/hourly_weather_model.dart';
 import 'package:weathe_app/utils/date_formatter.dart';
 
 class TileData {
-  final List<HourlyWeatherModel> hourlyWeatherList;
+  final List<ForecastWeatherModel> hourlyForecastList;
   // final DateTime sunrise;
   // final DateTime sunset;
   final int timeZone;
   final int sunriseDate;
   final int sunsetDate;
   TileData({
-    required this.hourlyWeatherList,
+    required this.hourlyForecastList,
     // required this.sunrise,
     // required this.sunset,
     required this.timeZone,
@@ -53,7 +53,7 @@ class TileData {
   Widget _getHour(double val, {bool showClouds = false}) {
     //only return text if val is a whole number
     if (val == val.toInt()) {
-      final hourlyWeather = hourlyWeatherList[val.toInt()];
+      final hourlyWeather = hourlyForecastList[val.toInt()];
       var text = hourlyWeather.hour;
 
       final currentDate = DateFormatter().getCurrentDateTimeofLocation(
@@ -89,7 +89,7 @@ class TileData {
                             showClouds ? Colors.white : Colors.amber.shade600,
                       )),
           ]);
-      // return hourlyWeatherList[val.toInt()].main.temp.toString();
+      // return hourlyForecastList[val.toInt()].main.temp.toString();
     } else {
       return const Text('');
     }
@@ -97,7 +97,7 @@ class TileData {
 
   Widget _getHumidity(double val) {
     if (val == val.toInt()) {
-      final text = "${hourlyWeatherList[val.toInt()].main.humidity}%";
+      final text = "${hourlyForecastList[val.toInt()].main.humidity}%";
       return Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,

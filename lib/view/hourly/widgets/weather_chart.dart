@@ -12,11 +12,11 @@ import '../../detailed_weather/detailed_weather_screen.dart';
 import 'tile_data.dart';
 
 class WeatherChart extends StatelessWidget {
-  final List<HourlyWeatherModel> hourlyWeatherList;
+  final List<ForecastWeatherModel> hourlyForecastList;
   final bool showClouds;
   const WeatherChart({
     super.key,
-    required this.hourlyWeatherList,
+    required this.hourlyForecastList,
     this.showClouds = false,
   });
 
@@ -25,17 +25,17 @@ class WeatherChart extends StatelessWidget {
     const noTiles = AxisTitles(sideTitles: SideTitles(showTitles: false));
     final deviceWidth = MediaQuery.of(context).size.width;
     final ApiResponseModel apiResponseModel =
-        context.read<WeatherRepository>().weatherModel.apiResponseModel;
+        context.read<WeatherRepository>().currentWeatherModel!.apiResponseModel;
 
     final tileData = TileData(
-      hourlyWeatherList: hourlyWeatherList,
+      hourlyForecastList: hourlyForecastList,
       timeZone: apiResponseModel.timezone,
       sunriseDate: apiResponseModel.sys.sunrise,
       sunsetDate: apiResponseModel.sys.sunset,
     );
     //main chart lines list (here only two lines)
     final List<LineChartBarData> lineBarsData =
-        getLineBarsData(hourlyWeatherList, showClouds);
+        getLineBarsData(hourlyForecastList, showClouds);
 
     return Container(
       padding: const EdgeInsets.only(top: 10, bottom: 5),
@@ -48,7 +48,7 @@ class WeatherChart extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 40),
 
                 //multiplying 0.2 to show 5 values in each screen
-                width: hourlyWeatherList.length * deviceWidth * 0.2,
+                width: hourlyForecastList.length * deviceWidth * 0.2,
                 child: LineChart(
                   LineChartData(
                     lineTouchData: LineTouchData(
@@ -69,7 +69,7 @@ class WeatherChart extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => DetailedWeather(
-                                  hourlyWeatherList: hourlyWeatherList,
+                                  hourlyForecastList: hourlyForecastList,
                                   currentIndex: touchResponse
                                       .lineBarSpots!.first.spotIndex,
                                   isHourly: true,
@@ -113,10 +113,10 @@ class WeatherChart extends StatelessWidget {
 
                     //to show tooltip permanently on the screen
                     //show as many tooltips as the number of data points
-                    showingTooltipIndicators: hourlyWeatherList
+                    showingTooltipIndicators: hourlyForecastList
                         .asMap()
                         .entries
-                        .map((MapEntry<int, HourlyWeatherModel> entry) {
+                        .map((MapEntry<int, ForecastWeatherModel> entry) {
                       return ShowingTooltipIndicators(
                         [
                           LineBarSpot(

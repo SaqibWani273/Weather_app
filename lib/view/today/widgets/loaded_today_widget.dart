@@ -23,7 +23,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
   var showDrawer = false;
   @override
   Widget build(BuildContext context) {
-    final apiResponseModel = widget.state.weatherModel.apiResponseModel;
+    final apiResponseModel = widget.state.currentWeatherModel.apiResponseModel;
     final temp = TodayScreenUiData().getTemp(apiResponseModel);
     final List<MainWeatherInfo> mainWeatherInfo =
         TodayScreenUiData().getMainWeatherInfo(apiResponseModel);
@@ -48,7 +48,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
             width: double.infinity,
             color: Colors.grey,
             child: TransitionImageWidget(
-              widget.state.weatherModel.imageUrl,
+              widget.state.currentWeatherModel.imageUrl,
               isAssetFile: false,
             ),
           ),
@@ -218,8 +218,9 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
             ),
           ),
 //to show some animation for rain or snow
-          if (widget.state.weatherModel.lottieUrl != null)
-            Lottie.network(widget.state.weatherModel.lottieUrl!, height: 500),
+          if (widget.state.currentWeatherModel.lottieUrl != null)
+            Lottie.network(widget.state.currentWeatherModel.lottieUrl!,
+                height: 500),
 
 //custom drawer
           if (showDrawer)

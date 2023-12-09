@@ -21,7 +21,7 @@ class OpenWeatherApi {
       {double? lat, double? longt}) async {
     try {
       //getting location weather in two events:
-      //user's current location (this time we'l need to get lat and longt)
+      //user's current location (this time we'll need to get lat and longt)
       //or when user searchs for any location's weather
 
       if (lat == null || longt == null) {
@@ -86,9 +86,9 @@ class OpenWeatherApi {
     return apiResponseModel;
   } //..........end of _getWeather
 
-  Future<List<HourlyWeatherModel>> getHourlyWeather(
+  Future<List<ForecastWeatherModel>> getHourlyWeather(
       {required double lat, required double longt}) async {
-    List<HourlyWeatherModel> hourlyWeatherList = [];
+    List<ForecastWeatherModel> hourlyForecastList = [];
     final url =
         "https://api.openweathermap.org/data/2.5/forecast?lat=$lat&lon=$longt&appid=$apiKey1&units=metric";
     final response = await http.get(Uri.parse(url));
@@ -103,7 +103,7 @@ class OpenWeatherApi {
           //to get formatted hour like 12 AM, 5pm
           final String hour =
               DateFormatter().getFormattedHour(timeZone, item["dt"]);
-          hourlyWeatherList.add(HourlyWeatherModel.fromMap(item, hour));
+          hourlyForecastList.add(ForecastWeatherModel.fromMap(item, hour));
         }
       } else {
         log("hourly response code = ${response.statusCode}");
@@ -116,6 +116,6 @@ class OpenWeatherApi {
       log("error  in getHourlyWeather: ${e}");
       throw internetException;
     }
-    return hourlyWeatherList;
+    return hourlyForecastList;
   }
 }

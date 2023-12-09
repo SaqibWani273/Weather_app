@@ -72,7 +72,6 @@ class SearchWeather extends StatelessWidget {
                     }
 
                     if (state is LoadedSuggestedLocations) {
-                      log("loaded");
                       return ListView.builder(
                         itemCount: state.suggestedLocations?.length,
                         itemBuilder: (context, index) {

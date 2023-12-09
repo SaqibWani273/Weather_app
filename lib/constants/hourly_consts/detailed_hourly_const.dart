@@ -1,6 +1,6 @@
 import 'package:weathe_app/models/hourly_weather_model.dart';
 
-Map<String, dynamic> getMainHourDetails(HourlyWeatherModel hourlyWeather) {
+Map<String, dynamic> getMainHourDetails(ForecastWeatherModel hourlyWeather) {
   return {
     "Real Feel": "${hourlyWeather.main.feelsLike}°c",
     "Humidity": "${hourlyWeather.main.humidity}%",

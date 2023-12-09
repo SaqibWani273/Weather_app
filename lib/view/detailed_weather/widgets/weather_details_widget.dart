@@ -7,16 +7,16 @@ import '../../../models/hourly_weather_model.dart';
 class WeatherDetailWidget extends StatelessWidget {
   const WeatherDetailWidget({
     super.key,
-    required this.hourlyWeatherList,
+    required this.hourlyForecastList,
     required this.index,
   });
 
   final int index;
-  final List<HourlyWeatherModel> hourlyWeatherList;
+  final List<ForecastWeatherModel> hourlyForecastList;
 
   @override
   Widget build(BuildContext context) {
-    final currentHour = hourlyWeatherList[index];
+    final currentHour = hourlyForecastList[index];
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Stack(
@@ -27,7 +27,7 @@ class WeatherDetailWidget extends StatelessWidget {
                 //  crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Text(
-                  //   " ${hourlyWeatherList[index].main.temp}",
+                  //   " ${hourlyForecastList[index].main.temp}",
                   //   style: const TextStyle(color: Colors.black),
                   // ),
                   //icon and date
