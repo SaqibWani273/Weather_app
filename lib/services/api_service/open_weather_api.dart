@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:weathe_app/services/geo_locator.dart';
-import 'package:weathe_app/models/hourly_weather_model.dart';
-import 'package:weathe_app/utils/date_formatter.dart';
+import '/services/geo_locator.dart';
+import '/models/hourly_weather_model.dart';
+import '/utils/date_formatter.dart';
 
 import '../../constants/api_keys.dart';
 import '../../constants/custom_exception.dart';
@@ -69,7 +69,7 @@ class OpenWeatherApi {
         //request timeout
         throw internetException;
       } else {
-        log("response = ${response.statusCode}");
+        // log("response = ${response.statusCode}");
         throw unknownException;
       }
     } on TypeError catch (e) {
@@ -95,7 +95,7 @@ class OpenWeatherApi {
     try {
       if (response.statusCode == 200) {
         final decodeResponse = jsonDecode(response.body);
-        log("decodeResponse = $decodeResponse");
+        // log("decodeResponse = $decodeResponse");
 
         final timeZone = decodeResponse["city"]["timezone"];
 

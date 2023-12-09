@@ -6,19 +6,18 @@ import 'package:weathe_app/models/weather_model1.dart';
 import 'package:weathe_app/repositories/weather_repository.dart';
 
 import '../../constants/custom_exception.dart';
-import '../../models/hourly_weather_model.dart';
 part 'weather_event.dart';
 part 'weather_state.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
+  final WeatherRepository weatherRepository;
   WeatherBloc({required this.weatherRepository})
       : super(WeatherInitialState()) {
     on<FetchCurrentLocationWeather>(_fetchCurrentLocationWeather);
     on<FetchSuggestedLocations>(_fetchSuggestedLocations);
     on<FetchLocationWeatherByLatLong>(_fetchLocationWeatherByLatLong);
-    on<FetchHourlyWeatherEvent>(_fetchHourlyWeather);
+    //  on<FetchHourlyWeatherEvent>(_fetchHourlyWeather);
   }
-  final WeatherRepository weatherRepository;
   Future<void> _fetchCurrentLocationWeather(
       FetchCurrentLocationWeather event, Emitter<WeatherState> emit) async {
     try {
@@ -97,24 +96,24 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     }
   }
 
-  Future<void> _fetchHourlyWeather(
-      FetchHourlyWeatherEvent event, Emitter<WeatherState> emit) async {
-    try {
-      emit(LoadingWeatherState());
-      final hourlyWeatherList = await weatherRepository.getHourlyWeather();
+  // Future<void> _fetchHourlyWeather(
+  //     FetchHourlyWeatherEvent event, Emitter<WeatherState> emit) async {
+  //   try {
+  //     emit(LoadingWeatherState());
+  //     final hourlyWeatherList = await weatherRepository.getHourlyWeather();
 
-      emit(LoadedHourlyWeatherState(
-        hourlyWeatherList: hourlyWeatherList,
-      ));
-    } on CustomException catch (e) {
-      log('custom error while getting hourly weather data from repo: $e');
-      emit(WeatherErrorState(
-        error: e,
-      ));
-    } catch (e) {
-      emit(WeatherErrorState(
-        error: unknownException,
-      ));
-    }
-  }
+  //     emit(LoadedHourlyWeatherState(
+  //       hourlyWeatherList: hourlyWeatherList,
+  //     ));
+  //   } on CustomException catch (e) {
+  //     log('custom error while getting hourly weather data from repo: $e');
+  //     emit(WeatherErrorState(
+  //       error: e,
+  //     ));
+  //   } catch (e) {
+  //     emit(WeatherErrorState(
+  //       error: unknownException,
+  //     ));
+  //   }
+  // }
 }

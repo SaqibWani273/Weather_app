@@ -1,37 +1,26 @@
 // import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:weathe_app/view/hourly/widgets/loaded_hourly_weather.dart';
+import '../../view/hourly/widgets/loaded_hourly_weather.dart';
+import '../../view_model/hourly_weather_bloc/hourly_weather_bloc.dart';
 
-import '../../view_model/weather_bloc/weather_bloc.dart';
 import '../common_widgets/error_screen.dart';
 import '../common_widgets/loading_weather.dart';
 
-class HourlyScreen extends StatefulWidget {
+class HourlyScreen extends StatelessWidget {
   const HourlyScreen({super.key});
 
   @override
-  State<HourlyScreen> createState() => _HourlyScreenState();
-}
-
-class _HourlyScreenState extends State<HourlyScreen> {
-  // late AxisTitles noTiles;
-  @override
-  void initState() {
-    super.initState();
-    context.read<WeatherBloc>().add(FetchHourlyWeatherEvent());
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<WeatherBloc, WeatherState>(builder: (context, state) {
-      if (state is LoadingWeatherState) {
+    return BlocBuilder<HourlyWeatherBloc, HourlyWeatherState>(
+        builder: (context, state) {
+      if (state is LoadingHourlyWeatherState) {
         return const LoadingWeather();
       }
       if (state is LoadedHourlyWeatherState) {
         return LoadedHourlyWeather(hourlyWeatherList: state.hourlyWeatherList);
       }
-      if (state is WeatherErrorState) {
+      if (state is HourlyWeatherErrorState) {
         return ErrorScreen(
           customException: state.error,
         );

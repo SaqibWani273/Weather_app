@@ -19,11 +19,11 @@ class _TransitionImageWidgetState extends State<TransitionImageWidget>
     super.initState();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 4),
+      duration: Duration(seconds: isFirstBuild ? 4 : 2),
     );
 
     _animation =
-        CurvedAnimation(parent: animationController, curve: Curves.easeIn);
+        CurvedAnimation(parent: animationController, curve: Curves.easeOut);
     // Start the animation
     animationController.forward();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -41,7 +41,7 @@ class _TransitionImageWidgetState extends State<TransitionImageWidget>
   @override
   Widget build(BuildContext context) {
     if (!isFirstBuild) {
-      //note: this is working as expected but might cause issues in ux
+      //note: this is working as expected but might cause issues in ux(...mr. chatgpt)
       animationController.forward(from: 0.2);
     }
 
