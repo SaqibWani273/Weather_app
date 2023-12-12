@@ -35,7 +35,7 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
     final apiResponseModel =
         context.read<WeatherRepository>().currentWeatherModel!.apiResponseModel;
     final formattedDateTime =
-        DateFormatter().getFormattedDateTime(apiResponseModel.timezone);
+        context.read<WeatherRepository>().dateFormatter.formattedDateTime;
 
     return Container(
       color: const Color.fromARGB(255, 2, 51, 94),
@@ -115,13 +115,13 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                 children: [
                   //temperature and clouds navigation buttons
                   Expanded(
-                    flex: 1,
+                    flex: deviceHeight <= Devices.smallMaxHeight ? 2 : 1,
                     child: Container(
                       // color:
                       //     const Color.fromARGB(255, 2, 51, 94).withOpacity(0.5),
-                      height: deviceHeight <= Devices.smallMaxHeight
-                          ? 0.15 * deviceHeight
-                          : 0.1 * deviceHeight,
+                      // height: deviceHeight <= Devices.smallMaxHeight
+                      //     ? 0.2 * deviceHeight
+                      //     : 0.1 * deviceHeight,
                       padding: const EdgeInsets.only(top: 15),
                       child: Row(
                           children: _list
@@ -180,12 +180,12 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                   currentIndex == 0
                       //temperature chart
                       ? Expanded(
-                          flex: 4,
+                          flex: deviceHeight <= Devices.smallMaxHeight ? 5 : 4,
                           child: WeatherChart(
                               hourlyForecastList: widget.hourlyForecastList))
                       //clouds chart
                       : Expanded(
-                          flex: 4,
+                          flex: deviceHeight <= Devices.smallMaxHeight ? 5 : 4,
                           child: WeatherChart(
                             hourlyForecastList: widget.hourlyForecastList,
                             showClouds: true,

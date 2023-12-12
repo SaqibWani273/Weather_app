@@ -3,17 +3,22 @@
 import 'package:intl/intl.dart';
 
 class DateFormatter {
-  String getFormattedDateTime(int timeZoneOffset) {
+  late String _dateTime;
+  late int _timeZoneOffset;
+  set setFormattedDateTime(int timeZoneOffset) {
     //for today screen
     final date = DateTime.now().add(Duration(
         seconds: timeZoneOffset - DateTime.now().timeZoneOffset.inSeconds));
-    // final date = DateTime.now().add(Duration(
-    //     seconds: timeZoneOffset - DateTime.now().timeZoneOffset.inSeconds));
 
     final formattedtime = DateFormat().add_jm().format(date);
     final formattedDate = DateFormat('EEEE, d MMM y').format(date);
+    _timeZoneOffset = timeZoneOffset;
+    _dateTime = "$formattedtime - $formattedDate";
+  }
 
-    return "$formattedtime - $formattedDate";
+  String get formattedDateTime => _dateTime;
+  set setTimeZoneOffset(int timeZoneOffset) {
+    _timeZoneOffset = timeZoneOffset;
   }
 
 //to get formatted hour like 12 AM, 5pm from
@@ -27,10 +32,11 @@ class DateFormatter {
   }
 
   DateTime getCurrentDateTimeofLocation(
-      {required int timeZoneOffsetFromUtc, required int dtInMillis}) {
+      {int? timeZoneOffsetFromUtc, required int dtInMillis}) {
     final utcDate =
         DateTime.fromMillisecondsSinceEpoch(dtInMillis * 1000, isUtc: true);
-    return utcDate.add(Duration(seconds: timeZoneOffsetFromUtc));
+    return utcDate
+        .add(Duration(seconds: timeZoneOffsetFromUtc ?? _timeZoneOffset));
   }
 
   String getFormattedDay(DateTime currentDate) {
@@ -107,4 +113,6 @@ class DateFormatter {
         return "$day Jan";
     }
   }
+
+  // void setFormattedDateTime(int timezone) {}
 }

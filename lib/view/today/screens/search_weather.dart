@@ -105,7 +105,6 @@ class SearchWeather extends StatelessWidget {
                       );
                     }
 
-                    log("error");
                     return Container(
                       child: Center(
                           child: Text("Suggested cities will appear here")),

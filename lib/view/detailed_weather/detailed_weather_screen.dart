@@ -104,6 +104,7 @@ class _DetailedWeatherState extends State<DetailedWeather> {
                 currentIndex: currentTopIndex,
                 screenWidth: widget.screenWidth,
                 hourlyForecastList: widget.hourlyForecastList,
+                isDaily: false,
                 onTap: (index) {
                   animateToOffset(
                       offset: index.toDouble() * widget.screenWidth);

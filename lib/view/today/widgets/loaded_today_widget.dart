@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:weathe_app/repositories/weather_repository.dart';
 import '../../../constants/today_screen_consts.dart';
 import '../../../utils/date_formatter.dart';
 import '../screens/search_weather.dart';
@@ -27,8 +29,11 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
     final temp = TodayScreenUiData().getTemp(apiResponseModel);
     final List<MainWeatherInfo> mainWeatherInfo =
         TodayScreenUiData().getMainWeatherInfo(apiResponseModel);
-    final formattedDateTime =
-        DateFormatter().getFormattedDateTime(apiResponseModel.timezone);
+    final DateFormatter dateFormatter =
+        context.read<WeatherRepository>().dateFormatter;
+    dateFormatter.setFormattedDateTime = apiResponseModel.timezone;
+    context.read<WeatherRepository>().dateFormatter.setTimeZoneOffset =
+        apiResponseModel.timezone;
 
     return GestureDetector(
       onTap: () {
@@ -90,7 +95,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                             FittedBox(
                               fit: BoxFit.contain,
                               child: Text(
-                                formattedDateTime,
+                                dateFormatter.formattedDateTime,
                                 textScaler: const TextScaler.linear(1.8),
                               ),
                             ),

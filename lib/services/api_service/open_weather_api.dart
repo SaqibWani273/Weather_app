@@ -103,7 +103,8 @@ class OpenWeatherApi {
           //to get formatted hour like 12 AM, 5pm
           final String hour =
               DateFormatter().getFormattedHour(timeZone, item["dt"]);
-          hourlyForecastList.add(ForecastWeatherModel.fromMap(item, hour));
+          hourlyForecastList
+              .add(ForecastWeatherModel.fromMap(item, hour: hour));
         }
       } else {
         log("hourly response code = ${response.statusCode}");

@@ -1,11 +1,14 @@
 import 'dart:developer';
 
-import 'package:weathe_app/services/api_service/open_weather_api.dart';
-import 'package:weathe_app/services/firestore_service.dart';
-import 'package:weathe_app/services/api_service/geo_db_service.dart';
-import 'package:weathe_app/models/city_model.dart';
-import 'package:weathe_app/models/hourly_weather_model.dart';
-import 'package:weathe_app/models/weather_model1.dart';
+import 'package:weathe_app/utils/date_formatter.dart';
+import 'package:weathe_app/utils/get_daily_forecast.dart';
+
+import '/services/api_service/open_weather_api.dart';
+import '/services/firestore_service.dart';
+import '/services/api_service/geo_db_service.dart';
+import '/models/city_model.dart';
+import '/models/hourly_weather_model.dart';
+import '/models/weather_model1.dart';
 
 class WeatherRepository {
   //get everything about current location, i.e. weather, image, lottie file
@@ -13,7 +16,7 @@ class WeatherRepository {
   WeatherModel? currentWeatherModel;
   //by default it is hourlyforecast
   List<ForecastWeatherModel>? forecastWeatherModelList;
-
+  DateFormatter dateFormatter = DateFormatter();
   Future<WeatherModel> getWeatherData({
     double? lat,
     double? longt,
@@ -58,21 +61,19 @@ class WeatherRepository {
   Future<List<ForecastWeatherModel>> getForecastWeather(
       {required bool isHourly}) async {
     try {
-      //idea is that we should only fetch from api for two cases:
+      //idea is that we should only fetch from api in two cases:
       // 1. first time any of the two screens are triggered
       //2. user changes the location by searching for a new location
       if (forecastWeatherModelList != null &&
           previousWeatherModel == currentWeatherModel) {
         //=> this method was invoked before either by hourly screen or daily
         //& now the different screen is invoking it again
-        if (isHourly) {
-          return forecastWeatherModelList!;
-        } else {
-          return forecastWeatherModelList!;
+        if (!isHourly) {
           //we need to do furhter processing
+          return getDailyForecast(forecastWeatherModelList!, dateFormatter);
         }
+        return forecastWeatherModelList!;
       } else {
-        log("fetching forecast...");
         //=> forecastWeatherModelList is null
         //this is the first time the method is invoked
         forecastWeatherModelList = await OpenWeatherApi().getHourlyWeather(
@@ -81,12 +82,11 @@ class WeatherRepository {
         );
         //to avoid unnecessary api calls
         previousWeatherModel = currentWeatherModel;
-        if (isHourly) {
-          return forecastWeatherModelList!;
-        } else {
+        if (!isHourly) {
           //we need to do furhter processing
-          return forecastWeatherModelList!;
+          return getDailyForecast(forecastWeatherModelList!, dateFormatter);
         }
+        return forecastWeatherModelList!;
       }
     } catch (e) {
       log("error in repository =$e");

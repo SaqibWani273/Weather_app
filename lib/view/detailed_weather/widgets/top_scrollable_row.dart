@@ -7,12 +7,14 @@ class TopScrollableRow extends StatefulWidget {
   final double screenWidth;
   final List<ForecastWeatherModel> hourlyForecastList;
   final Function(int) onTap;
+  final bool isDaily;
   const TopScrollableRow({
     super.key,
     required this.currentIndex,
     required this.screenWidth,
     required this.hourlyForecastList,
     required this.onTap,
+    required this.isDaily,
   });
 
   @override
@@ -80,7 +82,8 @@ class _TopScrollableRowState extends State<TopScrollableRow> {
                 .map((MapEntry<int, ForecastWeatherModel> e) {
               return Expanded(
                 //to allocate space as per the length of the word
-                flex: e.value.hour.length,
+                flex:
+                    widget.isDaily ? e.value.day!.length : e.value.hour!.length,
                 child: GestureDetector(
                   onTap: () {
                     animateToOffset(index: e.key);
@@ -109,12 +112,16 @@ class _TopScrollableRowState extends State<TopScrollableRow> {
                     child: RichText(
                       text: TextSpan(children: [
                         TextSpan(
-                            text: "${e.value.hour.split(' ')[0]}:00\n",
+                            text: !widget.isDaily
+                                ? "${e.value.hour!.split(' ')[0]}:00\n"
+                                : "",
                             style: const TextStyle(
                               fontSize: 15,
                             )),
                         TextSpan(
-                            text: e.value.hour.split(' ')[1].toLowerCase(),
+                            text: !widget.isDaily
+                                ? e.value.hour!.split(' ')[1].toLowerCase()
+                                : "",
                             style: const TextStyle(fontSize: 15)),
                         if (e.key == widget.currentIndex)
                           const TextSpan(

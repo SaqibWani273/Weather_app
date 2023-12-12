@@ -5,14 +5,14 @@ class ForecastWeatherModel {
   final Main main;
   final List<Weather> weather;
   final Clouds clouds;
-  final int dt; //different for hourly and daily
+  final int dt;
   final Wind wind;
   final int visibility;
-  final String dt_txt; //different for hourly and daily
-  final String hour; //only for hourly
+  final String dt_txt;
+  final String? hour; //only for hourly
   final double probOfPercpipitation;
   final Sys sys;
-  //final String day; //only for daily
+  final String? day; //only for daily
   ForecastWeatherModel({
     required this.main,
     required this.weather,
@@ -21,13 +21,14 @@ class ForecastWeatherModel {
     required this.wind,
     required this.visibility,
     required this.dt_txt,
-    required this.hour,
+    this.hour,
     required this.probOfPercpipitation,
     required this.sys,
+    this.day,
   });
 
-  factory ForecastWeatherModel.fromMap(
-      Map<String, dynamic> map, final String hour) {
+  factory ForecastWeatherModel.fromMap(Map<String, dynamic> map,
+      {String? hour, String? day}) {
     return ForecastWeatherModel(
       main: Main.fromMap(map['main'] as Map<String, dynamic>),
       weather: List<Weather>.from(
@@ -45,6 +46,7 @@ class ForecastWeatherModel {
       ),
       sys: Sys.fromMap(map['sys'] as Map<String, dynamic>),
       hour: hour,
+      day: day,
     );
   }
 
