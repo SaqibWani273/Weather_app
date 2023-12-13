@@ -9,8 +9,9 @@ class WeatherDetailWidget extends StatelessWidget {
     super.key,
     required this.hourlyForecastList,
     required this.index,
+    this.isHourly = true,
   });
-
+  final bool isHourly;
   final int index;
   final List<ForecastWeatherModel> hourlyForecastList;
 
@@ -51,7 +52,7 @@ class WeatherDetailWidget extends StatelessWidget {
                               const SizedBox(
                                 height: 20,
                               ),
-                              Text("${currentHour.main.temp}°"),
+                              Text("${currentHour.main.temp.round()}°"),
                               Text(currentHour.weather[0].description),
                               const SizedBox(
                                 height: 10,
@@ -64,8 +65,9 @@ class WeatherDetailWidget extends StatelessWidget {
                   ),
                   Expanded(
                       flex: 8,
-                      child:
-                          WeatherDetailsGrid(getMainHourDetails(currentHour))),
+                      child: WeatherDetailsGrid(
+                        getMainHourDetails(currentHour, isHourly: isHourly),
+                      )),
                 ]),
           ),
           Positioned(

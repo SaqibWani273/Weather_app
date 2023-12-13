@@ -23,7 +23,7 @@ class _DailyWeatherScreenState extends State<DailyWeatherScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: const Color.fromARGB(255, 2, 51, 94),
         body: BlocBuilder<DailyWeatherBloc, DailyWeatherState>(
             builder: (context, state) {
           if (state is LoadedDailyWeatherState) {

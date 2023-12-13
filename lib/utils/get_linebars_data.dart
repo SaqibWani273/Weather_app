@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:weathe_app/models/hourly_weather_model.dart';
 
 List<LineChartBarData> getLineBarsData(
-    List<ForecastWeatherModel> hourlyForecastList, bool showClouds) {
+  List<ForecastWeatherModel> hourlyForecastList,
+  bool showClouds,
+) {
   return [
+    //main spots i.e. temp/avg temp
     LineChartBarData(
       barWidth: 5.0,
       spots: hourlyForecastList
@@ -21,20 +24,22 @@ List<LineChartBarData> getLineBarsData(
       //by default changes the color of both tooltip and the line
       color: Colors.white,
     ),
+    //real-feel spots for hourly chart
     if (showClouds != true)
       LineChartBarData(
-          dotData: const FlDotData(show: false),
-          barWidth: 2.0,
-          spots: hourlyForecastList
-              .asMap()
-              .entries
-              .map<FlSpot>((MapEntry<int, ForecastWeatherModel> entry) {
-            return FlSpot(entry.key.toDouble(), entry.value.main.feelsLike);
-          }).toList(),
-          isCurved: false,
+        dotData: FlDotData(show: false),
+        barWidth: 2.0,
+        spots: hourlyForecastList
+            .asMap()
+            .entries
+            .map<FlSpot>((MapEntry<int, ForecastWeatherModel> entry) {
+          return FlSpot(entry.key.toDouble(), entry.value.main.feelsLike);
+        }).toList(),
+        isCurved: false,
 
-          //by default changes the color of both tooltip and the line
-          color: Colors.deepPurple,
-          dashArray: [5, 5]),
+        //by default changes the color of both tooltip and the line
+        color: Colors.deepPurple,
+        dashArray: [5, 5],
+      ),
   ];
 }

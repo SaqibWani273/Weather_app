@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../constants/hourly_consts/line_chart_consts.dart';
+import '../../../utils/get_linebars_data.dart';
 import '../../../models/weather_model1.dart';
 import '../../../repositories/weather_repository.dart';
 import '../../../models/hourly_weather_model.dart';
@@ -14,10 +14,12 @@ import 'tile_data.dart';
 class WeatherChart extends StatelessWidget {
   final List<ForecastWeatherModel> hourlyForecastList;
   final bool showClouds;
+  final bool isDaily;
   const WeatherChart({
     super.key,
     required this.hourlyForecastList,
     this.showClouds = false,
+    this.isDaily = false,
   });
 
   @override
@@ -34,8 +36,10 @@ class WeatherChart extends StatelessWidget {
       sunsetDate: apiResponseModel.sys.sunset,
     );
     //main chart lines list (here only two lines)
-    final List<LineChartBarData> lineBarsData =
-        getLineBarsData(hourlyForecastList, showClouds);
+    final List<LineChartBarData> lineBarsData = getLineBarsData(
+      hourlyForecastList,
+      showClouds,
+    );
 
     return Container(
       padding: const EdgeInsets.only(top: 10, bottom: 5),
@@ -97,7 +101,7 @@ class WeatherChart extends StatelessWidget {
                         getTooltipItems: (List<LineBarSpot> lineBarSpots) {
                           return lineBarSpots.map((LineBarSpot lineBarSpot) {
                             return LineTooltipItem(
-                              "${lineBarSpot.y.round().toString()} ${showClouds ? "%" : "°"}",
+                              "${lineBarSpot.y.round().toString()} ${showClouds ? "%" : "°"}${lineBarSpots.indexOf(lineBarSpot) == 1 ? "" : ""} ",
                               const TextStyle(
                                 inherit: false,
                                 fontSize: 20,
@@ -108,6 +112,7 @@ class WeatherChart extends StatelessWidget {
                         tooltipBgColor: Colors.transparent,
                         tooltipRoundedRadius: 2,
                         tooltipPadding: const EdgeInsets.all(0),
+                        tooltipMargin: 10,
                       ),
                     ),
 

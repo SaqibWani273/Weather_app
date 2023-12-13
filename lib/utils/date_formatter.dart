@@ -41,6 +41,7 @@ class DateFormatter {
 
   String getFormattedDay(DateTime currentDate) {
     var day = "";
+    // currentDate.day.toString();
     switch (currentDate.weekday) {
       case 1:
         day += " Mon";

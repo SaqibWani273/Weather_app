@@ -26,28 +26,28 @@ class TileData {
     bool showClouds = false,
   }) {
     return AxisTitles(
-
-        //   axisNameSize: 30,
-        sideTitles: SideTitles(
-      reservedSize: 55,
-      showTitles: true,
-      getTitlesWidget: (double value, TitleMeta meta) {
-        return SideTitleWidget(
-          axisSide: isTopTiles ? AxisSide.top : AxisSide.bottom,
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Container(
-              alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width * 0.25,
-              height: 80,
-              child: isTopTiles
-                  ? _getHour(value, showClouds: showClouds)
-                  : _getHumidity(value),
+      //   axisNameSize: 30,
+      sideTitles: SideTitles(
+        reservedSize: 55,
+        showTitles: true,
+        getTitlesWidget: (double value, TitleMeta meta) {
+          return SideTitleWidget(
+            axisSide: isTopTiles ? AxisSide.top : AxisSide.bottom,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Container(
+                alignment: Alignment.center,
+                width: MediaQuery.of(context).size.width * 0.25,
+                height: 80,
+                child: isTopTiles
+                    ? _getHour(value, showClouds: showClouds)
+                    : _getHumidity(value),
+              ),
             ),
-          ),
-        );
-      },
-    ));
+          );
+        },
+      ),
+    );
   }
 
   Widget _getHour(double val, {bool showClouds = false}) {

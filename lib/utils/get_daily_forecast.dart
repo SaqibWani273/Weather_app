@@ -19,14 +19,14 @@ List<hwm.ForecastWeatherModel> getDailyForecast(
   //   Main main;
   double temperature = 0;
   double feelsLike = 0;
-  double tempMin = 0;
-  double tempMax = 0;
+  double tempMin = 100;
+  double tempMax = -100;
   int pressure = 0;
   int humidity = 0;
   //  List<Weather> weather;
   int id = 123;
   String main = "dummy main";
-  String description = "dummy description";
+
   String icon = "xyz";
   //  Clouds clouds;
   int all = 0;
@@ -53,7 +53,7 @@ List<hwm.ForecastWeatherModel> getDailyForecast(
     if (j % 8 == 0 && j != 0) {
 //=> 24 hrs completed, its 3-hourly forecast (3*8=24)
       temp = dateFormatter.getCurrentDateTimeofLocation(
-          dtInMillis: completeWeatherList[j - 1].dt);
+          dtInMillis: completeWeatherList[i - 1].dt);
       dailyForecast.add(
         hwm.ForecastWeatherModel(
           main: Main(
@@ -68,17 +68,19 @@ List<hwm.ForecastWeatherModel> getDailyForecast(
             Weather(
               id: id, //not needed
               main: main, //not needed
-              description: description, //not needed
+              description: completeWeatherList[i - 1]
+                  .weather[0]
+                  .description, //not needed
               icon: icon, //not needed
             )
           ],
           clouds: Clouds(all: (all / 8).round()),
-          dt: completeWeatherList[j - 1].dt,
+          dt: completeWeatherList[i - 1].dt,
           wind: Wind(speed: speed / 8, deg: (deg / 8).round(), gust: gust / 8),
           sys: hwm.Sys(partOfDay: "null"), //not needed//not needed
           visibility: (visibility / 8).round(),
           probOfPercpipitation: probOfPercpipitation / 8,
-          dt_txt: completeWeatherList[j - 1].dt_txt, //not needed
+          dt_txt: completeWeatherList[i - 1].dt_txt, //not needed
           day: dateFormatter.getFormattedDay(temp),
         ),
       );
@@ -99,22 +101,22 @@ List<hwm.ForecastWeatherModel> getDailyForecast(
       tempMin = 100;
     }
     //adding the values to get the avg
-    temperature += completeWeatherList[j].main.temp;
-    feelsLike += completeWeatherList[j].main.feelsLike;
-    tempMin = completeWeatherList[j].main.tempMin < tempMin
-        ? completeWeatherList[j].main.tempMin
+    temperature += completeWeatherList[i].main.temp;
+    feelsLike += completeWeatherList[i].main.feelsLike;
+    tempMin = completeWeatherList[i].main.tempMin < tempMin
+        ? completeWeatherList[i].main.tempMin
         : tempMin; //to get the min
-    tempMax = completeWeatherList[j].main.tempMax > tempMax
-        ? completeWeatherList[j].main.tempMax
+    tempMax = completeWeatherList[i].main.tempMax > tempMax
+        ? completeWeatherList[i].main.tempMax
         : tempMax; //to get the max
-    pressure += completeWeatherList[j].main.pressure;
-    humidity += completeWeatherList[j].main.humidity;
-    all += completeWeatherList[j].clouds.all;
-    speed += completeWeatherList[j].wind.speed;
-    deg += completeWeatherList[j].wind.deg;
-    gust += completeWeatherList[j].wind.gust ?? 0;
-    visibility += completeWeatherList[j].visibility;
-    probOfPercpipitation += completeWeatherList[j].probOfPercpipitation;
+    pressure += completeWeatherList[i].main.pressure;
+    humidity += completeWeatherList[i].main.humidity;
+    all += completeWeatherList[i].clouds.all;
+    speed += completeWeatherList[i].wind.speed;
+    deg += completeWeatherList[i].wind.deg;
+    gust += completeWeatherList[i].wind.gust ?? 0;
+    visibility += completeWeatherList[i].visibility;
+    probOfPercpipitation += completeWeatherList[i].probOfPercpipitation;
   }
   return dailyForecast;
 }

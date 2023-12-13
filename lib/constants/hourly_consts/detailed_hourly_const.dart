@@ -1,22 +1,27 @@
 import 'package:weathe_app/models/hourly_weather_model.dart';
 
-Map<String, dynamic> getMainHourDetails(ForecastWeatherModel hourlyWeather) {
+Map<String, dynamic> getMainHourDetails(ForecastWeatherModel hourlyWeather,
+    {isHourly = true}) {
   return {
-    "Real Feel": "${hourlyWeather.main.feelsLike}°c",
-    "Humidity": "${hourlyWeather.main.humidity}%",
-    "Percipitation": "${hourlyWeather.probOfPercpipitation.toInt()}%",
+    "Real Feel": "${hourlyWeather.main.feelsLike.round().round()}°c",
+    "Humidity": "${hourlyWeather.main.humidity.round()}%",
     //speed is in m/s for metric and miles/h for imperial
-    "Wind Speed": " ${hourlyWeather.wind.speed} m/s",
+    "Wind Speed": " ${hourlyWeather.wind.speed.round()} m/s",
 
-    "Winds From": getWindDirection(hourlyWeather.wind.deg),
+    "Winds From": getWindDirection(hourlyWeather.wind.deg.round()),
     "Visibility": "${hourlyWeather.visibility / 1000} km",
-    "Pressure ": "${hourlyWeather.main.pressure} hpa",
-    "Wind Gust": "${hourlyWeather.wind.gust} m/s",
-    "Part Of Day": getPartOfDay(hourlyWeather.sys.partOfDay),
-    "Cloud Cover": "${hourlyWeather.clouds.all}%",
-    "Min Temp": "${hourlyWeather.main.tempMin}°c",
-    "Max Temp": "${hourlyWeather.main.tempMax}°c",
-    "Hour": hourlyWeather.hour,
+    "Pressure ": "${hourlyWeather.main.pressure.round()} hpa",
+    "Wind Gust": "${hourlyWeather.wind.gust?.round()} m/s",
+
+    "Cloud Cover": "${hourlyWeather.clouds.all.round()}%",
+    "Min Temp": "${hourlyWeather.main.tempMin.round()}°c",
+    "Max Temp": "${hourlyWeather.main.tempMax.round()}°c",
+
+    if (isHourly) ...{
+      "Part Of Day": getPartOfDay(hourlyWeather.sys.partOfDay),
+      "Hour": hourlyWeather.hour,
+      "Percipitation": "${hourlyWeather.probOfPercpipitation.toInt()}%",
+    }
   };
 }
 

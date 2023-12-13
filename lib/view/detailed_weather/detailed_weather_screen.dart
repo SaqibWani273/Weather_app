@@ -104,7 +104,7 @@ class _DetailedWeatherState extends State<DetailedWeather> {
                 currentIndex: currentTopIndex,
                 screenWidth: widget.screenWidth,
                 hourlyForecastList: widget.hourlyForecastList,
-                isDaily: false,
+                isDaily: !widget.isHourly,
                 onTap: (index) {
                   animateToOffset(
                       offset: index.toDouble() * widget.screenWidth);
@@ -120,7 +120,8 @@ class _DetailedWeatherState extends State<DetailedWeather> {
                 itemBuilder: (context, index) {
                   return WeatherDetailWidget(
                       hourlyForecastList: widget.hourlyForecastList,
-                      index: index);
+                      index: index,
+                      isHourly: widget.isHourly);
                 },
               )),
         ]),
