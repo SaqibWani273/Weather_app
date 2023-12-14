@@ -60,7 +60,4 @@ List<Widget> screens = [
   const TodayScreen(),
   const HourlyScreen(),
   const DailyWeatherScreen(),
-  Container(
-    child: const Text("Map"),
-  ),
 ];

@@ -16,6 +16,10 @@ class LoadedDailyWeather extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final apiResponseModel =
+        context.read<WeatherRepository>().currentWeatherModel!.apiResponseModel;
+    final formattedDateTime =
+        context.read<WeatherRepository>().dateFormatter.formattedDateTime;
     double lowestTemp = 100;
     double highestTemp = -100;
     for (var element in dailyWeatherList) {
@@ -33,7 +37,7 @@ class LoadedDailyWeather extends StatelessWidget {
     return Container(
         alignment: Alignment.center,
         child: SizedBox(
-            height: MediaQuery.of(context).size.height * 0.7,
+            height: MediaQuery.of(context).size.height * 0.9,
             child: Padding(
               padding: const EdgeInsets.all(18.0),
               child: BarChart(BarChartData(
@@ -68,35 +72,64 @@ class LoadedDailyWeather extends StatelessWidget {
                                 )
                               ],
                             );
-                          })),
+                          }),
+                      axisNameWidget: Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: Text("Daily Forecast   "),
+                      ),
+                      axisNameSize: 50),
                   topTitles: AxisTitles(
-                      sideTitles: SideTitles(
-                          showTitles: true,
-                          reservedSize: 100,
-                          getTitlesWidget: (double value, TitleMeta meta) {
-                            final dateFormatter =
-                                context.read<WeatherRepository>().dateFormatter;
-                            final dailyWeather =
-                                dailyWeatherList[value.toInt()];
-                            final currentDate =
-                                dateFormatter.getCurrentDateTimeofLocation(
-                                    dtInMillis: dailyWeather.dt);
-                            return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                      flex: 2,
-                                      child: Text(
-                                        "${dateFormatter.getFormattedDay(currentDate)}\n${currentDate.day}",
-                                        style: TextStyle(fontSize: 15),
-                                      )),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Icon(Icons.cloud),
-                                  ),
-                                ]);
-                          })),
+                    sideTitles: SideTitles(
+                        showTitles: true,
+                        reservedSize: 100,
+                        getTitlesWidget: (double value, TitleMeta meta) {
+                          final dateFormatter =
+                              context.read<WeatherRepository>().dateFormatter;
+                          final dailyWeather = dailyWeatherList[value.toInt()];
+                          final currentDate =
+                              dateFormatter.getCurrentDateTimeofLocation(
+                                  dtInMillis: dailyWeather.dt);
+                          return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      "${dateFormatter.getFormattedDay(currentDate)}\n${currentDate.day}",
+                                      style: TextStyle(fontSize: 15),
+                                    )),
+                                Expanded(
+                                  flex: 1,
+                                  child: Icon(Icons.cloud),
+                                ),
+                              ]);
+                        }),
+                    axisNameSize: 100,
+                    axisNameWidget: //location and date
+                        FittedBox(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            apiResponseModel.name,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          FittedBox(
+                            fit: BoxFit.contain,
+                            child: Text(
+                              " (${formattedDateTime.split("-")[1]})",
+                              // textScaler: const TextScaler.linear(1.8),
+                            ),
+                          ),
+                          //  const Spacer(),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
 
                 //to show tooltip
@@ -136,7 +169,12 @@ class LoadedDailyWeather extends StatelessWidget {
                             int2 == 0
                                 ? "${barChartRodData.toY.round()}°c"
                                 : "${barChartRodData.fromY.round()}°c",
-                            TextStyle(fontSize: 15, inherit: false));
+                            TextStyle(
+                                fontSize: 15,
+                                inherit: false,
+                                color: int2 == 1
+                                    ? Colors.lightBlue
+                                    : Colors.white));
                       }),
                 ),
               )),

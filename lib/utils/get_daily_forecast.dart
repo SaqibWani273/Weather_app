@@ -27,7 +27,7 @@ List<hwm.ForecastWeatherModel> getDailyForecast(
   int id = 123;
   String main = "dummy main";
 
-  String icon = "xyz";
+  String icon = "";
   //  Clouds clouds;
   int all = 0;
   //  Wind wind;
@@ -68,10 +68,10 @@ List<hwm.ForecastWeatherModel> getDailyForecast(
             Weather(
               id: id, //not needed
               main: main, //not needed
-              description: completeWeatherList[i - 1]
+              description: completeWeatherList[i - 3]
                   .weather[0]
-                  .description, //not needed
-              icon: icon, //not needed
+                  .description, //not accurate
+              icon: completeWeatherList[i - 3].weather[0].icon, //not accurate
             )
           ],
           clouds: Clouds(all: (all / 8).round()),

@@ -76,18 +76,18 @@ class TileData {
               ),
             ),
             Expanded(
-                flex: 1,
-                child: currentDate.hour < sunrise.hour ||
-                        currentDate.hour > sunset.hour
-                    ? const Icon(
-                        Icons.nights_stay,
-                        color: Colors.blue,
-                      )
-                    : Icon(
-                        showClouds ? Icons.cloud : Icons.sunny,
-                        color:
-                            showClouds ? Colors.white : Colors.amber.shade600,
-                      )),
+              flex: 1,
+              child: currentDate.hour < sunrise.hour ||
+                      currentDate.hour > sunset.hour
+                  ? const Icon(
+                      Icons.nights_stay,
+                      color: Colors.blue,
+                    )
+                  : Icon(
+                      showClouds ? Icons.cloud : Icons.sunny,
+                      color: showClouds ? Colors.white : Colors.amber.shade600,
+                    ),
+            ),
           ]);
       // return hourlyForecastList[val.toInt()].main.temp.toString();
     } else {

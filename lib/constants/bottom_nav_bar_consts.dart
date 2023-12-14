@@ -25,6 +25,6 @@ const List<MyBottomNavigationBarItem> bottomNavigationBarItems = [
       label: "Daily",
       activeIcon: Icons.person,
       inactiveIcon: Icons.person_outline),
-  MyBottomNavigationBarItem(
-      label: "Map", activeIcon: Icons.map, inactiveIcon: Icons.map_outlined),
+  // MyBottomNavigationBarItem(
+  //     label: "Map", activeIcon: Icons.map, inactiveIcon: Icons.map_outlined),
 ];
