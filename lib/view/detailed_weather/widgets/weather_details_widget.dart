@@ -85,19 +85,20 @@ class WeatherDetailWidget extends StatelessWidget {
 
 class WeatherDetailsGrid extends StatelessWidget {
   final Map<String, dynamic> weatherDetails;
+  final double? height;
 
-  const WeatherDetailsGrid(this.weatherDetails, {super.key});
+  const WeatherDetailsGrid(this.weatherDetails, {this.height, super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 200,
+      height: height ?? 200,
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
           crossAxisSpacing: 8.0,
           mainAxisSpacing: 8.0,
-          childAspectRatio: 2.0,
+          childAspectRatio: 1.7,
         ),
         //  physics: const NeverScrollableScrollPhysics(),
         itemCount: weatherDetails.length,

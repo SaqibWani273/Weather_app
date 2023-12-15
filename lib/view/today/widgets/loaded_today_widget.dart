@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:weathe_app/constants/more_details_const.dart';
 import 'package:weathe_app/repositories/weather_repository.dart';
+import 'package:weathe_app/view/detailed_weather/detailed_weather_screen.dart';
 import '../../../constants/today_screen_consts.dart';
 import '../../../utils/date_formatter.dart';
-import '../screens/search_weather.dart';
+import '../../detailed_weather/widgets/weather_details_widget.dart';
+import '../search_weather.dart';
 
 import '../../../view_model/weather_bloc/weather_bloc.dart';
-import 'transition_image_widget.dart';
+import 'more_weather_info.dart';
+import '../../common_widgets/transition_image_widget.dart';
 
 class LoadedTodayWidget extends StatefulWidget {
   const LoadedTodayWidget({
@@ -87,7 +91,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              apiResponseModel.name,
+                              "${apiResponseModel.name}, ${apiResponseModel.sys.country}",
                             ),
                             const SizedBox(
                               height: 10,
@@ -254,18 +258,61 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                         //   color: Colors.grey.withOpacity(0.7),
                         // ),
                       ),
-                      ListTile(
-                        //  tileColor: Colors.white,
-                        tileColor: Colors.blueGrey,
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SearchWeather(),
-                              ));
-                        },
-                        title: const Text("Search Weather"),
-                        trailing: const Icon(Icons.search),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white60,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: ListTile(
+                          //  tileColor: Colors.white,
+                          //  tileColor: Colors.blueGrey,
+                          onTap: () {
+                            setState(() {
+                              showDrawer = false;
+                            });
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SearchWeather(),
+                                ));
+                          },
+                          title: const Text("Search Weather"),
+                          trailing: const Icon(Icons.search),
+                        ),
+                      ),
+                      const Divider(
+                        color: Colors.white,
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white60,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: ListTile(
+                          //  tileColor: Colors.blueGrey,
+                          onTap: () {
+                            setState(() {
+                              showDrawer = false;
+                            });
+                            final weatherDetails = getMoreDetails(
+                                apiResponseModel,
+                                dateFormatter: context
+                                    .read<WeatherRepository>()
+                                    .dateFormatter);
+
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MoreWeatherInfo(
+                                      weatherDetails: weatherDetails),
+                                ));
+                          },
+                          title: const Text("More Weather Info"),
+                          trailing: const Icon(Icons.nightlight_outlined),
+                        ),
                       )
                     ]),
                   ),

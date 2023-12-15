@@ -6,7 +6,7 @@ import '../../../view/hourly/widgets/weather_chart.dart';
 
 import '../../../models/hourly_weather_model.dart';
 import '../../../utils/date_formatter.dart';
-import '../../today/widgets/transition_image_widget.dart';
+import '../../common_widgets/transition_image_widget.dart';
 
 class LoadedHourlyWeather extends StatefulWidget {
   final List<ForecastWeatherModel> hourlyForecastList;
@@ -66,7 +66,7 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                apiResponseModel.name,
+                                "${apiResponseModel.name}, ${apiResponseModel.sys.country}",
                               ),
                               const SizedBox(
                                 height: 10,

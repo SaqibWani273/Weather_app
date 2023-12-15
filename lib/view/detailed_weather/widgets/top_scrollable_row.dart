@@ -30,14 +30,11 @@ class _TopScrollableRowState extends State<TopScrollableRow> {
   void initState() {
     super.initState();
 
-    // width = screen width * 0.12 i.e. 12% of screen width
     currentIndex = widget.currentIndex;
 
     _scrollController = ScrollController();
     currentIndex = widget.currentIndex;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      // _scrollController.animateTo(offset,
-      //     duration: const Duration(seconds: 1), curve: Curves.easeOut);
       animateToOffset(index: currentIndex);
       isInitial = false;
     });
@@ -45,7 +42,7 @@ class _TopScrollableRowState extends State<TopScrollableRow> {
 
   void animateToOffset({required int index}) {
     _scrollController.animateTo(
-      index * widget.screenWidth * 0.12,
+      index * widget.screenWidth * 0.15,
       duration: const Duration(seconds: 1),
       curve: Curves.easeOut,
     );

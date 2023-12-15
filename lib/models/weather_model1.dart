@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:country_picker/country_picker.dart';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class WeatherModel {
   final ApiResponseModel apiResponseModel;
@@ -113,7 +115,7 @@ class Sys {
     return Sys(
       // // type: map['type'],
       id: map['id'],
-      country: map['country'],
+      country: Country.tryParse(map['country'])!.name,
       sunrise: map['sunrise'],
       sunset: map['sunset'],
     );

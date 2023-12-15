@@ -22,7 +22,7 @@ List<BarChartGroupData>? getBarGroupsData(
                 fromY: e.value.main.tempMin.toInt().toDouble(),
                 toY: e.value.main.tempMin.toInt().toDouble(),
                 width: 15.0,
-                color: Colors.white,
+                color: Colors.transparent,
               ),
             ],
             showingTooltipIndicators: [0, 1],

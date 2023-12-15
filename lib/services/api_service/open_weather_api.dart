@@ -60,7 +60,7 @@ class OpenWeatherApi {
       //internet connection source
 
       final response = await http.get(Uri.parse(url));
-
+      log("response =${response.statusCode}");
       if (response.statusCode == 200) {
         log("response body = ${response.body}");
 
@@ -80,7 +80,7 @@ class OpenWeatherApi {
       throw unknownException;
     } catch (e) {
       log("error occurred in getWeather: ${e}");
-      throw unknownException;
+      throw internetException;
     }
 
     return apiResponseModel;
@@ -92,6 +92,7 @@ class OpenWeatherApi {
     final url =
         "https://api.openweathermap.org/data/2.5/forecast?lat=$lat&lon=$longt&appid=$apiKey1&units=metric";
     final response = await http.get(Uri.parse(url));
+
     try {
       if (response.statusCode == 200) {
         final decodeResponse = jsonDecode(response.body);

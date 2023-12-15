@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../view_model/Daily_weather_bloc/daily_weather_bloc.dart';
-import '../../common_widgets/error_screen.dart';
-import '../../common_widgets/loading_weather.dart';
-import '../widgets/loaded_daily_weather.dart';
+import '../../view_model/Daily_weather_bloc/daily_weather_bloc.dart';
+import '../common_widgets/error_screen.dart';
+import '../common_widgets/loading_weather.dart';
+import 'widgets/loaded_daily_weather.dart';
 
 class DailyWeatherScreen extends StatefulWidget {
   const DailyWeatherScreen({super.key});

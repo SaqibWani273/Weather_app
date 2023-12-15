@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weathe_app/repositories/weather_repository.dart';
 import 'package:weathe_app/view_model/weather_bloc/weather_bloc.dart';
 
 class SearchWeather extends StatelessWidget {
@@ -9,7 +8,8 @@ class SearchWeather extends StatelessWidget {
   final List<String> suggestions = [];
   @override
   Widget build(BuildContext context) {
-    log("search weather build called");
+    showSnackbar(context);
+
     return Scaffold(
       backgroundColor: Colors.blue.shade400,
       body: Container(
@@ -23,22 +23,20 @@ class SearchWeather extends StatelessWidget {
             margin: EdgeInsets.symmetric(horizontal: 10),
             child: TextField(
               onChanged: (value) {
-                // context.read<CitiesBloc>().add(GetCitiesEvent(query: value));
                 context
                     .read<WeatherBloc>()
                     .add(FetchSuggestedLocations(query: value));
               },
               decoration: InputDecoration(
-                hintText: 'search',
+                hintText: 'enter city name here',
                 prefixIcon: const Icon(Icons.search),
-                suffixIcon: const Icon(Icons.sort_rounded),
                 filled: true,
                 fillColor: Colors.grey.withOpacity(0.9),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                     borderSide: BorderSide.none),
               ),
-              style: const TextStyle(height: 0.5),
+              style: const TextStyle(height: 0.9),
             ),
           ),
           SizedBox(
@@ -107,7 +105,22 @@ class SearchWeather extends StatelessWidget {
 
                     return Container(
                       child: Center(
-                          child: Text("Suggested cities will appear here")),
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Text(
+                          //     "Discover real-time weather, current date, and time for any location worldwide.",
+                          //     style:
+                          //         TextStyle(color: Colors.black, fontSize: 20)),
+                          // Spacer(),
+                          Image.asset(
+                              "assets/images/search_weather_waiting.jpg"),
+                          Text(
+                            "Suggested cities will appear here",
+                            style: TextStyle(color: Colors.black, fontSize: 20),
+                          ),
+                        ],
+                      )),
                     );
                   },
                 )),
@@ -115,5 +128,24 @@ class SearchWeather extends StatelessWidget {
         ]),
       ),
     );
+  }
+}
+
+void showSnackbar(BuildContext context) {
+  bool showedSnack = context.read<WeatherRepository>().showedSnackBar;
+  if (!showedSnack) {
+    Future.delayed(Duration(seconds: 1), () {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            "Discover real-time weather, current date and time for any location worldwide.",
+            style: TextStyle(fontSize: 15),
+          ),
+          showCloseIcon: true,
+        ),
+      );
+    });
+
+    context.read<WeatherRepository>().showedSnackBar = true;
   }
 }

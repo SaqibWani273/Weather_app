@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weathe_app/repositories/weather_repository.dart';
@@ -30,7 +32,9 @@ class LoadedDailyWeather extends StatelessWidget {
         highestTemp = element.main.tempMax;
       }
     }
-    // lowestTemp = dailyWeatherList.map((e) => e.main.tempMin).toList();
+    log("highest temp = $highestTemp");
+    log("lowest temp = $lowestTemp");
+
     const noTitles = AxisTitles(
       sideTitles: SideTitles(showTitles: false),
     );

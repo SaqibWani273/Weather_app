@@ -2,32 +2,29 @@ import 'package:lottie/lottie.dart';
 import 'package:weathe_app/constants/custom_exception.dart';
 
 LottieBuilder getLottieImage(CustomException customException) {
+  late String asset;
   switch (customException.errorType) {
     case ErrorType.locationpermissionDenied:
-      return Lottie.asset(
-        'assets/lottie/no_location.json',
-      );
+      asset = 'assets/lottie/no_location.json';
+      break;
     case ErrorType.locationServicesDisabled:
-      return Lottie.asset(
-        'assets/lottie/no_location.json',
-      );
+      asset = 'assets/lottie/no_location.json';
+      break;
     case ErrorType.locationPermissionDeniedPermanently:
-      return Lottie.asset(
-        'assets/lottie/no_location.json',
-      );
+      asset = 'assets/lottie/no_location.json';
+      break;
     case ErrorType.internetConnection:
-      return Lottie.asset(
-        'assets/lottie/network_error.json',
-      );
+      asset = 'assets/lottie/network_error.json';
+      break;
     case ErrorType.unknown:
-      return Lottie.asset(
-        //to do: change lottie file later
-        'assets/lottie/unknown.json',
-      );
+      asset =
+          //to do: change lottie file later
+          'assets/lottie/unknown.json';
+      break;
     default:
-      return Lottie.asset(
-        //to do: change lottie file later
-        'assets/lottie/unknown.json',
-      );
+      asset =
+          //to do: change lottie file later
+          'assets/lottie/unknown.json';
   }
+  return Lottie.asset(asset, reverse: true);
 }

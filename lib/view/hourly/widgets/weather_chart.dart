@@ -40,6 +40,16 @@ class WeatherChart extends StatelessWidget {
       hourlyForecastList,
       showClouds,
     );
+    double lowestTemp = 100;
+    double highestTemp = -100;
+    for (var element in hourlyForecastList) {
+      if (element.main.tempMin < lowestTemp) {
+        lowestTemp = element.main.tempMin;
+      }
+      if (element.main.tempMax > highestTemp) {
+        highestTemp = element.main.tempMax;
+      }
+    }
 
     return Container(
       padding: const EdgeInsets.only(top: 10, bottom: 5),
@@ -134,8 +144,9 @@ class WeatherChart extends StatelessWidget {
                     }).toList(),
 
                     minX: 0,
-                    minY: 0,
-                    maxY: showClouds ? 150 : 45,
+                    minY: lowestTemp - 3,
+                    maxY: showClouds ? 150 : highestTemp + 10,
+                    // maxX: hourlyForecastList.length - 1,
 
                     //to hide/show the grid
                     gridData: const FlGridData(

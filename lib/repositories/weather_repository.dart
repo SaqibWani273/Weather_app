@@ -11,6 +11,14 @@ import '/models/hourly_weather_model.dart';
 import '/models/weather_model1.dart';
 
 class WeatherRepository {
+  var _showedSnackBar = false;
+
+//getter and setter for showedsnackbar
+  bool get showedSnackBar => _showedSnackBar;
+  set showedSnackBar(bool value) {
+    _showedSnackBar = value;
+  }
+
   //get everything about current location, i.e. weather, image, lottie file
   WeatherModel? previousWeatherModel;
   WeatherModel? currentWeatherModel;
