@@ -5,10 +5,12 @@ class CustomTheme {
   // final textTheme = Theme.of(context).textTheme;
   ThemeData getTheme() {
     return ThemeData(
-        textTheme: GoogleFonts.robotoTextTheme(ThemeData.light()
+        appBarTheme:
+            const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
+        textTheme: GoogleFonts.aBeeZeeTextTheme(ThemeData.light()
             .textTheme
             .copyWith(
-                bodyMedium: GoogleFonts.roboto(
+                bodyMedium: GoogleFonts.aBeeZee(
                     fontSize: 25,
                     color: Colors.white,
                     fontWeight: FontWeight.w800))));

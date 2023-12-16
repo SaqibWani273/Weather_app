@@ -5,6 +5,7 @@ import 'package:weathe_app/constants/more_details_const.dart';
 import 'package:weathe_app/repositories/weather_repository.dart';
 import 'package:weathe_app/view/detailed_weather/detailed_weather_screen.dart';
 import '../../../constants/today_screen_consts.dart';
+import '../../../constants/weather_icons.dart';
 import '../../../utils/date_formatter.dart';
 import '../../detailed_weather/widgets/weather_details_widget.dart';
 import '../search_weather.dart';
@@ -38,6 +39,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
     dateFormatter.setFormattedDateTime = apiResponseModel.timezone;
     context.read<WeatherRepository>().dateFormatter.setTimeZoneOffset =
         apiResponseModel.timezone;
+    final image = getWeatherIcon(apiResponseModel.weather[0].icon);
 
     return GestureDetector(
       onTap: () {
@@ -128,25 +130,29 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                       children: [
                         Expanded(
                           flex: 3,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                temp,
-                                style: const TextStyle(
-                                  fontSize: 70,
+                          child: FittedBox(
+                            fit: BoxFit.none,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  temp,
+                                  style: const TextStyle(
+                                    fontSize: 70,
+                                  ),
                                 ),
-                              ),
-                              const Text(
-                                "O",
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              const Text(
-                                "C",
-                                style: TextStyle(
-                                    fontSize: 70, fontWeight: FontWeight.w500),
-                              )
-                            ],
+                                const Text(
+                                  "O",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                const Text(
+                                  "C",
+                                  style: TextStyle(
+                                      fontSize: 70,
+                                      fontWeight: FontWeight.w500),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         const SizedBox(
@@ -159,7 +165,8 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Image.asset(
-                                "assets/images/cloud.png",
+                                "assets/images/weather_icons/$image",
+                                fit: BoxFit.contain,
                               ),
                               const SizedBox(
                                 width: 10,
@@ -227,9 +234,9 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
             ),
           ),
 //to show some animation for rain or snow
-          if (widget.state.currentWeatherModel.lottieUrl != null)
-            Lottie.network(widget.state.currentWeatherModel.lottieUrl!,
-                height: 500),
+          // if (widget.state.currentWeatherModel.lottieUrl != null)
+          //   Lottie.network(widget.state.currentWeatherModel.lottieUrl!,
+          //       height: 500),
 
 //custom drawer
           if (showDrawer)
@@ -244,7 +251,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                     Matrix4.translationValues(showDrawer ? 0 : -250, 0, 0),
                 //   color: Colors.transparent,
                 color: const Color.fromRGBO(10, 47, 91, 255),
-                width: MediaQuery.of(context).size.width * 0.5,
+                width: MediaQuery.of(context).size.width * 0.56,
                 height: MediaQuery.of(context).size.height,
                 child: Drawer(
                   backgroundColor: const Color.fromARGB(255, 2, 51, 94),
@@ -278,7 +285,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                                   builder: (context) => SearchWeather(),
                                 ));
                           },
-                          title: const Text("Search Weather"),
+                          title: FittedBox(child: const Text("Search Weather")),
                           trailing: const Icon(Icons.search),
                         ),
                       ),
@@ -310,7 +317,11 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                                       weatherDetails: weatherDetails),
                                 ));
                           },
-                          title: const Text("More Weather Info"),
+                          title: FittedBox(
+                            fit: BoxFit.cover,
+                            child: const Text("More Weather Info",
+                                style: TextStyle(fontSize: 25)),
+                          ),
                           trailing: const Icon(Icons.nightlight_outlined),
                         ),
                       )

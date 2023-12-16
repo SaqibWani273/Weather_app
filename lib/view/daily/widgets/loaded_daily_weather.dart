@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weathe_app/constants/weather_icons.dart';
 import 'package:weathe_app/repositories/weather_repository.dart';
 import '../../../utils/date_formatter.dart';
 import '../../../utils/get_bargroups_data.dart';
@@ -105,7 +106,9 @@ class LoadedDailyWeather extends StatelessWidget {
                                     )),
                                 Expanded(
                                   flex: 1,
-                                  child: Icon(Icons.cloud),
+                                  child: Image.asset(
+                                    "assets/images/weather_icons/${getWeatherIcon(dailyWeather.weather[0].icon)}",
+                                  ),
                                 ),
                               ]);
                         }),

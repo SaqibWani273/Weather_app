@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weathe_app/constants/weather_icons.dart';
 import '../../../constants/other_const.dart';
 import '../../../repositories/weather_repository.dart';
 import '../../../view/hourly/widgets/weather_chart.dart';
@@ -28,9 +29,9 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
 
   @override
   Widget build(BuildContext context) {
-    final img = currentIndex == 0
-        ? "hourly_screen_pic.png"
-        : "hourly_screen_cloud1.png";
+    final imgIcon =
+        getWeatherIcon(widget.hourlyForecastList[currentIndex].weather[0].icon);
+    final img = currentIndex == 0 ? imgIcon : "scattered_clouds.png";
     final deviceHeight = MediaQuery.of(context).size.height;
     final apiResponseModel =
         context.read<WeatherRepository>().currentWeatherModel!.apiResponseModel;
@@ -65,8 +66,10 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "${apiResponseModel.name}, ${apiResponseModel.sys.country}",
+                              FittedBox(
+                                child: Text(
+                                  "${apiResponseModel.name}, ${apiResponseModel.sys.country}",
+                                ),
                               ),
                               const SizedBox(
                                 height: 10,
@@ -88,7 +91,7 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
                 Expanded(
                     flex: 2,
                     child: TransitionImageWidget(
-                      "assets/images/$img",
+                      "assets/images/weather_icons/$img",
                       isAssetFile: true,
                     )
                     //  Image.asset(
