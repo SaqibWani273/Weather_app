@@ -8,7 +8,7 @@ import '/services/firestore_service.dart';
 import '/services/api_service/geo_db_service.dart';
 import '/models/city_model.dart';
 import '/models/hourly_weather_model.dart';
-import '/models/weather_model1.dart';
+import '../models/weather_model.dart';
 
 class WeatherRepository {
   var _showedSnackBar = false;

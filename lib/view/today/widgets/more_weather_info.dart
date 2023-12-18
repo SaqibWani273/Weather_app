@@ -18,7 +18,7 @@ class MoreWeatherInfo extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             "$name, ${weatherDetails['Country']}",
-            style: TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white),
           ),
           centerTitle: true,
           elevation: 0,
@@ -33,7 +33,8 @@ class MoreWeatherInfo extends StatelessWidget {
               flex: 5,
               child: Container(
                 alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 05),
+                margin:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 05),
                 //  color: Colors.black,
                 child: WeatherDetailsGrid(
                   weatherDetails,

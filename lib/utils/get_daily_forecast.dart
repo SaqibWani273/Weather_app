@@ -8,7 +8,7 @@ taking the average of the hourly forecast data for the day(i.e. 24 hrs)
 import 'package:weathe_app/utils/date_formatter.dart';
 
 import '../models/hourly_weather_model.dart' as hwm;
-import '../models/weather_model1.dart';
+import '../models/weather_model.dart';
 
 List<hwm.ForecastWeatherModel> getDailyForecast(
     List<hwm.ForecastWeatherModel> completeWeatherList,
@@ -27,7 +27,6 @@ List<hwm.ForecastWeatherModel> getDailyForecast(
   int id = 123;
   String main = "dummy main";
 
-  String icon = "";
   //  Clouds clouds;
   int all = 0;
   //  Wind wind;

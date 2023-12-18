@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
-import 'package:weathe_app/constants/more_details_const.dart';
-import 'package:weathe_app/repositories/weather_repository.dart';
-import 'package:weathe_app/view/detailed_weather/detailed_weather_screen.dart';
+
+import '../../common_widgets/location_name_date.dart';
+import '/constants/device_const.dart';
+import '/constants/more_details_const.dart';
+import '/repositories/weather_repository.dart';
 import '../../../constants/today_screen_consts.dart';
 import '../../../constants/weather_icons.dart';
 import '../../../utils/date_formatter.dart';
-import '../../detailed_weather/widgets/weather_details_widget.dart';
 import '../search_weather.dart';
 
 import '../../../view_model/weather_bloc/weather_bloc.dart';
+import 'drawer_item_widget.dart';
 import 'more_weather_info.dart';
 import '../../common_widgets/transition_image_widget.dart';
+import 'temperature_row.dart';
 
 class LoadedTodayWidget extends StatefulWidget {
   const LoadedTodayWidget({
@@ -40,6 +42,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
     context.read<WeatherRepository>().dateFormatter.setTimeZoneOffset =
         apiResponseModel.timezone;
     final image = getWeatherIcon(apiResponseModel.weather[0].icon);
+    final deviceHeight = MediaQuery.of(context).size.height;
 
     return GestureDetector(
       onTap: () {
@@ -50,7 +53,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
         });
       },
       child: SizedBox(
-        height: MediaQuery.of(context).size.height,
+        height: deviceHeight,
         width: double.infinity,
         child: Stack(children: [
           //bg image
@@ -65,52 +68,31 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
           ),
           //menu icon
           Positioned(
-              top: 30,
-              left: 20,
-              child: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      showDrawer = true;
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.menu,
-                    color: Colors.white,
-                  ))),
+            top: 30,
+            left: 20,
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  showDrawer = true;
+                });
+              },
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.white,
+              ),
+            ),
+          ),
 //location name and date
           Positioned(
-              top: 100,
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "${apiResponseModel.name}, ${apiResponseModel.sys.country}",
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            FittedBox(
-                              fit: BoxFit.contain,
-                              child: Text(
-                                dateFormatter.formattedDateTime,
-                                textScaler: const TextScaler.linear(1.8),
-                              ),
-                            ),
-                          ]),
-                    ),
-                    const Spacer(),
-                  ],
-                ),
-              )),
+            top: 100,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              width: MediaQuery.of(context).size.width,
+              child: LocationNameDate(
+                apiResponseModel: apiResponseModel,
+              ),
+            ),
+          ),
 
           //main weather info
           Align(
@@ -130,30 +112,11 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                       children: [
                         Expanded(
                           flex: 3,
-                          child: FittedBox(
-                            fit: BoxFit.none,
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  temp,
-                                  style: const TextStyle(
-                                    fontSize: 70,
-                                  ),
-                                ),
-                                const Text(
-                                  "O",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                const Text(
-                                  "C",
-                                  style: TextStyle(
-                                      fontSize: 70,
-                                      fontWeight: FontWeight.w500),
+                          child: deviceHeight <= Devices.smallMaxHeight
+                              ? FittedBox(
+                                  child: TemperatureRow(temp: temp),
                                 )
-                              ],
-                            ),
-                          ),
+                              : TemperatureRow(temp: temp),
                         ),
                         const SizedBox(
                           height: 5,
@@ -244,13 +207,7 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
               top: 0,
               left: 0,
               bottom: 0,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInOut,
-                transform:
-                    Matrix4.translationValues(showDrawer ? 0 : -250, 0, 0),
-                //   color: Colors.transparent,
-                color: const Color.fromRGBO(10, 47, 91, 255),
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.56,
                 height: MediaQuery.of(context).size.height,
                 child: Drawer(
@@ -261,70 +218,42 @@ class _LoadedTodayWidgetState extends State<LoadedTodayWidget> {
                     child: Column(children: [
                       DrawerHeader(
                         child: Image.asset("assets/images/cloud.png"),
-                        // decoration: BoxDecoration(
-                        //   color: Colors.grey.withOpacity(0.7),
-                        // ),
                       ),
-                      Container(
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white60,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: ListTile(
-                          //  tileColor: Colors.white,
-                          //  tileColor: Colors.blueGrey,
-                          onTap: () {
-                            setState(() {
-                              showDrawer = false;
-                            });
+                      ...drawerItems.entries
+                          .map((e) => DrawerItemWidget(
+                                icon: e.value,
+                                title: e.key,
+                                onTap: () {
+                                  final weatherDetails = getMoreDetails(
+                                      apiResponseModel,
+                                      dateFormatter: context
+                                          .read<WeatherRepository>()
+                                          .dateFormatter);
+                                  //either navigate to search page
+                                  drawerItems.keys.toList().indexOf(e.key) == 0
+                                      ? Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SearchWeather(),
+                                          ))
+                                      :
 
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SearchWeather(),
-                                ));
-                          },
-                          title: FittedBox(child: const Text("Search Weather")),
-                          trailing: const Icon(Icons.search),
-                        ),
-                      ),
-                      const Divider(
-                        color: Colors.white,
-                      ),
-                      Container(
-                        margin: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white60,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: ListTile(
-                          //  tileColor: Colors.blueGrey,
-                          onTap: () {
-                            setState(() {
-                              showDrawer = false;
-                            });
-                            final weatherDetails = getMoreDetails(
-                                apiResponseModel,
-                                dateFormatter: context
-                                    .read<WeatherRepository>()
-                                    .dateFormatter);
-
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MoreWeatherInfo(
-                                      weatherDetails: weatherDetails),
-                                ));
-                          },
-                          title: FittedBox(
-                            fit: BoxFit.cover,
-                            child: const Text("More Weather Info",
-                                style: TextStyle(fontSize: 25)),
-                          ),
-                          trailing: const Icon(Icons.nightlight_outlined),
-                        ),
-                      )
+                                      //or detail page
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                MoreWeatherInfo(
+                                                    weatherDetails:
+                                                        weatherDetails),
+                                          ));
+                                  setState(() {
+                                    showDrawer = false;
+                                  });
+                                },
+                              ))
+                          .toList(),
                     ]),
                   ),
                 ),

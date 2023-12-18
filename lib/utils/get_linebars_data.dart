@@ -27,7 +27,7 @@ List<LineChartBarData> getLineBarsData(
     //real-feel spots for hourly chart
     if (showClouds != true)
       LineChartBarData(
-        dotData: FlDotData(show: false),
+        dotData: const FlDotData(show: false),
         barWidth: 2.0,
         spots: hourlyForecastList
             .asMap()

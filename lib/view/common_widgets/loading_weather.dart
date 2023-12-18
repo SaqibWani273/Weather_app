@@ -38,7 +38,7 @@ class _LoadingWeatherState extends State<LoadingWeather>
   Widget build(BuildContext context) {
     return Container(
         // color: Colors.blue.withOpacity(0.4),
-        color: Color.fromARGB(255, 16, 12, 44),
+        color: const Color.fromARGB(255, 16, 12, 44),
         child: Center(
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +54,7 @@ class _LoadingWeatherState extends State<LoadingWeather>
                   height: 30,
                 ),
                 const Text("Loading Weather Data ... "),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 const CircularProgressIndicator.adaptive(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weathe_app/constants/hourly_consts/detailed_hourly_const.dart';
+import 'package:weathe_app/constants/detailed_hourly_const.dart';
 import 'package:weathe_app/utils/date_formatter.dart';
 
 import '../../../models/hourly_weather_model.dart';

@@ -114,6 +114,4 @@ class DateFormatter {
         return "$day Jan";
     }
   }
-
-  // void setFormattedDateTime(int timezone) {}
 }

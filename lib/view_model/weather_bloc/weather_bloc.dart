@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weathe_app/models/city_model.dart';
-import 'package:weathe_app/models/weather_model1.dart';
+import 'package:weathe_app/models/weather_model.dart';
 import 'package:weathe_app/repositories/weather_repository.dart';
 
 import '../../constants/custom_exception.dart';
@@ -49,7 +49,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
         emit(NoSuggestedLocations());
       }
     } on CustomException catch (e) {
-      log('unexpected error in fetching suggested locations: ${e}');
+      log('unexpected error in fetching suggested locations: $e');
       emit(WeatherErrorState(error: e));
     } catch (e) {
       emit(WeatherErrorState(

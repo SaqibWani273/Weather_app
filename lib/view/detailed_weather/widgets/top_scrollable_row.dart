@@ -111,7 +111,7 @@ class _TopScrollableRowState extends State<TopScrollableRow> {
                         TextSpan(
                             text: !widget.isDaily
                                 ? "${e.value.hour!.split(' ')[0]}:00\n"
-                                : "${e.value.day!}",
+                                : e.value.day!,
                             style: const TextStyle(
                               fontSize: 15,
                             )),

@@ -1,5 +1,6 @@
 import 'package:weathe_app/models/hourly_weather_model.dart';
 
+// some hourlyweather info to display in ui
 Map<String, dynamic> getMainHourDetails(ForecastWeatherModel hourlyWeather,
     {isHourly = true}) {
   return {

@@ -9,7 +9,7 @@ import '/utils/date_formatter.dart';
 
 import '../../constants/api_keys.dart';
 import '../../constants/custom_exception.dart';
-import '../../models/weather_model1.dart';
+import '../../models/weather_model.dart';
 
 class OpenWeatherApi {
   Position? _position;
@@ -54,7 +54,7 @@ class OpenWeatherApi {
     ApiResponseModel? apiResponseModel;
     try {
       final url =
-          "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$longt&appid=${apiKey1}&units=metric";
+          "https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$longt&appid=$apiKey1&units=metric";
 
       //make sure the pc and the device(emulator or physical) have the same
       //internet connection source
@@ -76,10 +76,10 @@ class OpenWeatherApi {
       log("TypeError getWeather:\n : ${e.stackTrace}\n error : $e");
       throw unknownException;
     } on FormatException catch (e) {
-      log("FormatException getWeather:\n msg : ${e.message}\n error : ${e}");
+      log("FormatException getWeather:\n msg : ${e.message}\n error : $e");
       throw unknownException;
     } catch (e) {
-      log("error occurred in getWeather: ${e}");
+      log("error occurred in getWeather: $e");
       throw internetException;
     }
 
@@ -115,7 +115,7 @@ class OpenWeatherApi {
       log("type error in getHourlyWeather:\n stacktrace : ${e.stackTrace}\n error : $e");
       throw unknownException;
     } catch (e) {
-      log("error  in getHourlyWeather: ${e}");
+      log("error  in getHourlyWeather: $e");
       throw internetException;
     }
     return hourlyForecastList;

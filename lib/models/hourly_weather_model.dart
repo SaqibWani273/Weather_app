@@ -1,4 +1,4 @@
-import 'package:weathe_app/models/weather_model1.dart';
+import 'package:weathe_app/models/weather_model.dart';
 
 //using this model for both hourly and daily weather forecast
 class ForecastWeatherModel {

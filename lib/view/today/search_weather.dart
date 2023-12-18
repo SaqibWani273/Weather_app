@@ -14,13 +14,13 @@ class SearchWeather extends StatelessWidget {
       backgroundColor: Colors.blue.shade400,
       body: Container(
         color: Colors.blue.shade400,
-        margin: EdgeInsets.only(top: 50),
+        margin: const EdgeInsets.only(top: 50),
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Column(children: [
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 10),
             child: TextField(
               onChanged: (value) {
                 context
@@ -39,7 +39,7 @@ class SearchWeather extends StatelessWidget {
               style: const TextStyle(height: 0.9),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Container(
@@ -50,12 +50,12 @@ class SearchWeather extends StatelessWidget {
                 Navigator.pop(context);
               },
 
-              leading: Icon(Icons.location_on_outlined),
-              title: Text("Select current Location"),
+              leading: const Icon(Icons.location_on_outlined),
+              title: const Text("Select current Location"),
               // subtitle: Text("Srinagar,India"),
             ),
           ),
-          Divider(
+          const Divider(
             height: 5,
           ),
           Expanded(
@@ -64,7 +64,7 @@ class SearchWeather extends StatelessWidget {
                 child: BlocBuilder<WeatherBloc, WeatherState>(
                   builder: (context, state) {
                     if (state is LoadingSuggestedLocations) {
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     }
@@ -86,14 +86,14 @@ class SearchWeather extends StatelessWidget {
                                   Navigator.pop(context);
                                 },
                                 tileColor: Colors.grey.withOpacity(0.3),
-                                leading: Icon(Icons.location_on_outlined),
+                                leading: const Icon(Icons.location_on_outlined),
                                 title: Text(
                                     "${location.name},${location.region ?? ""}"),
                                 subtitle: Text(
                                   location.country ?? "",
                                 ),
                               ),
-                              Divider(
+                              const Divider(
                                 height: 2,
                                 color: Colors.blue,
                               )
@@ -103,25 +103,20 @@ class SearchWeather extends StatelessWidget {
                       );
                     }
 
-                    return Container(
-                      child: Center(
-                          child: Column(
+                    return Center(
+                        child: SingleChildScrollView(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // Text(
-                          //     "Discover real-time weather, current date, and time for any location worldwide.",
-                          //     style:
-                          //         TextStyle(color: Colors.black, fontSize: 20)),
-                          // Spacer(),
                           Image.asset(
                               "assets/images/search_weather_waiting.jpg"),
-                          Text(
+                          const Text(
                             "Suggested cities will appear here",
                             style: TextStyle(color: Colors.black, fontSize: 20),
                           ),
                         ],
-                      )),
-                    );
+                      ),
+                    ));
                   },
                 )),
           )
@@ -134,9 +129,9 @@ class SearchWeather extends StatelessWidget {
 void showSnackbar(BuildContext context) {
   bool showedSnack = context.read<WeatherRepository>().showedSnackBar;
   if (!showedSnack) {
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text(
             "Discover real-time weather, current date and time for any location worldwide.",
             style: TextStyle(fontSize: 15),

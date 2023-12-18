@@ -4,7 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../utils/get_linebars_data.dart';
-import '../../../models/weather_model1.dart';
+import '../../../models/weather_model.dart';
 import '../../../repositories/weather_repository.dart';
 import '../../../models/hourly_weather_model.dart';
 

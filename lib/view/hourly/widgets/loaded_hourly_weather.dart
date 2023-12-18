@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weathe_app/constants/weather_icons.dart';
-import '../../../constants/other_const.dart';
+import 'package:weathe_app/view/common_widgets/location_name_date.dart';
+import '../../../constants/device_const.dart';
 import '../../../repositories/weather_repository.dart';
 import '../../../view/hourly/widgets/weather_chart.dart';
 
 import '../../../models/hourly_weather_model.dart';
-import '../../../utils/date_formatter.dart';
+
 import '../../common_widgets/transition_image_widget.dart';
 
 class LoadedHourlyWeather extends StatefulWidget {
@@ -25,7 +26,7 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
     });
   }
 
-  List<String> _list = ["Temperature", "Clouds"];
+  final List<String> _list = ["Temperature", "Clouds"];
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +36,7 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
     final deviceHeight = MediaQuery.of(context).size.height;
     final apiResponseModel =
         context.read<WeatherRepository>().currentWeatherModel!.apiResponseModel;
-    final formattedDateTime =
-        context.read<WeatherRepository>().dateFormatter.formattedDateTime;
+    final dateFormatter = context.read<WeatherRepository>().dateFormatter;
 
     return Container(
       color: const Color.fromARGB(255, 2, 51, 94),
@@ -56,37 +56,10 @@ class _LoadedHourlyWeatherState extends State<LoadedHourlyWeather> {
               children: [
                 //location and date
                 Expanded(
-                  flex: 3,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              FittedBox(
-                                child: Text(
-                                  "${apiResponseModel.name}, ${apiResponseModel.sys.country}",
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              FittedBox(
-                                fit: BoxFit.contain,
-                                child: Text(
-                                  formattedDateTime,
-                                  textScaler: const TextScaler.linear(1.8),
-                                ),
-                              ),
-                            ]),
-                      ),
-                      const Spacer(),
-                    ],
-                  ),
-                ),
+                    flex: 3,
+                    child: LocationNameDate(
+                      apiResponseModel: apiResponseModel,
+                    )),
                 //image,
                 Expanded(
                     flex: 2,

@@ -73,7 +73,5 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
-
-    // screens[index]);
   }
 }

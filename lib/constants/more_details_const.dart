@@ -1,7 +1,7 @@
-import 'package:weathe_app/models/weather_model1.dart';
+import 'package:weathe_app/models/weather_model.dart';
 import 'package:weathe_app/utils/date_formatter.dart';
 
-import 'hourly_consts/detailed_hourly_const.dart';
+import 'detailed_hourly_const.dart';
 
 Map<String, dynamic> getMoreDetails(ApiResponseModel apiResponseModel,
     {required DateFormatter dateFormatter}) {

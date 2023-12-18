@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weathe_app/constants/weather_icons.dart';
 import 'package:weathe_app/repositories/weather_repository.dart';
-import '../../../utils/date_formatter.dart';
+
 import '../../../utils/get_bargroups_data.dart';
 
 import '../../../models/hourly_weather_model.dart';
@@ -50,7 +50,7 @@ class LoadedDailyWeather extends StatelessWidget {
                 minY: lowestTemp - 3,
                 barGroups: getBarGroupsData(dailyWeatherList),
                 borderData: FlBorderData(show: false),
-                gridData: FlGridData(show: false),
+                gridData: const FlGridData(show: false),
                 titlesData: FlTitlesData(
                   show: true,
                   leftTitles: noTitles,
@@ -78,8 +78,8 @@ class LoadedDailyWeather extends StatelessWidget {
                               ],
                             );
                           }),
-                      axisNameWidget: Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0),
+                      axisNameWidget: const Padding(
+                        padding: EdgeInsets.only(bottom: 10.0),
                         child: Text("Daily Forecast   "),
                       ),
                       axisNameSize: 50),
@@ -102,7 +102,7 @@ class LoadedDailyWeather extends StatelessWidget {
                                     flex: 2,
                                     child: Text(
                                       "${dateFormatter.getFormattedDay(currentDate)}\n${currentDate.day}",
-                                      style: TextStyle(fontSize: 15),
+                                      style: const TextStyle(fontSize: 15),
                                     )),
                                 Expanded(
                                   flex: 1,
